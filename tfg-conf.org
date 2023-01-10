@@ -1,0 +1,288 @@
+# -*- buffer-read-only: t; org-confirm-babel-evaluate: nil;  -*-
+
+#+TITLE: Archivo de configuración TFG
+#+AUTHOR: Antonio Moreno
+#+PROPERTY: header-args :tangle "~/Sync/proyectos/tfg/tex/tfg-conf.tex" :comments org :exports code
+#+OPTIONS: d:nil
+#+LANGUAGE: es
+#+OPTIONS: ':t
+#+OPTIONS: tags:nil
+#+OPTIONS: todo:nil
+
+
+* Configuración general
+** Configuración de la clase de documento
+
+
+  #+BEGIN_SRC latex
+    \documentclass[%
+    % 10pt,
+    a4paper,
+    % openany,
+    % draft
+    ]{book}
+  #+END_SRC
+
+
+** Dimensiones de la caja
+
+#+begin_SRC latex
+  \topskip=12pt
+
+  \usepackage[%
+  twoside=false,
+  paperwidth=21cm,
+  paperheight=29.7cm,
+  % showframe,
+  textwidth=15.5cm,
+  textheight=22cm,
+  left=3cm,
+  top=4cm,
+  headsep=0.9cm,
+  headheight=24pt
+  ]{geometry}
+#+end_SRC
+
+** Parámetros de espacio vertical y horizontal, viudas, parindent, etc.
+
+#+begin_SRC latex
+  \pdfvariable minorversion 7
+  \setlength{\bigskipamount}{12pt plus 4pt minus 3pt}
+  \parskip=0pt
+  \setlength{\parindent}{2.2em}
+  \widowpenalty=10000
+  \clubpenalty=10000
+  \flushbottom
+  \setlength\partopsep{-\topsep}\addtolength\partopsep{6pt plus 2pt minus 2pt} % equivalente a medskip (para las citas de poemas)
+  \renewcommand{\baselinestretch}{1.5}
+#+end_SRC
+
+** Colores
+
+#+begin_SRC latex
+  \usepackage{xcolor}
+
+  \definecolor{azulon}{cmyk}{0.76,0.31,0.04,0}
+  \definecolor{meta}{cmyk}{0.10,0.0,0.20,0}
+  \definecolor{linea}{cmyk}{0.02,0.75,0.97,0.06}
+
+  \definecolor{azulao}{rgb}{0.04,0.33,0.62}
+  \definecolor{morado}{rgb}{0.34,0.12,0.43}
+  \definecolor{verdoso}{rgb}{0.10,0.40,0.20}
+#+end_SRC
+
+* Fuentes e idiomas
+** Fontspec y definición de familias
+
+Comenzamos cargando =fontspec=
+
+#+begin_SRC latex
+  \usepackage{fontspec}
+#+end_SRC
+
+la fuente principal con Noto Serif
+
+#+begin_SRC latex
+  \setmainfont{Noto Serif}
+  \setsansfont{NotoSansHK-Regular}[Scale=1.1]
+#+end_SRC
+
+Fira code para la fuente monoespaciada y escalada a la altura de la fuente principal
+
+#+begin_SRC latex
+  \setmonofont{fira code}[Scale=MatchLowercase]
+#+end_SRC
+
+** Babel e idiomas
+
+Cargamos Babel con los idiomas que se van a usar en el documento
+
+#+begin_SRC latex
+  \usepackage[english,spanish]{babel}
+#+end_SRC
+
+Definimos un guión de no-corte:
+
+#+begin_SRC latex
+  \def\nocort{\babelhyphen{nobreak}}
+#+end_SRC
+
+Para evitar el guionado de los acrónimos se debe utilizar el siguiente comando de TeX que impide el guionado de las palabras en mayúsculas
+
+#+begin_SRC latex
+  \uchyph=0
+#+end_SRC
+
+Para que el espaciado entre oraciones y palabras sea igual. La tradición inglesa (por defecto en LaTeX) ajusta los espacios después de punto y seguido (o comas, exclamaciones, etc)
+
+#+begin_SRC latex
+  \frenchspacing
+#+end_SRC
+
+** Definición de nuevos tipos
+
+#+begin_SRC latex
+  \newfontfamily\nummeta[Scale=3.6]{Noto Sans}
+  \newfontfamily\texmeta[Scale=2]{Noto Sans}
+  \newfontfamily\numblo[Color=azulon,Scale=12.4]{Noto Sans}
+  \newfontfamily\texblo[Color=azulon,Scale=3]{Noto Sans}
+  \newfontfamily\meta[Color=azulon,Scale=1.4]{Noto Sans}
+  \newfontfamily\actua[Color=white,Scale=1.4]{Noto Sans}
+  \newfontfamily\fods[Color=white,Scale=0.9]{Noto Sans}
+  \newfontfamily\azul[Color=azulon]{Noto Serif}
+  \newfontfamily\linea[Color=linea,Scale=1.4]{Noto Sans}
+  \newfontfamily\cb[Color=azulao]{PT Sans}
+  \newfontfamily\fnotab{PT Sans}
+  \newfontfamily\fnota[Scale=0.90]{PT Sans}[
+    UprightFont={*},
+    ItalicFont={* Italic},
+    BoldFont={* Bold},
+    BoldItalicFont={* Bold Italic}]
+  #+end_SRC
+
+* Más paquetes
+
+** Gráficos
+
+#+BEGIN_SRC latex
+  \usepackage{graphicx}
+#+END_SRC
+
+** Listas
+
+#+begin_SRC latex
+  \usepackage{enumitem}
+#+end_SRC
+
+** Matemáticas
+
+#+begin_SRC latex
+  \usepackage{amsmath}
+#+end_SRC
+
+** Tablas
+
+#+begin_SRC latex
+  \usepackage{array}
+  \usepackage{tabularx}
+  \usepackage{booktabs}
+#+end_SRC
+
+* Cabeceras, títulos e índices
+
+Se carga =titlesec= y =titletoc= pero como son necesarias las cabeceras dinámicas del diccionario, para los estilos de página se usará =fancyhdr=
+
+#+begin_SRC latex
+  % \usepackage[clearempty]{titlesec}
+  \usepackage[rigidchapters]{titlesec}
+  \usepackage{titletoc}
+
+  \newcommand{\sectionbreak}{}
+  \newcommand{\subsectionbreak}{}
+  \newcommand{\subsubsectionbreak}{}
+#+end_SRC
+
+** Estilos de página (conf fancyhdr)
+
+*** Cargamos =fancyhdr= e =ifthen=
+
+#+begin_SRC latex
+  \usepackage{fancyhdr}
+  \usepackage{ifthen}
+#+end_SRC
+
+*** Encabezados
+
+#+begin_SRC latex
+  % \pagestyle{fancy}
+  \fancypagestyle{plain}{%
+    \fancyhf{}
+    \fancyfoot{}
+    \renewcommand{\headrulewidth}{0pt}}
+#+end_SRC
+
+
+#+BEGIN_SRC latex
+  \fancyhead[L,C]{}
+  \fancyhead[L]{\sffamily\nouppercase\rightmark}
+  \fancyhead[R]{\sffamily\color{azulao}\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \fancyfoot[L,C]{}
+
+  \pagestyle{fancy}
+#+END_SRC
+
+** Estilos de las secciones con titlesec
+
+#+BEGIN_SRC latex
+          % sección
+        \titleformat{name=\section,numberless}          % comando
+        [block]                                         % tipo
+        {\sffamily\bfseries\Large\color{morado}}        % format
+        {}                                              % label
+        {0mm}                                           % sep
+        {\leavevmode\smash{\llap{\rule{2mm}{2mm}\;\;}}} % before-code
+        []                                              % after-code
+
+        \renewcommand{\thesection}{\arabic{section}}
+        \renewcommand{\sectionbreak}{}
+        \titleformat{name=\section}              % comando
+        [hang]                                   % tipo
+        {\sffamily\bfseries\Large\color{morado}} % format
+        {\thesection}                            % label
+        {4mm}                                    % sep
+        {}                                       % before-code
+        []                                       % after-code
+        \titlespacing{\section}
+        {0pc}                           % left
+        {.7cm}                          % before-sep
+        {.3cm}                          % after-sep
+
+        % subsección
+        \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+        \renewcommand{\subsectionbreak}{%
+          \addpenalty{-300}%
+          \vspace*{0pt}}
+        \titleformat{name=\subsection}     % comando
+        [block]                            % tipo
+        {\sffamily\bfseries\color{morado}} % format
+        {\thesubsection}                   % label
+        {3mm}                              % sep
+        {}                                 % before-code
+        []                                 % after-code
+        \titlespacing{\subsection}
+        {0pc}                           % left
+        {12.29pt plus 4pt minus 3pt}    % before-sep
+        {5mm}                           % after-sep
+
+        % subsubsección
+        \titleformat{\subsubsection}[runin]{%
+          \fontsize{10.2pt}{12.20pt}\selectfont%
+          \mdseries\scshape}%
+        {}%
+        {0em}%
+        {}%
+        [.]
+        \titlespacing{\subsubsection}{0pt}{12.29pt plus 4pt minus 3pt}{0.5em}
+#+END_SRC
+
+
+* Hyperref
+
+#+BEGIN_SRC latex
+  \usepackage[unicode=true,breaklinks=true,final,hyperindex=false]{hyperref}
+  \hypersetup{%
+    linktocpage=true,
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+  }
+#+END_SRC
+
+* COMMENT Bibliografía
+
+#+BEGIN_SRC latex
+  \usepackage{biblatex}
+  \addbibresource{/Users/ammz/Sync/proyectos/tfg/org/references.bib}
+#+END_SRC

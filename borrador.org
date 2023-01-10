@@ -1,0 +1,145 @@
+#+OPTIONS: author:nil
+#+OPTIONS: title:nil
+#+OPTIONS: date:nil
+#+OPTIONS: toc:nil
+# #+OPTIONS: num:nil
+#+LANGUAGE: es
+#+OPTIONS: ':t
+#+OPTIONS: H:5
+# #+EXPORT_FILE_NAME: ../tex/borrador
+#+LATEX_CLASS: etea-empty
+#+bibliography: references.bib
+#+CITE_EXPORT: biblatex authoryear
+#+LaTeX_HEADER: \input{~/Sync/proyectos/tfg/tex/tfg-conf.tex}
+
+
+* Portada                                                            :ignore:
+
+#+BEGIN_SRC latex
+    \begin{titlepage}
+      \begin{sffamily}
+        % \color{azulon}
+        \begin{center}
+          \begin{figure}
+            \makebox[\textwidth][c]{\includegraphics[width=8cm]{logo-uloyola.png}}
+          \end{figure}
+          \vspace{2.5cm}
+          {\Large Grado en Ingeniería Informática y Tecnologías Virtuales}\\
+          \vspace{2cm}
+          {\Large Trabajo Fin de Grado}
+          \rule{10.5cm}{0.1mm}\\
+          \bigskip
+          {\Huge Simulación de fluidos}\\[10pt]
+          {\Huge basada en física}\\[10pt]
+          {\Huge utilizando la arquitectura CUDA}
+          \vspace*{0.5cm}
+          \rule{10.5cm}{0.1mm}\\
+          \vspace*{0.9cm}
+          {\large Autor}\\
+          {\Large Antonio Moreno Talero}\\
+          \vspace*{1cm}
+          {\large Tutor}\\
+          {\Large Juan J. Perea Rodríguez}
+          \vfill
+          {\large Sevilla, febrero 2023}
+        \end{center}
+        \color{black}
+      \end{sffamily}
+  \end{titlepage}
+#+END_SRC
+
+
+* Contenido                                                          :ignore:
+
+#+BEGIN_SRC latex
+  \tableofcontents
+#+END_SRC
+
+* Introducción
+
+El proyecto desarrollado para este Trabajo de Fin de Grado se encuentra en el ámbito de la computación grafica, también conocida por sus siglas en ingles CG (Computer Graphics). La cual es un campo de la informática que se encarga de la generación y procesamiento de imágenes y gráficos mediante el uso de algoritmos y técnicas de programación. Esta disciplina engloba aplicaciones de diferentes campos como pueden ser juegos, visualización de datos, animaciones y simulación.
+
+Es en esta última y mas específicamente en la simulación de fluidos basada en física es la que se centra este proyecto.
+
+La simulación de fluidos es una técnica utilizada en la ingeniería y la ciencia para modelar y predecir el comportamiento de los fluidos en un sistema determinado. Se utiliza en una gran variedad de aplicaciones, como la simulación de procesos industriales, el diseño de aeronaves, vehículos e incluso en la predicción meteorológica.
+
+Simular un fluido implica resolver las complejas ecuaciones en derivadas parciales con las que se describe, cuantitativamente, el flujo del fluido. Para llevar a cabo esta tarea, es necesario utilizar métodos numéricos que transforman esas complejas ecuaciones diferenciales en un conjunto de ecuaciones algebraicas, relativamente más sencillas de manejar e implementables en sistemas computacionales. Para que estas técnicas puedan ser utilozadas es necesario modelar la continuidad del fluido en un conjunto discreto de /entidades/ conexas.
+
+Entre las diferentes técnicas existentes, merecen destacar, por su extenso uso: el Métodos de Elementos Finitos (FEM), el Método de los Volúmenes Disceretos (DVM) o Particles in cell (PEC), en lo que las /entidades/ conexas son polígonos conexos que forman una malla, y Smoothed Particles Hydrodynamics (SPH) en la que las entidades son aprtículas libres que se /conectan/ directamente a través de funciones contínuas decrecientes. Este último método es el que vamos a utilizar en nuestro proyecto.
+
+Si bien realizaremos una descripción más específica en el Capítulo 2, seguidamente vamos a explicar algunas de las características más generales del método SPH.
+
+(*Explicación corta de SPH*)
+
+SPH (Smoothed Particle Hydrodynamics) es un método numérico utilizado para simular el comportamiento de fluidos. En este método, el fluido se representa como un conjunto de partículas que se mueven y interactúan entre sí a través de fuerzas de interacción, definida a partir de las ecuaciones en derivadas parciales con las que se describe el flujo del fluido. Cada partícula tiene una masa y está sujeta a la influencia de las demás partículas, las más próximas, a su alrededor. Esta interacción local es la que modela la interacción y permite reproducir el comportamiento de los fluidos de manera realista. SPH se utiliza a menudo en aplicaciones de simulación de fluidos en la industria del cine y en la ingeniería, así como en la investigación científica.
+
+Algunas de las ventajas asociadas al uso del método SPH son las siguientes:
+
+- Simplicidad de implementación: SPH es relativamente fácil de implementar y requiere poca información previa sobre el sistema que se está simulando.
+
+- Flexibilidad: SPH es un método muy flexible que se puede utilizar en una amplia variedad de aplicaciones y escenarios.
+
+- Capacidad de manejar flujos no newtonianos: SPH es capaz de manejar flujos no newtonianos, lo que lo hace adecuado para la simulación de fluidos con comportamientos no lineales.
+
+- Robustez: SPH es un método robusto que puede manejar cambios bruscos en el flujo y en la topología del sistema.
+
+- Facilidad de paralelización: SPH es fácil de paralelizar lo que permite acelerar la simulación en máquinas con varios núcleos o en clusters de computación.
+
+
+(*Problema de SPH*)
+
+A pesar de estas ventajas, el método SPH tiene algunos problemas asociados que hace que aún sea un campo de investigación en desarrollo. Algunas de las desventajas que este método presentan son:
+
+- Dificultad para manejar obstáculos sólidos: uno de los principales problemas de SPH es la dificultad para manejar obstáculos sólidos de manera efectiva. Esto puede dar lugar a penetraciones de partículas a través de los obstáculos lo que afecta al realismo de la simulación.
+
+- Pérdida de precisión en la modelización de ondas: SPH tiende a tener dificultades para reproducir ondas de alta frecuencia y amplitud, lo que puede afectar la precisión de la simulación en algunos casos. El resultado es la aparición de atenuación de este tipo de ondas lo que induce sobreamortiguamiento poco realista.
+
+- Dificultad para manejar flujos de alta velocidad: SPH puede tener problemas para manejar flujos de alta velocidad debido a la discretización de las partículas y a la forma en que se calculan las fuerzas de interacción entre ellas.
+
+- Sensibilidad a los parámetros de entrada: el rendimiento de SPH puede ser sensible a los parámetros de entrada, lo que puede hacer difícil encontrar los valores óptimos para una simulación determinada.
+
+- Altos requisitos computacionales: debido a la gran cantidad de partículas involucradas en las simulaciones de SPH, este método puede requerir una gran cantidad de recursos de cómputo para su ejecución, especialmente a la hora de determinar las partículas más próximas a cada una de ellas, las /partículas vecinas/, que son con las que interactúa.
+
+** Objetivos del proyecto
+
+Explicar los principales puntos del proyecto montar una estructura de programa con Opengl y CUDA, además de intentar acelerar lo máximo posible el tiempo de simulación
+
+** Estructura de la Memoria
+* Analisis
+** Introduccion
+** Definición del problema real
+** Análisis de requisitos
+** Planificación y seguimiento
+* Fundamentos del Método SPH
+** Introducción
+** Descripción del Método SPH
+** Formulación del Método SPH
+* Búsqueda de partículas vecinas
+** Introducción
+** Búsqueda de vecinas basadas en etiquetado Hash
+** Búsqueda de vecinas basadas Fuerza bruta
+* Método de integración temporal
+** Introducción
+** Ecuación fundamental para la integración temporal numérica
+** Comparativa entre métodos implícitos y explícitos
+* Colisiones
+** Introducción
+** Etapa de detección de la colisión fluido-contorno
+*** Técnicas de detección basada en límites
+*** Técnicas de detección basada en campo de distancias
+** Etapa de la respuesta dinámica a la interacción fluido-contorno
+** Estructura del proceso de colisión
+* Características de las herramientas de implementación del proyecto
+** Introducción
+** Características del lenguaje C
+** Características del lenguaje CUDA
+** Características de OpenGL
+* Estrucutra del simulador y resultados
+** Introducción
+** Estructura del simulador
+** Bucle de simulación
+** Resultados obtenidos
+*** Comparativa en tiempo de renderizado
+* Conclusiones y trabajo futuro
+* Referencias                                                        :ignore:
+#+print_bibliography:
