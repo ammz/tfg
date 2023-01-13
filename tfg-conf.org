@@ -16,7 +16,7 @@
 
   #+BEGIN_SRC latex
     \documentclass[%
-    % 10pt,
+    12pt,
     a4paper,
     % openany,
     % draft
@@ -34,7 +34,7 @@
   paperwidth=21cm,
   paperheight=29.7cm,
   % showframe,
-  textwidth=15.5cm,
+  textwidth=15cm,
   textheight=22cm,
   left=3cm,
   top=4cm,
@@ -48,14 +48,20 @@
 #+begin_SRC latex
   \pdfvariable minorversion 7
   \setlength{\bigskipamount}{12pt plus 4pt minus 3pt}
-  \parskip=0pt
-  \setlength{\parindent}{2.2em}
+  % \parskip=20pt
+  % \setlength{\parindent}{2em}
   \widowpenalty=10000
   \clubpenalty=10000
   \flushbottom
   \setlength\partopsep{-\topsep}\addtolength\partopsep{6pt plus 2pt minus 2pt} % equivalente a medskip (para las citas de poemas)
-  \renewcommand{\baselinestretch}{1.5}
+  \usepackage[nodisplayskipstretch]{setspace}
+  \setstretch{1.24}
+  \renewcommand{\baselinestretch}{1.24}
 #+end_SRC
+
+#+BEGIN_SRC latex
+  \usepackage[skip=20pt plus1pt, indent=2em]{parskip}
+#+END_SRC
 
 ** Colores
 
@@ -83,8 +89,8 @@ Comenzamos cargando =fontspec=
 la fuente principal con Noto Serif
 
 #+begin_SRC latex
-  \setmainfont{Noto Serif}
-  \setsansfont{NotoSansHK-Regular}[Scale=1.1]
+  % \setmainfont{Noto Serif}
+  % \setsansfont{NotoSansHK-Regular}[Scale=1.1]
 #+end_SRC
 
 Fira code para la fuente monoespaciada y escalada a la altura de la fuente principal
@@ -146,6 +152,8 @@ Para que el espaciado entre oraciones y palabras sea igual. La tradición ingles
 
 #+BEGIN_SRC latex
   \usepackage{graphicx}
+  \usepackage[section]{placeins}
+  \usepackage{import}
 #+END_SRC
 
 ** Listas
@@ -215,55 +223,55 @@ Se carga =titlesec= y =titletoc= pero como son necesarias las cabeceras dinámic
 ** Estilos de las secciones con titlesec
 
 #+BEGIN_SRC latex
-          % sección
-        \titleformat{name=\section,numberless}          % comando
-        [block]                                         % tipo
-        {\sffamily\bfseries\Large\color{morado}}        % format
-        {}                                              % label
-        {0mm}                                           % sep
-        {\leavevmode\smash{\llap{\rule{2mm}{2mm}\;\;}}} % before-code
-        []                                              % after-code
+  % sección
+  \titleformat{name=\section}          % comando
+  [block]                                         % tipo
+  {\sffamily\bfseries\Large\color{morado}}        % format
+  {}                                              % label
+  {0mm}                                           % sep
+  {\leavevmode\smash{\llap{\rule{2mm}{2mm}\;\;}}} % before-code
+  []                                              % after-code
 
-        \renewcommand{\thesection}{\arabic{section}}
-        \renewcommand{\sectionbreak}{}
-        \titleformat{name=\section}              % comando
-        [hang]                                   % tipo
-        {\sffamily\bfseries\Large\color{morado}} % format
-        {\thesection}                            % label
-        {4mm}                                    % sep
-        {}                                       % before-code
-        []                                       % after-code
-        \titlespacing{\section}
-        {0pc}                           % left
-        {.7cm}                          % before-sep
-        {.3cm}                          % after-sep
+  % \renewcommand{\thesection}{\arabic{section}}
+  \renewcommand{\sectionbreak}{}
+  \titleformat{name=\section}              % comando
+  [hang]                                   % tipo
+  {\sffamily\bfseries\Large\color{morado}} % format
+  {\thesection}                            % label
+  {4mm}                                    % sep
+  {}                                       % before-code
+  []                                       % after-code
+  \titlespacing{\section}
+  {0pc}                           % left
+  {.7cm}                          % before-sep
+  {.3cm}                          % after-sep
 
-        % subsección
-        \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
-        \renewcommand{\subsectionbreak}{%
-          \addpenalty{-300}%
-          \vspace*{0pt}}
-        \titleformat{name=\subsection}     % comando
-        [block]                            % tipo
-        {\sffamily\bfseries\color{morado}} % format
-        {\thesubsection}                   % label
-        {3mm}                              % sep
-        {}                                 % before-code
-        []                                 % after-code
-        \titlespacing{\subsection}
-        {0pc}                           % left
-        {12.29pt plus 4pt minus 3pt}    % before-sep
-        {5mm}                           % after-sep
+  % subsección
+  \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+  \renewcommand{\subsectionbreak}{%
+    \addpenalty{-300}%
+    \vspace*{0pt}}
+  \titleformat{name=\subsection}     % comando
+  [block]                            % tipo
+  {\sffamily\bfseries\color{morado}} % format
+  {\thesubsection}                   % label
+  {3mm}                              % sep
+  {}                                 % before-code
+  []                                 % after-code
+  \titlespacing{\subsection}
+  {0pc}                           % left
+  {12.29pt plus 4pt minus 3pt}    % before-sep
+  {5mm}                           % after-sep
 
-        % subsubsección
-        \titleformat{\subsubsection}[runin]{%
-          \fontsize{10.2pt}{12.20pt}\selectfont%
-          \mdseries\scshape}%
-        {}%
-        {0em}%
-        {}%
-        [.]
-        \titlespacing{\subsubsection}{0pt}{12.29pt plus 4pt minus 3pt}{0.5em}
+  % subsubsección
+  \titleformat{\subsubsection}[runin]{%
+    \fontsize{10.2pt}{12.20pt}\selectfont%
+    \mdseries\scshape}%
+  {}%
+  {0em}%
+  {}%
+  [.]
+  \titlespacing{\subsubsection}{0pt}{12.29pt plus 4pt minus 3pt}{0.5em}
 #+END_SRC
 
 

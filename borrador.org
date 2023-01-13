@@ -9,7 +9,7 @@
 # #+EXPORT_FILE_NAME: ../tex/borrador
 #+LATEX_CLASS: etea-empty
 #+bibliography: references.bib
-#+CITE_EXPORT: biblatex authoryear
+#+CITE_EXPORT: biblatex numeric
 #+LaTeX_HEADER: \input{~/Sync/proyectos/tfg/tex/tfg-conf.tex}
 
 
@@ -46,34 +46,87 @@
         \color{black}
       \end{sffamily}
   \end{titlepage}
+
+  \newpage
+  \thispagestyle{empty}
+  \mbox{}
+  \newpage
 #+END_SRC
 
 
 * Contenido                                                          :ignore:
 
 #+BEGIN_SRC latex
+  \frontmatter
   \tableofcontents
+  \listoffigures
+  \mainmatter
 #+END_SRC
+
 
 * Introducción
 
-El proyecto desarrollado para este Trabajo de Fin de Grado se encuentra en el ámbito de la computación grafica, también conocida por sus siglas en ingles CG (Computer Graphics). La cual es un campo de la informática que se encarga de la generación y procesamiento de imágenes y gráficos mediante el uso de algoritmos y técnicas de programación. Esta disciplina engloba aplicaciones de diferentes campos como pueden ser juegos, visualización de datos, animaciones y simulación.
 
-Es en esta última y mas específicamente en la simulación de fluidos basada en física es la que se centra este proyecto.
+La computación gráfica o gráficos por ordenador también conocida por sus siglas en ingles CG (/Computer Graphics/) es el campo de la informática que trata de la generación y procesamiento de imágenes y gráficos mediante el uso de algoritmos y técnicas de programación. En la actualidad, es una tecnología clave para multitud de sectores, que van desde el cine, la fotografía digital, los videojuegos hasta la investigación científica, la arquitectura, la medicina o el diseño de vehículos.
 
-La simulación de fluidos es una técnica utilizada en la ingeniería y la ciencia para modelar y predecir el comportamiento de los fluidos en un sistema determinado. Se utiliza en una gran variedad de aplicaciones, como la simulación de procesos industriales, el diseño de aeronaves, vehículos e incluso en la predicción meteorológica.
+El proyecto desarrollado para este Trabajo de Fin de Grado se centra en el uso de la metodología de generación de imágenes mediante un proceso de simulación. En concreto, se plantea una simulación basada en física, también designada como simulación dinámica.
 
-Simular un fluido implica resolver las complejas ecuaciones en derivadas parciales con las que se describe, cuantitativamente, el flujo del fluido. Para llevar a cabo esta tarea, es necesario utilizar métodos numéricos que transforman esas complejas ecuaciones diferenciales en un conjunto de ecuaciones algebraicas, relativamente más sencillas de manejar e implementables en sistemas computacionales. Para que estas técnicas puedan ser utilozadas es necesario modelar la continuidad del fluido en un conjunto discreto de /entidades/ conexas.
+La simulación de un sistema dinámico implica resolver las complejas ecuaciones en derivadas parciales con las que se describe, cuantitativamente, su comportamiento. Para llevar a cabo esta tarea, es necesario utilizar métodos numéricos que transforman esas complejas ecuaciones diferenciales en un conjunto de ecuaciones algebraicas, relativamente más sencillas de manejar e implementables en sistemas computacionales.
 
-Entre las diferentes técnicas existentes, merecen destacar, por su extenso uso: el Métodos de Elementos Finitos (FEM), el Método de los Volúmenes Disceretos (DVM) o Particles in cell (PEC), en lo que las /entidades/ conexas son polígonos conexos que forman una malla, y Smoothed Particles Hydrodynamics (SPH) en la que las entidades son aprtículas libres que se /conectan/ directamente a través de funciones contínuas decrecientes. Este último método es el que vamos a utilizar en nuestro proyecto.
+De forma aún más específica este proyecto se centrará en la simulación del comportamiento de los fluidos. La simulación de fluidos es una técnica utilizada en la ingeniería y la ciencia para modelar y predecir el comportamiento de la dinámica de medios contínuos, como los flujos de un fluido, en un sistema determinado. Se utiliza en una gran variedad de aplicaciones, como la simulación de procesos industriales, el diseño de aeronaves, vehículos e incluso en la predicción meteorológica.
 
-Si bien realizaremos una descripción más específica en el Capítulo 2, seguidamente vamos a explicar algunas de las características más generales del método SPH.
+Para que estas técnicas puedan ser utilizadas es necesario modelar la continuidad del fluido en un conjunto discreto de /entidades/ conexas.
 
-(*Explicación corta de SPH*)
+Entre los diferentes métodos numéricos que se han desarrollado, merecen destacar, por su extenso uso: el Método de Elementos Finitos o FEM (del inglés /Finite Element Method/), el Método de los Volúmenes Discretos o DVM (del inglés /Discrete Volume Method/) o /Particles in cell/ (PIC), en la que las /entidades/ conexas son polígonos conexos que forman una malla, y el método Smoothed Particles Hydrodynamics (SPH) en el que las entidades son partículas libres que se /conectan/ directamente a través de funciones contínuas decrecientes. Este último método es el que vamos a utilizar en nuestro proyecto.
 
-SPH (Smoothed Particle Hydrodynamics) es un método numérico utilizado para simular el comportamiento de fluidos. En este método, el fluido se representa como un conjunto de partículas que se mueven y interactúan entre sí a través de fuerzas de interacción, definida a partir de las ecuaciones en derivadas parciales con las que se describe el flujo del fluido. Cada partícula tiene una masa y está sujeta a la influencia de las demás partículas, las más próximas, a su alrededor. Esta interacción local es la que modela la interacción y permite reproducir el comportamiento de los fluidos de manera realista. SPH se utiliza a menudo en aplicaciones de simulación de fluidos en la industria del cine y en la ingeniería, así como en la investigación científica.
+Si se realizará una descripción más específica en el Capítulo 2, seguidamente se describen  algunas de las características más generales del método SPH.
 
-Algunas de las ventajas asociadas al uso del método SPH son las siguientes:
+** (Navier Stokes)                                                  :ignore:
+
+La dinámica de un fluido se refiere al comportamiento del fluido y a su evolución en el espacio y el tiempo. Esto también implica dar respuesta a cómo el fluido se mueve, cómo cambia de forma o cómo cambian sus propiedades físicas.
+
+Una de las principales ecuaciones que rigen la dinámica de los fluidos es la ecuación de Navier-Stokes, que describe cómo la velocidad, la presión y la densidad del fluido cambian con el tiempo y el espacio. Esta ecuación se basa en las ecuaciones de conservación de masa y movimiento, y tiene en cuenta factores como la viscosidad, las fuerzas externas y la inercia del fluido.
+
+Igualmente, la dinámica de un fluido también se ve afectada por la /estratificación/, que es cuando las diferentes capas de un fluido tienen distintas velocidades debido a diferencias en las propiedades del fluido, como la densidad o la viscosidad. Esto puede dar lugar a distintos fenómenos como los remolinos o las corrientes de remolino.
+
+Otro factor importante en la dinámica de los fluidos es la turbulencia, que es el movimiento caótico e irregular de un fluido. La turbulencia puede estar causada por factores como las diferencias de velocidad, las irregularidades en la superficie o las perturbaciones externas. El factor de la turbulencia puede tener un gran impacto en la dinámica de un fluido, ya que puede aumentar la mezcla y el intercambio de calor y masa.
+
+En resumen, la dinámica de un fluido se refiere al comportamiento y evolución del fluido en el espacio y el tiempo, y está determinada por una serie de factores como las ecuaciones de conservación de masa y movimiento, la viscosidad, las fuerzas externas, la estratificación y la turbulencia.
+
+Para describir completamente la dinámica del fluido se requiere de hasta nueve ecuaciones en derivadas parciales. No obstante, distintos estudios sugieren la pertinencia de prescindir de un gran número de ellas, y centrarse en la ecuación obtenida a partir de la conservación del momento. Es por ello, que se utiliza la denominada ecuación de Navier-Stokes ([[eqn:1]]) que en su forma más compacta se puede expresar como sigue:
+#
+#+NAME: eqn:1
+\begin{gather}
+\rho\frac{\mathrm {D} v}{\mathrm {D} t} = -\nabla P + \nu\nabla^2 v + \rho g
+\end{gather}
+#
+@@latex:\noindent@@ donde
+$\rho$ es la densidad del fluido, $\frac{\mathrm {D}}{\mathrm {D} t}$ es la derivada sustancial, $v$ es la velocidad del flujo del fluido, $P$ es la presión del fluido, $g$ es la gravedad y $\nu$ es la viscosidad del fluido.
+
+Esta ecuación expresa el comportamiento del fluido y su dinámica, describiendo cómo la velocidad, la presión y la densidad evolucionan en el tiempo y en el espacio.
+
+Aunque es indudable las ventajas que representa poder operar exclusivamente con la ecuación de Navier-Stokes en la simulación de fluidos, algunos autores han apuntado que precisamente en la simulación de fluidos, es conveniente incorporar la propiedad de /incompresibilidad/, sobre todo en el ámbito de la CG, ya que esta no está considerada en la ecuación de Navier Stokes. Ha habido distintas propuestas técnicas que pretenden resolver el problema /imponiendo/ la incompresiblidad mediante procesos de adaptación de resultados calculando el valor instantáneo de la presión o a través de la composición de la ecuación de Navier Stokes y la conservación de la masa. Debido a estas desventajas, en este proyecto consideraremos un modelo basado em la propuesta de Perea et al. [42] que impone implícitamente la incompresibilidad.
+
+** Diferentes métodos numéricos
+
+Simular un fluido implica resolver las complejas ecuaciones en derivadas parciales con las que se describe, cuantitativamente, el flujo del fluido. Para llevar a cabo esta tarea, es necesario utilizar métodos numéricos que transformen esas complejas ecuaciones diferenciales en un conjunto de ecuaciones algebraicas, relativamente más sencillas de manejar.
+
+Existen varios métodos numéricos que se han desarrollado para la simulación de fluidos, y se pueden clasificar según su tipología en dos grupos principales:
+
+- *Métodos Eulerianos*
+
+  Se trata de métodos en los que se considera el fluido como un medio continuo (mallas, generalmente de triángulos o cuadriláteros, en el caso de bi–dimensional o bien, hexaedros o tetraedros, para el caso tridimensional) y se describen las variables en un punto fijo del espacio y el tiempo. Entre estos métodos se encuentran el método de volúmenes finitos o FEM (del inglés /Finite Element Method/) y el método de diferencias finitas o FDM (del inglés /Finite Difference Method/). Ambos métodos se basan en la discretización del espacio y del tiempo y se utilizan para resolver ecuaciones diferenciales. Son ampliamente utilizados para simular el comportamiento de fluidos incompresibles y compresibles, especialmente en casos donde hay un gran número de obstáculos o geometrías complejas.
+
+
+- *Métodos Lagrangianos*:
+
+  Son aquellos métodos en los que se considera el fluido como un conjunto de partículas y se describen las variables en función de la posición y la velocidad de cada partícula. El método de partículas (SPH) es un ejemplo de estos métodos, se basa en la resolución de la ecuación de continuidad y la ecuación de movimiento para cada partícula, utilizando una función de suavizado o kernel para la interpolación entre las partículas. Este método es ampliamente utilizado en aplicaciones como la simulación de fluidos en medios porosos, fluidos multi-componentes y en problemas de dinámica de fluidos complejos.
+
+  Los métodos lagrangianos presentan indudables ventajas frente a los eulerianos, ya que, por una parte, al operar con partículas en lugar de mallas permite una mayor simplificación de los cálculos y permite una gran adaptabilidad al contenedor del fluido, especialmente cuando se simulan líquidos. Por otro lado, resolver la ecuación de Navier Stoke mediante el uso de técnicas lagrangianas, “genera” un conjunto de ecuaciones desacopladas que facilita el proceso de solución. Otra importante característica de los métodos lagrangianos  es que facilitan simular la interfase entre fluidos –por ejemplo aire–líquido– y la conservación de la masa, cómo se ha demostrado por (...)
+
+EL SPH (/Smoothed Particle Hydrodynamics/) se presenta como el método más destacable de los métodos lagrangianos. Se trata método numérico utilizado para simular el comportamiento de fluidos. En este método, el fluido se representa como un conjunto de partículas que se mueven e interactúan entre sí a través de fuerzas de interacción, definido a partir de las ecuaciones en derivadas parciales con las que se describe el flujo del fluido. Cada partícula tiene una masa y está sujeta a la influencia de las demás partículas, las más próximas, a su alrededor. Esta interacción local es la que modela la interacción y permite reproducir el comportamiento de los fluidos de manera realista. Dado los buenos resultados que ofrece, el método SPH se utiliza a menudo en aplicaciones de simulación de fluidos en la industria del cine y en la ingeniería, así como en la investigación científica.
+
+Algunas de las ventajas específicas asociadas al uso del método SPH son las siguientes:
 
 - Simplicidad de implementación: SPH es relativamente fácil de implementar y requiere poca información previa sobre el sistema que se está simulando.
 
@@ -83,12 +136,9 @@ Algunas de las ventajas asociadas al uso del método SPH son las siguientes:
 
 - Robustez: SPH es un método robusto que puede manejar cambios bruscos en el flujo y en la topología del sistema.
 
-- Facilidad de paralelización: SPH es fácil de paralelizar lo que permite acelerar la simulación en máquinas con varios núcleos o en clusters de computación.
+- Facilidad de paralelización: SPH es fácil de paralelizar lo que permite acelerar la simulación en máquinas con varios núcleos o en /clusters/ de computación.
 
-
-(*Problema de SPH*)
-
-A pesar de estas ventajas, el método SPH tiene algunos problemas asociados que hace que aún sea un campo de investigación en desarrollo. Algunas de las desventajas que este método presentan son:
+A pesar de estas ventajas, el método SPH tiene algunos problemas asociados que hace que aún sea un campo de investigación en desarrollo. Algunas de las desventajas que este método presenta son:
 
 - Dificultad para manejar obstáculos sólidos: uno de los principales problemas de SPH es la dificultad para manejar obstáculos sólidos de manera efectiva. Esto puede dar lugar a penetraciones de partículas a través de los obstáculos lo que afecta al realismo de la simulación.
 
@@ -100,28 +150,186 @@ A pesar de estas ventajas, el método SPH tiene algunos problemas asociados que 
 
 - Altos requisitos computacionales: debido a la gran cantidad de partículas involucradas en las simulaciones de SPH, este método puede requerir una gran cantidad de recursos de cómputo para su ejecución, especialmente a la hora de determinar las partículas más próximas a cada una de ellas, las /partículas vecinas/, que son con las que interactúa.
 
-** Objetivos del proyecto
+** Objetivos
 
-Explicar los principales puntos del proyecto montar una estructura de programa con Opengl y CUDA, además de intentar acelerar lo máximo posible el tiempo de simulación
+El principal objetivo de este trabajo es desarrollar un simulador tridimensional que sea capaz de simular el comportamiento de un fluido de manera realista y conseguir alcanzar el máximo rendimiento posible utilizando el lenguaje de programación CUDA que permite programar en las GPUs de NVIDIA de manera relativamente sencilla y paralelizar los cálculos de SPH, tales como la búsqueda de partículas vecinas y la actualización de sus posiciones y velocidades, conseguiendo una mayor velocidad en la obtención de estos resultados.
 
-** Estructura de la Memoria
-* Analisis
-** Introduccion
+En el desarrollo del proyecto también se ha investigado en solventar los principales inconvenientes que tiene el método SPH, en analizar los diferentes parámetros dentro de la simulación para que la simulación sea estable y estudiar otras propuestas, en desarrollar una implementación que nos permita colisionar de manera realista con diferentes tipos de solidos rígidos y en implementar exportadores para motores de renderizado para que el proyecto tenga un renderizado de mayor calidad
+
+El proyecto deberá tener una estructura que sea escalable ya que no se pretende que este proyecto, dado lo ambicioso de sus objetivos, no es finalizar dentro del tiempo dado durante el TFG si no que se desarrolle más allá del ámbito de la universidad.
+
+
+** Organización del proyecto
+
+El presente documento se divide en ocho capítulos, en los cuales se explica el contenido de la investigación, la experimentación realizada, así como los resultados obtenidos durante su transcurso:
+
+En el capítulo 2 se describirá de manera técnica el proyecto a desarrollar y se enumerarán los requisitos que debe cumplir el trabajo y las herramientas utilizadas en el proceso de desarrollo.
+
+En el capitulo 3 se revisara en profundidad el método SPH, especialemente en sus fundamentos matemáticos, los diferentes estudios que avalan el método y los problemas del mismo junto con las diferentes soluciones creadas para solventarlos.
+
+En el capitulo 4 se explican los diferentes métodos de integración temporal, uno de los pilares en la simulación, qué papel juega dentro de nuestra simulación y se explica la decisión de escoger un método sobre otro.
+
+En el capitulo 5 se discute brevemente una de las dificultades del método SPH: la reacción ante obstáculos, y como se ha resuelto la problemática desarrollando un gestor de colisiones.
+
+En el capitulo 6 se detallan las características del lenguaje CUDA, indicando los motivos de su elección y las ventajas e inconvenientes que presenta. También se explica brevemente la librería gráfica OpenGL. Esta librería se utilizó en un principio para visualizar el comportamiento de la simulación de manera gráfica, aunque posteriormente se ha cambiado por un /exportador,/ que directamente exporta los datos de las partículas para un renderizado en un programa comercial: RealFlow.
+
+En el capitulo 7 se lleva a cabo la descripción de cómo se ha implantado todo lo explicado anteriormente y la estructura del simulador, junto con los resultados obtenidos.
+
+Finalmente, en el capitulo 8 se muestran las conclusiones obtenidas a partir de los resultados y se exponen las diferentes ampliaciones y posibilidades que tiene este proyecto en el futuro.
+
+* Análisis
+
+** Introducción
+
+En este segundo capítulo explicaremos todo lo concerniente al estudio previo desarrollado para la aplicación (en nuestro caso una simulación) solicitado. Se describirá de manera técnica, se enumeraran los requisitos que se deben cumplir en la aplicación, los objetivos durante la duración del proyecto y las herramientas necesarias.
+
 ** Definición del problema real
+
+Se solicita una simulación de fluidos que se comporte de manera realista y tenga un enfoque académico junto con un análisis de resultado para comparar con otras propuestas realizadas en estudios parecidos.
+
 ** Análisis de requisitos
+
+*** Funcionamiento
+
+Se definen las funcionalidades que se integran en el proyecto.
+
+La funcionalidad de la simulación es la simulación en si misma además de cumplir con los estándares de los considerado realista en el ámbito de las Computer Graphics junto con una mejora de rendimiento.
+
+*** Entorno:
+
+- Entorno Software: El desarrollo se lleva a cabo dentro del editor visual Studio 2019 ya que cuenta con la integración de la librería CUDA.
+
+- Entorno Hardware: El programa se podrá utilizar en sistemas operativos Windows con tarjetas graficas NVIDIA que tengan compatibilidad con la versión de CUDA que se este utilizando
+
+- Entorno de Usuario: Aunque los resultados de la simulación pueden ser apreciados por cualquier tipo de persona, este proyecto esta orientado a personas con conocimientos previos de computación paralela y la simulación física
+
+*** Vida Esperada:
+
+Al ser un proyecto de investigación con vistas de mejora a futuro es difícil concretar la vida esperada de la aplicación. También debido a que estamos usando tecnología dependiente de NVIDIA, esta simulación será funcional mientras sigan manteniendo las librerías.
+
+*** Ciclo de mantenimiento:
+
+En una segunda etapa de experimentación, elmarco de predicción propuesto ha sido instanciado en un caso de concreto y real, donde ha sido adaptado para el análisis de flujos de tráfico entrates.
+
+La aplicación tendrá que ser revisada para posibles mejoras debido a las nuevas versiones de CUDA o nuevas investigaciones que puedan arrojar posibilidades para obtener mejores resultados.
+
+Aunque sin esto la aplicación seguirá siendo funcional no estará al día con los nuevos avances.
+
+*** Competencia
+Los diversos estudios de simulación que se presentan en el SIGGRAPH cada año.
+
+*** Aspecto externo:
+
 ** Planificación y seguimiento
 * Fundamentos del Método SPH
 ** Introducción
+
+La formulación fundamental del método de partículas suaves o SPH (del inglés Smoothed-particle hydrodynamics) es un método numérico utilizado para resolver ecuaciones de fluidos y problemas relacionados.
+
+En SPH, el fluido se representa como un conjunto de partículas, cada una de las cuales tiene una posición y una velocidad. A partir de estas posiciones y velocidades, se pueden calcular las propiedades del fluido en cualquier punto del espacio mediante el uso de funciones de interpolación suaves, como el kernel gaussiano.
+
+La formulación fundamental del SPH se basa en la reescritura de las ecuaciones de conservación de masa y movimiento (por ejemplo, las ecuaciones de Navier-Stokes) como un sistema de ecuaciones no-lineales para las posiciones y las velocidades de las partículas. Estas ecuaciones se resuelven numéricamente utilizando técnicas de integración temporal y técnicas de resolución de sistemas de ecuaciones no lineales.
+
+La formulación estándar de SPH se basa en usar derivadas y operadores definidos sobre las particulas y no en una malla física, lo que permite aplicar el método a una variedad de problemas y geometrías complicadas y con movimiento libre de la malla.
+
 ** Descripción del Método SPH
+
+El método de partículas suaves (SPH, por sus siglas en inglés) fue propuesto originalmente por los investigadores G.R. Lucy [cite:@Lucy77] en 1977 y J.J. Monaghan [cite:@Monaghan82] en 1985. En estos trabajos iniciales, se presentó el método como una técnica numérica para resolver ecuaciones de fluidos mediante la representación del fluido como un conjunto de partículas, cada una con su posición y velocidad.
+
+En estas publicaciones se propuso el uso de una función de interpolación suave (/función kernel/) para calcular las propiedades del fluido en cualquier punto del espacio a partir de las posiciones y velocidades de las partículas. Con este método, se logró simular una gran variedad de problemas y geometrías complejas y con movimiento libre de la malla.
+
+En los años siguientes, investigadores como M.L. Beckermann y J.C. Rieger (1994) y M. S. Long (1995) han extendido y mejorado el método, añadiendo mejoras como la posibilidad de simular problemas multi-materiales y la inclusión de términos de viscosidad artificial.
+
+Otros autores incluyen a:
+
+G.R. Liu y M.B. Liu: en su libro "Smooth Particle Hydrodynamics: A Meshfree Particle Method" (2003) presentan una revisión detallada de la historia, fundamentos y aplicaciones del método SPH.
+
+J.J. Monaghan: es uno de los principales investigadores en el desarrollo de la versión original del método SPH. En su trabajo "Smooth Particle Hydrodynamics" (1992) presenta una revisión detallada de los fundamentos y las aplicaciones del método SPH.
+
+D.J. Price: es otro investigador importante en el desarrollo del método SPH. En su trabajo "Smooth Particle Hydrodynamics: A Review of Recent Developments" (2012) presenta una revisión actualizada de los fundamentos y las aplicaciones del método SPH.
+
 ** Formulación del Método SPH
+
+La formulación integral de las ecuaciones del método SPH incluye tres pasos básicos:
+
+- Calculo de la densidad de cada partícula: se utiliza una función de suavizado (como por ejemplo, una función de Kernel Gaussiana) para interpolación entre las partículas y calcular la densidad de cada una de ellas. Esto se hace mediante la siguiente ecuación:
+
+- Calculo de la velocidad de cada partícula: una vez que se conocen las densidades de todas las partículas, se puede calcular la velocidad de cada una de ellas utilizando la ecuación de movimiento y teniendo en cuenta las fuerzas que actúan sobre ellas. Esto se hace mediante la siguiente ecuación:
+
+- Actualización de la posición de cada partícula: una vez que se conocen las velocidades de todas las partículas, se puede actualizar su posición utilizando la siguiente ecuación:
+
+  Es importante tener en cuenta que estas ecuaciones son solo una parte de la formulación completa del método SPH. Además, hay muchas variantes y modificaciones posibles de estas ecuaciones para mejorar la precisión y robustez del método.
+
 * Búsqueda de partículas vecinas
+
 ** Introducción
+
+La búsqueda de partículas vecinas es una de las tareas fundamentales en el método de partículas suaves (SPH). Es necesario encontrar las partículas vecinas de una partícula dada para poder calcular las propiedades del fluido en ese punto utilizando funciones de interpolación suaves.
+
+Hay varios métodos para buscar partículas vecinas en SPH. Algunos de los métodos más comunes incluyen:
+
+- Listas de vecindad estáticas: en este método, se construye una lista de vecindad estática para cada partícula al principio de la simulación y se utiliza para todo el tiempo de simulación. Es importante reconstruir la lista de vecindad en caso de que las particulas se salgan de su vecindario original.
+
+- Búsqueda vecinal dinámica: en este método, se buscan las partículas vecinas de una partícula dada en cada paso de tiempo. Se puede utilizar estructuras de datos como el octree o el kd-tree para hacer esta búsqueda de manera eficiente.
+
+- Grids: Es una aproximación de malla de cuadros regular, es decir, se divide el espacio en celdas regulares y se clasifican las partículas en las celdas correspondientes, permitiendo una búsqueda eficiente de las particulas vecina.
+
+En general, el tiempo de cálculo para la búsqueda vecinal es proporcional al número de partículas, y puede ser un cuello de botella importante en simulaciones de gran escala. Por esta razón, es importante seleccionar el método de búsqueda vecinal adecuado para cada simulación y optimizarlo para mejorar el rendimiento.
+
 ** Búsqueda de vecinas basadas en etiquetado Hash
+
+La búsqueda de vecinos basada en etiquetado hash es una técnica utilizada para encontrar partículas vecinas en el método de partículas suaves (SPH). Esta técnica se basa en el uso de una tabla hash para almacenar las partículas en diferentes "celdas" en función de su posición en el espacio.
+
+En esta técnica, se divide el espacio de simulación en celdas regulares y se etiquetan las partículas mediante una función hash que asigna a cada partícula una "etiqueta" basada en su posición. Luego, se buscan las partículas vecinas a través de un recorrido de las celdas adyacentes a la celda de la partícula dada.
+
+La ventaja de este método es que, al clasificar las partículas en las celdas, se puede limitar el número de partículas que se deben revisar para encontrar vecinos a solo aquellas en las celdas adyacentes. Esto reduce significativamente el tiempo pde búsqueda y permite una mayor escalabilidad en similaciones de gran escala.
+
+Sin embargo, esta técnica tiene algunas desventajas. Puede haber un sobreabundancia de partículas en ciertas celdas y una falta de partículas en otras, lo que puede causar problemas de precisión en la búsqueda de vecinos. Además, puede ser necesario ajustar el tamaño de las celdas en función de la densidad de las partículas para evitar problemas de precisión.
+
+En general, la búsqueda de vecinos basada en etiquetado hash es una técnica eficiente para encontrar vecinos en SPH, pero requiere una buena comprensión de los detalles y puede requerir ajustes para adaptarse a diferentes situaciones.
+
 ** Búsqueda de vecinas basadas Fuerza bruta
+
+La búsqueda de vecinos en el método de partículas suaves (SPH) mediante fuerza bruta consiste en comparar la posición de cada partícula con la posición de todas las demás partículas para encontrar las partículas vecinas. Es una técnica simple, pero tiene un tiempo de ejecución que crece de manera cuadrática con el número de partículas, lo que la hace ineficiente para simular grandes conjuntos de partículas.
+
+En esta técnica se recorren todas las partículas, y se compara su posición con la de cada otra particula para determinar si está dentro del radio de vecindad. Se puede utilizar un radio fijo o un radio variable para determinar la vecindad.
+
+Este método es útil para pequeñas cantidades de partículas, pero se vuelve ineficiente para sistemas grandes debido a su complejidad computacional. En lugar de esto, se recomiendan técnicas de búsqueda vecinal más eficientes, como el uso de estructuras de datos como /octree/, /kd-tree/ o etiquetado /hash/.
+
 * Método de integración temporal
+
 ** Introducción
+
+En el método de partículas suaves (SPH), los métodos de integración temporal se utilizan para resolver las ecuaciones de conservación de masa y movimiento numéricamente y actualizar las posiciones y velocidades de las partículas en el tiempo. Algunos métodos comunes de integración temporal en SPH incluyen:
+
+- Método de Euler: es el método más simple de integración temporal. Consiste en calcular las nuevas posiciones y velocidades de las partículas a partir de las velocidades y aceleraciones actuales utilizando las ecuaciones de movimiento. Sin embargo, este método tiene una baja estabilidad temporal y suele ser utilizado solo para problemas simples.
+
+- Método de Euler semimplícito: es una variante del método de Euler que se utiliza para mejorar la estabilidad temporal. Consiste en calcular las nuevas posiciones de las partículas a partir de las velocidades actuales y las aceleraciones interpoladas, mientras que las nuevas velocidades se calculan a partir de las aceleraciones actuales.
+
+- Método de Verlet: es un método de integración temporal que se basa en el uso de la posición actual y la posición anterior para calcular la velocidad y la nueva posición de las partículas. Es un método más estable que el método de Euler y se utiliza comúnmente en SPH.
+
 ** Ecuación fundamental para la integración temporal numérica
+
+La idea subyacente en la integración temporal numérica es la de aproximar la solución de un sistema dinámico (como las ecuaciones de movimiento) mediante una serie de pasos discretos en el tiempo.
+
+La idea es dividir el tiempo en pequeños intervalos (llamados pasos de tiempo) y calcular la solución en cada uno de estos intervalos. En cada paso de tiempo, se utilizan las condiciones iniciales (como la posición y velocidad de las partículas) y las ecuaciones de movimiento para calcular la solución en el siguiente paso de tiempo. Esto se repite sucesivamente para todos los pasos de tiempo, generando una serie de soluciones que representan la evolución del sistema en el tiempo.
+
+La precisión de la solución numérica dependerá del tamaño del paso de tiempo elegido y del método de integración temporal utilizado. Los métodos de integración temporal más precisos son los de orden superior, como el método de Runge-Kutta, que utilizan más información para calcular la solución en cada paso de tiempo, pero son también más computacionalmente costosos.
+
+En resumen, la integración temporal numérica busca aproximar la solución de un sistema dinámico dividiendo el tiempo en pequeños intervalos y utilizando las condiciones iniciales y las ecuaciones de movimiento para calcular la solución en cada paso de tiempo. La precisión de la solución depende del tamaño del paso de tiempo y del método de integración temporal utilizado.
+
+(Ecuaciones)
+
 ** Comparativa entre métodos implícitos y explícitos
+
+En la integración temporal numérica, los métodos implícitos y explícitos se refieren a cómo se utilizan las soluciones en un paso de tiempo para calcular la solución en el siguiente paso de tiempo.
+
+Los métodos explícitos son aquellos en los que las soluciones en un paso de tiempo son utilizadas directamente para calcular la solución en el siguiente paso de tiempo. Es decir, las soluciones en un paso de tiempo no afectan a las soluciones en el siguiente paso de tiempo. Los métodos explícitos son fáciles de implementar y rápidos, pero su estabilidad temporal esta limitada por el tamaño del paso de tiempo. Ejemplos de métodos explícitos son el método de Euler, Verlet.
+
+Por otro lado, los métodos implícitos son aquellos en los que las soluciones en un paso de tiempo son utilizadas para calcular las soluciones en el siguiente paso de tiempo de manera implícita, a través de la resolución de un sistema de ecuaciones no lineales. Estos métodos son más estables temporalmente, pero requieren más cálculos y son más complejos de implementar. Ejemplo de métodos implícitos son los métodos de Runge-Kutta, Euler-implícito.
+
+En resumen, la diferencia entre los métodos implícitos y explícitos de integración numérica radica en cómo se utilizan las soluciones en un paso de tiempo para calcular la solución en el siguiente paso de tiempo. Los métodos explícitos son fáciles de implementar y rápidos pero con menor estabilidad temporal, mientras que los métodos implícitos son más estables temporalmente pero más complejos de implementar.
+
 * Colisiones
 ** Introducción
 ** Etapa de detección de la colisión fluido-contorno
@@ -133,7 +341,57 @@ Explicar los principales puntos del proyecto montar una estructura de programa c
 ** Introducción
 ** Características del lenguaje C
 ** Características del lenguaje CUDA
+
+CUDA (Compute Unified Device Architecture) es una plataforma de cálculo paralelo y un modelo de programación desarrollados por la empresa NVIDIA Corporation para el cálculo general en unidades de procesamiento gráfico (GPU). Con CUDA, los desarrolladores pueden acelerar drásticamente las aplicaciones de cálculo aprovechando la potencia de las GPU.
+
+Algunas de las características más relevantes del lenguaje CUDA son:
+
+- Paralelismo: CUDA permite ejecutar cálculos en paralelo en una GPU, lo que permite acelerar los cálculos y mejorar el rendimiento de las aplicaciones.
+
+- Programación de alto nivel: CUDA es un lenguaje de programación de alto nivel, lo que significa que se parece y se usa como un lenguaje de programación general como C/C++, Java, Python.
+
+- Compatibilidad con lenguajes de programación comunes: CUDA se integra bien con lenguajes de programación comunes como C/C++ y Fortran, lo que permite a los desarrolladores utilizar las funciones de programación de alto nivel de CUDA junto con los lenguajes de programación existentes.
+
+- Modelo de programación paralelo: CUDA proporciona un modelo de programación paralelo basado en tareas de punto flotante de alta precisión, que permite a los desarrolladores dividir una tarea en subprocesos que se ejecutan en paralelo en una GPU.
+
+- Memoria compartida: CUDA permite el acceso a la memoria compartida entre las diferentes unidades de procesamiento en una GPU, lo que permite una mayor flexibilidad en la programación paralela.
+
+- Entorno de desarrollo: NVIDIA proporciona un entorno de desarrollo integrado (IDE) y herramientas de depuración para CUDA, lo que facilita el desarrollo y la depuración de aplicaciones CUDA.
+
+En general, CUDA es un lenguaje de programación eficiente para el desarrollo de aplicaciones paralelas en GPU. Pero es importante notar que solo es compatible con tarjetas gráficas de NVIDIA y que es necesario tener un conocimiento específico de paralelismo y GPU's para sacarle provecho.
+
+#+CAPTION: Sistema de computación en sistemas heterogénos CPU + GPU
+#+ATTR_LATEX: :width 8cm
+[[./graficos/CPU+GPU.pdf]]
+
+Pero para entender verdaderamente como funciona CUDA primero hay entender como funciona la programación tradicional o secuencial y como trabaja CUDA con programación en paralelo. La programación secuencial, la que se utiliza mayoritariamente para en toda la computación clásica, es aquella en la que solo se ejecuta una instrucción a la vez y hay que esperar que el ordenador termine para ejecutar la siguiente. Es el modelo de programación clásica y debido a que los sistemas informáticos son extremadamente rápidos en estos momentos no es perceptible. Pero para aplicaciones en las que el tiempo de ejecución es vital y existe un alto coste computacional no se puede permitir ese desperdicio de recursos ya que técnicamente en la programación secuencial al esperar que se acaba cada instrucción se están desperdiciando recursos del sistema en vez de utilizarlos para otra tarea. Es por eso que surge la programación en paralelo en la que varias instrucciones se ejecutan a la vez utilizando la mayor cantidad de recursos disponibles del sistema.
+
+Por otra parte, el desarrollo del hardware ha hecho que los procesadores de las tarjetas gráficas, el componente hardware encargado del procesamiento de datos relacionados con imágenes y videos, sean extremadamente potentes en la actualidad, optimamente capacitadas para este tipo de cálculos intensivos. Su rendiemiento es muy superior al que se obtiene con los otros procesadores, utilizados para ejecutar la mayoría de programas. Es en este contexto, donde CUDA realiza un trabajo excelente, al permitir programar paralelamente en estas tarjetas gráficas de una manera sencilla.
+
+Cuda permite utilizar el procesador del sistema y utilizar los múltiples núcleos de programación de las tarjetas gráficas, además de permitir creación de funciones que se ejecutaran paralelamente en los núcleos de GPU.
+
+La tecnología CUDA se basa en dos pilares el /host/ (el procesador principal) y el /device/ (la tarjeta grafica). El código secuencial se ejecutara en el /host/ y el código que alto coste computacional se ejecutara en el /device/.
+
+#+CAPTION: Modelo de programación heterogéna
+#+ATTR_LATEX: :width 10cm
+[[./graficos/prog-heterogenea.pdf]]
+
+#+CAPTION: Jerarquía de memoria dentro de la arquitectura CUDA
+#+ATTR_LATEX: :width 10cm
+[[./graficos/jerarquia-memoria.pdf]]
+
 ** Características de OpenGL
+
+Una librería gráfica es conjunto de programas que implementan versiones optimizadas de funciones y métodos que facilitan al programador la renderización de gráficos para mostrarlos en un dispositivo electrónico de salida de video, ya sean monitores de computadora o cascos RV. Incluyen rutinas de gestión de texturas, de generación de efectos de iluminación y sombreado, y que pueden aprovechar hardware de las actuales tarjetas gráficas
+
+Existen diferentes librerías gráficas de bajo nivel, es decir, aquellas que permiten sacar el máximo partido al hardware, aunque también son más complejas de programar. De entre estas se pueden destacar debido a su amplio uso en el sector de la computación gráfica, Vulkan, DirectX y OpenGL. Todas ellas tienen sus ventajas e inconvenientes y destacan en ciertos aspectos sobre otros. En este proyecto para una ilustración previa de los resultados se ha utilizado OpenGL.
+
+Debido a que OpenGL no es solo una API o librería si no una especificación de como ciertas funciones tienen que devolver cierto tipos de resultados, se han desarrollado varias librerías implementadas normalmente por los creadores de las tarjetas graficas (/OpenGL Utility Toolkit/ - GLUT, /Simple DirectMedia Layer/ - SDL, /Simple and Fast Multimedia Library/ - SMFL o /Graphics Library Framework/ - GLFW), que deben ser implementadas conforme a las especificaciones de OpenGL. Esto ha llevado a que la implementación de OpenGL pueda tener comportamientos extraños debido a incompatibilidades con algunas tarjetas graficas o la falta de mantenimiento de ciertas librerías por parte de sus desarrolladores.
+
+GLFW (/Graphics Library Framework/) es una pequeña librería en C que permite la creación y gestión de ventanas con contextos OpenGL, haciendo posible también el uso de múltiples monitores y modos de vídeo. Proporciona acceso a la entrada del teclado, ratón y joysticks. La API proporciona una fina capa de abstracción multiplataforma, principalmente para aplicaciones cuya única salida gráfica es a través de la API OpenGL. Aunque GLFW es muy útil cuando se desarrollan aplicaciones OpenGL multiplataforma, los desarrolladores de una sola plataforma también pueden beneficiarse de su uso al evitar tener que lidiar con diferentes API específicas de la plataforma.
+
+En este proyecto se utiliza la librería GLFW debido a la disponibilidad de gran cantidad y calidad de recursos didácticos que utilizan esta librería como ejemplo para desarrollar sus implementaciones de los conceptos de OpenGL, que se ha tenido que investigar desde cero para la realización de un muestreo de resultados inicial.
+
 * Estrucutra del simulador y resultados
 ** Introducción
 ** Estructura del simulador
