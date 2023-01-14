@@ -165,17 +165,17 @@ El presente documento se divide en ocho capítulos, en los cuales se explica el 
 
 En el capítulo 2 se describirá de manera técnica el proyecto a desarrollar y se enumerarán los requisitos que debe cumplir el trabajo y las herramientas utilizadas en el proceso de desarrollo.
 
-En el capitulo 3 se revisara en profundidad el método SPH, especialemente en sus fundamentos matemáticos, los diferentes estudios que avalan el método y los problemas del mismo junto con las diferentes soluciones creadas para solventarlos.
+En el capítulo 3 se revisara en profundidad el método SPH, especialemente en sus fundamentos matemáticos, los diferentes estudios que avalan el método y los problemas del mismo junto con las diferentes soluciones creadas para solventarlos.
 
-En el capitulo 4 se explican los diferentes métodos de integración temporal, uno de los pilares en la simulación, qué papel juega dentro de nuestra simulación y se explica la decisión de escoger un método sobre otro.
+En el capítulo 4 se explican los diferentes métodos de integración temporal, uno de los pilares en la simulación, qué papel juega dentro de nuestra simulación y se explica la decisión de escoger un método sobre otro.
 
-En el capitulo 5 se discute brevemente una de las dificultades del método SPH: la reacción ante obstáculos, y como se ha resuelto la problemática desarrollando un gestor de colisiones.
+En el capítulo 5 se discute brevemente una de las dificultades del método SPH: la reacción ante obstáculos, y como se ha resuelto la problemática desarrollando un gestor de colisiones.
 
-En el capitulo 6 se detallan las características del lenguaje CUDA, indicando los motivos de su elección y las ventajas e inconvenientes que presenta. También se explica brevemente la librería gráfica OpenGL. Esta librería se utilizó en un principio para visualizar el comportamiento de la simulación de manera gráfica, aunque posteriormente se ha cambiado por un /exportador,/ que directamente exporta los datos de las partículas para un renderizado en un programa comercial: RealFlow.
+En el capítulo 6 se detallan las características del lenguaje CUDA, indicando los motivos de su elección y las ventajas e inconvenientes que presenta. También se explica brevemente la librería gráfica OpenGL. Esta librería se utilizó en un principio para visualizar el comportamiento de la simulación de manera gráfica, aunque posteriormente se ha cambiado por un /exportador,/ que directamente exporta los datos de las partículas para un renderizado en un programa comercial: RealFlow.
 
-En el capitulo 7 se lleva a cabo la descripción de cómo se ha implantado todo lo explicado anteriormente y la estructura del simulador, junto con los resultados obtenidos.
+En el capítulo 7 se lleva a cabo la descripción de cómo se ha implantado todo lo explicado anteriormente y la estructura del simulador. Además se presentan los resultados obtenidos.
 
-Finalmente, en el capitulo 8 se muestran las conclusiones obtenidas a partir de los resultados y se exponen las diferentes ampliaciones y posibilidades que tiene este proyecto en el futuro.
+Finalmente, en el capítulo 8 se muestran las conclusiones obtenidas a partir de los resultados y se exponen las diferentes ampliaciones y posibilidades que tiene este proyecto en el futuro.
 
 * Análisis
 
@@ -332,6 +332,61 @@ En resumen, la diferencia entre los métodos implícitos y explícitos de integr
 
 * Colisiones
 ** Introducción
+
+Las colisiones es uno de los principales comportamientos a simular en las simulaciones físicas, saber como reaccionan dos elementos al encontrarse en el mismo espacio y tiempo. Para responder a esta pregunta se necesita saber el material, textura y lo más importante geometría de los objetos para saber si se encuentran en el mismo espacio de tiempo y como responden después de este.
+
+Al tratar en nuestro proyecto con una metodología SPH que trata el conjunto de nuestro fluido como partículas independientes podemos suponer que uno de las geometrías de las que debemos conocer si han colisionado es el de la esfera. Se desarrollará una explicación sobre las diferentes colisiones que puede tener una esfera con otros cuerpos rígidos.
+
+- *Colisión caja*:
+
+  Para saber si una esfera (o partícula en nuestro caso) ha colisionado con un cuerpo geométrico con la forma de un cubo. Sabiendo que un cubo tiene todos sus lados perpendiculares podemos definir este mismo a través de los límites de sus tres dimensiones, o dicho de otra manera las posiciones de sus extremos que llamaremos /límites/. Una vez conocidos los límites inferiores y superiores de nuestro cuerpo geométrico podemos razonar que si la posición de nuestra partícula se encuentra dentro de la figura geométrica y sus coordenadas son menores o superiores a alguno de los límites del cubo esta ha colisionado con alguna de las caras del cubo. Análogamente si suponemos que la partícula se encuentra en el exterior de la caja seguiríamos necesitando los mismos parámetros para definir nuestro cubo pero esta vez la colisión se detectaría si estuviera dentro de esos límites.
+
+  #+CAPTION: Colisión caja
+  #+ATTR_LATEX: :width 8cm
+  [[./graficos/caja-vacia.pdf]]
+
+  Ya que los dos métodos son análogos para la detección nos centraremos en explicar la partícula dentro del cubo ya que es uno de los usos más comunes para representar un fluido contenido en un espacio cerrado.
+
+  La manera de implementar esto de una manera algorítmica se puede definir con la siguiente fórmula:
+
+
+- *Colisión cilindro*:
+
+  Igual que con otra colisión con una forma geométrica simple conocida podemos resolver si se ha producido una colisión entre nuestra partícula y el cuerpo rígido conociendo su altura o el límite de su coordenada Y (suponiendo que el cilindro tiene una posición vertical paralela al eje Y de nuestro sistema global) y el radio de éste con respecto a su eje. La partícula estará colisionando si la distancia de la partícula hacia el eje es menor que el radio y si cumple la condición de estar entre los límites de la altura del cilindro. La partícula ha colisionado con el cilindro
+
+  #+CAPTION: Colisión cilindro
+  #+ATTR_LATEX: :width 8cm
+  [[./graficos/cilindro.pdf]]
+
+  La manera de implementar esto de una manera algorítmica se puede definir con la siguiente formula:
+
+- *Colisión esfera*:
+
+  La colisión esfera partícula es una de las más sencillas de implementar y entender pues solo se necesita conocer el radio y el centro de la esfera con la que se va a colisionar para calcular la distancia entre nuestra partícula y la esfera con la que se quiere detectar la colisión. Al conocer estos parámetros solo necesitaríamos aplicar una operación vectorial que nos dijera el módulo o distancia entre nuestra partícula y el centro y una vez obtenida esa distancia calcular si es menor que el radio de la esfera si el resultado es verdadero nuestra esfera ha colisionado con la particula.
+
+  #+CAPTION: Colisión esfera
+  #+ATTR_LATEX: :width 8cm
+  [[./graficos/esfera.pdf]]
+
+  La manera de implementar esto de una manera algorítmica se puede definir con la siguiente formula:
+
+
+- *Colisión triangulo*:
+
+  La colisión de triángulo partícula es una de las más difíciles de implementar y visionar ya que requiere de una gran cantidad de operaciones matemáticas para calcular si la particula ha colisionado o no con un triángulo. Esto conlleva un alto coste computacional que “perderíamos” si la partícula no llegara a colisionar pero de todas maneras es necesario explicarlo junto con su implementación ya que la mayoría de modelos existentes no son figuras geométricas con alta simetría que nos permiten calcular rápidamente sus colisiones si no que son mallas de triángulos que forman todo tipo de figuras, además el estándar en la industria es que los modelados sean mallas de triángulos ya que con esto se puede representar cualquier figura o modelo, desde una caja 8 triángulos hasta al famoso conejo /Stanford bunny/ compuesto por 69.451 triángulos.
+
+
+  #+CAPTION: Colisión triángulo
+  #+ATTR_LATEX: :width 8cm
+  [[./graficos/triangulo.pdf]]
+
+  Imagen cubo triangulo
+  Imagen Stanford bunny triángulos
+
+  Los parámetros necesarios para conocer si existe la colisión entre una partícula y un triángulo en un espacio 3D es conocer los vértices del triangulo junto con la posición de la particula.
+
+  Para este proceso denominado campo de distancia nos permite determinar si existe colisión entre la particula y el triangulo independientemente de la orientación y posición en la que se encuentre el triangulo. Para ello nuestro primer paso es determinar si la particula esta a una distancia en la que es posible que colisionara con el triangulo
+
 ** Etapa de detección de la colisión fluido-contorno
 *** Técnicas de detección basada en límites
 *** Técnicas de detección basada en campo de distancias
@@ -340,6 +395,13 @@ En resumen, la diferencia entre los métodos implícitos y explícitos de integr
 * Características de las herramientas de implementación del proyecto
 ** Introducción
 ** Características del lenguaje C
+
+Como ya hemos visto nuestro proyecto de simulación de fluidos se ha construido sobre dos librerías para unos resultados iniciales que luego se exportaran a un motor de renderizado.
+
+Debido a que el objetivo de este proyecto se ha enfocado en reducir lo máximo posible el tiempo de calculo necesario para el muestreo de los resultados. Se ha utilizado el lenguaje C debido a las siguientes razones. Tanto CUDA como OpenGL tienen soporte en C cuya incorporación en este mismo lenguaje esta documentado, mantenido y siendo usado por varios desarrolladores.
+
+C también es por si solo uno de los lenguajes multiplataforma que permite una gran eficiencia del código y es el mas utilizado actualmente en el desarrollo de software. Debido a que permite estructuras típicas de los lenguajes de alto nivel pero también nos da acceso a funciones de control de bajo nivel como puede ser el manejo de la memoria. Características que nos resultan muy útiles a la hora de desarrollar nuestro proyecto.
+
 ** Características del lenguaje CUDA
 
 CUDA (Compute Unified Device Architecture) es una plataforma de cálculo paralelo y un modelo de programación desarrollados por la empresa NVIDIA Corporation para el cálculo general en unidades de procesamiento gráfico (GPU). Con CUDA, los desarrolladores pueden acelerar drásticamente las aplicaciones de cálculo aprovechando la potencia de las GPU.
