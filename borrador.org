@@ -93,9 +93,9 @@ Otro factor importante en la dinámica de los fluidos es la turbulencia, que es 
 
 En resumen, la dinámica de un fluido se refiere al comportamiento y evolución del fluido en el espacio y el tiempo, y está determinada por una serie de factores como las ecuaciones de conservación de masa y movimiento, la viscosidad, las fuerzas externas, la estratificación y la turbulencia.
 
-Para describir completamente la dinámica del fluido se requiere de hasta nueve ecuaciones en derivadas parciales. No obstante, distintos estudios sugieren la pertinencia de prescindir de un gran número de ellas, y centrarse en la ecuación obtenida a partir de la conservación del momento. Es por ello, que se utiliza la denominada ecuación de Navier-Stokes ([[eqn:1]]) que en su forma más compacta se puede expresar como sigue:
+Para describir completamente la dinámica del fluido se requiere de hasta nueve ecuaciones en derivadas parciales. No obstante, distintos estudios sugieren la pertinencia de prescindir de un gran número de ellas, y centrarse en la ecuación obtenida a partir de la conservación del  momento. Es por ello, que se utiliza la denominada ecuación de Navier--Stokes ([[ec:Navier--Stokes]]) que en su forma más compacta se puede expresar como sigue:
 #
-#+NAME: eqn:1
+#+NAME: ec:Navier--Stokes
 \begin{gather}
 \rho\frac{\mathrm {D} v}{\mathrm {D} t} = -\nabla P + \nu\nabla^2 v + \rho g
 \end{gather}
@@ -105,7 +105,7 @@ $\rho$ es la densidad del fluido, $\frac{\mathrm {D}}{\mathrm {D} t}$ es la deri
 
 Esta ecuación expresa el comportamiento del fluido y su dinámica, describiendo cómo la velocidad, la presión y la densidad evolucionan en el tiempo y en el espacio.
 
-Aunque es indudable las ventajas que representa poder operar exclusivamente con la ecuación de Navier-Stokes en la simulación de fluidos, algunos autores han apuntado que precisamente en la simulación de fluidos, es conveniente incorporar la propiedad de /incompresibilidad/, sobre todo en el ámbito de la CG, ya que esta no está considerada en la ecuación de Navier Stokes. Ha habido distintas propuestas técnicas que pretenden resolver el problema /imponiendo/ la incompresiblidad mediante procesos de adaptación de resultados calculando el valor instantáneo de la presión o a través de la composición de la ecuación de Navier Stokes y la conservación de la masa. Debido a estas desventajas, en este proyecto consideraremos un modelo basado em la propuesta de Perea et al. [42] que impone implícitamente la incompresibilidad.
+Aunque es indudable las ventajas que representa poder operar exclusivamente con la ecuación de Navier--Stokes en la simulación de fluidos, algunos autores han apuntado que precisamente en la simulación de fluidos, es conveniente incorporar la propiedad de /incompresibilidad/, sobre todo en el ámbito de la CG, ya que esta no está considerada en la ecuación de Navier--Stokes. Ha habido distintas propuestas técnicas que pretenden resolver el problema /imponiendo/ la incompresiblidad mediante procesos de adaptación de resultados calculando el valor instantáneo de la presión o a través de la composición de la ecuación de Navier--Stokes y la conservación de la masa. Debido a estas desventajas, en este proyecto consideraremos un modelo basado em la propuesta de Perea et al. [42] que impone implícitamente la incompresibilidad.
 
 ** Diferentes métodos numéricos
 
@@ -122,7 +122,7 @@ Existen varios métodos numéricos que se han desarrollado para la simulación d
 
   Son aquellos métodos en los que se considera el fluido como un conjunto de partículas y se describen las variables en función de la posición y la velocidad de cada partícula. El método de partículas (SPH) es un ejemplo de estos métodos, se basa en la resolución de la ecuación de continuidad y la ecuación de movimiento para cada partícula, utilizando una función de suavizado o kernel para la interpolación entre las partículas. Este método es ampliamente utilizado en aplicaciones como la simulación de fluidos en medios porosos, fluidos multi-componentes y en problemas de dinámica de fluidos complejos.
 
-  Los métodos lagrangianos presentan indudables ventajas frente a los eulerianos, ya que, por una parte, al operar con partículas en lugar de mallas permite una mayor simplificación de los cálculos y permite una gran adaptabilidad al contenedor del fluido, especialmente cuando se simulan líquidos. Por otro lado, resolver la ecuación de Navier Stoke mediante el uso de técnicas lagrangianas, “genera” un conjunto de ecuaciones desacopladas que facilita el proceso de solución. Otra importante característica de los métodos lagrangianos  es que facilitan simular la interfase entre fluidos –por ejemplo aire–líquido– y la conservación de la masa, cómo se ha demostrado por (...)
+  Los métodos lagrangianos presentan indudables ventajas frente a los eulerianos, ya que, por una parte, al operar con partículas en lugar de mallas permite una mayor simplificación de los cálculos y permite una gran adaptabilidad al contenedor del fluido, especialmente cuando se simulan líquidos. Por otro lado, resolver la ecuación de Navier--Stoke mediante el uso de técnicas lagrangianas, “genera” un conjunto de ecuaciones desacopladas que facilita el proceso de solución. Otra importante característica de los métodos lagrangianos  es que facilitan simular la interfase entre fluidos –por ejemplo aire–líquido– y la conservación de la masa, cómo se ha demostrado por (...)
 
 EL SPH (/Smoothed Particle Hydrodynamics/) se presenta como el método más destacable de los métodos lagrangianos. Se trata método numérico utilizado para simular el comportamiento de fluidos. En este método, el fluido se representa como un conjunto de partículas que se mueven e interactúan entre sí a través de fuerzas de interacción, definido a partir de las ecuaciones en derivadas parciales con las que se describe el flujo del fluido. Cada partícula tiene una masa y está sujeta a la influencia de las demás partículas, las más próximas, a su alrededor. Esta interacción local es la que modela la interacción y permite reproducir el comportamiento de los fluidos de manera realista. Dado los buenos resultados que ofrece, el método SPH se utiliza a menudo en aplicaciones de simulación de fluidos en la industria del cine y en la ingeniería, así como en la investigación científica.
 
@@ -224,15 +224,258 @@ Los diversos estudios de simulación que se presentan en el SIGGRAPH cada año.
 * Fundamentos del Método SPH
 ** Introducción
 
-La formulación fundamental del método de partículas suaves o SPH (del inglés Smoothed-particle hydrodynamics) es un método numérico utilizado para resolver ecuaciones de fluidos y problemas relacionados.
+En la introducción de esta memoria de TFG, describimos las características generales de las magnitudes dinámicas y constitutivas del fluido. También expusimos las complejidades que tiene resolver de la ecuación dinámica del fluido, la ecuación [[ec:Navier--Stokes]], y la imposibilidad de resolverla, en la mayoría de los casos, mediante técnicas analíticas. La consecuencia de esta limitación es la necesidad del uso de técnicas numéricas. Así mismo, esbozamos la metodología lagrangiana que utilizamos en este proyecto para simular el flujo del fluido, concretamente, el método Smoothed Particles Hydrodynamics (SPH).
 
-En SPH, el fluido se representa como un conjunto de partículas, cada una de las cuales tiene una posición y una velocidad. A partir de estas posiciones y velocidades, se pueden calcular las propiedades del fluido en cualquier punto del espacio mediante el uso de funciones de interpolación suaves, como el kernel gaussiano.
+En este capítulo vamos a concretar las características generales y los fundamentos en los que se basa SPH. Además, describiremos los problemas de estabilidad que pueden presentar los resultados obtenidos mediante SPH. Problemas que hemos considerado para evitarlos y obtener simulaciones realistas en diferentes entorno de simulación.
 
-La formulación fundamental del SPH se basa en la reescritura de las ecuaciones de conservación de masa y movimiento (por ejemplo, las ecuaciones de Navier-Stokes) como un sistema de ecuaciones no-lineales para las posiciones y las velocidades de las partículas. Estas ecuaciones se resuelven numéricamente utilizando técnicas de integración temporal y técnicas de resolución de sistemas de ecuaciones no lineales.
+Si bien el método SPH fue desarrollado por Gingold--Monaghan [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77], para la simulación de sistemas de múltiples cuerpos, como ocurre en cosmología, rápidamente fue adaptado para sumular las ecuaciones dinámicas asociadas a medios continuos.  Específicamente, la formulación desarrollada por Gingold--Monaghan [cite:@Gingold-Monaghan77], es la que se utilizó para modelar las ecuaciones en derivadas parciales del fluido.
 
-La formulación estándar de SPH se basa en usar derivadas y operadores definidos sobre las particulas y no en una malla física, lo que permite aplicar el método a una variedad de problemas y geometrías complicadas y con movimiento libre de la malla.
+Para poder aplicar el método SPH en la simulación del flujo del fluido, es necesario que el continuo que es el fluido, quede representado, unívocamente, por un sistema de partículas que puedan interactuar entre cada una de ellas. Así pues, para una correcta representación del fluido mediante partículas, se tiene que cumplir que la suma de la masa de todas las partículas sea igual a la masa de la totalidad del fluido. Así queda satisfecha una de las restricciones más importantes en física que es \textit{la conservación de la masa}.  Una vez que el fluido es transformado en un sistema de partículas, se tiene que \textit{modelar} la interacción entre las partículas. Aquí es donde entra en juego la formulación de SPH, que describiremos a lo largo de este capítulo, con las que se modela las ecuaciones en derivadas parciales del fluido. Resumidamente, las dos \textit{piedras angulares} de SPH son:
 
-** Descripción del Método SPH
+1. /Las partículas/ donde se particularizan las magnitudes del fluido ($\rho$,$\nu$...), la masa y las magnitudes dinámicas (posición, velocidad, aceleración).
+
+2. /La función para modelar la interacción/, que en el ámbito de SPH, suele denominarse /función kernel/. Esta función debe satisfacer ciertas condiciones, que describiremos posteriormente en este mismo capítulo, entre las que destaca la continuidad, su dependencia de la distancia y que esta dependencia es de monótona decreciente con la distancia, tal como se indica en [cite:@Liu-Liu03].
+
+Visualmente, lo que acabamos de describir se ilustra en la figura \ref{fig:esquemaKernel}
+
+# \begin{figure}[htbp!]
+# 	\centering
+# 	\includegraphics[scale=2.5]{Capitulo2/figuras2/SPH_1.eps}
+# 	\caption{Ilustración de los pilares en los que se asienta el método SPH: partículas y función kernel. La interación está restringida por el dominio de la función, cuyo radio es $h$. Las partículas que cumplan que su distancia es inferior a $h$, se denominan partículas vecinas.}
+# 	\label{fig:esquemaKernel}
+# \end{figure}
+
+Una vez que hemos descrito brevemente los pilares fundamentales del método SPH, seguidamente vamos a llevar a cabo una descripción más precisa. En la sección [[*Fundamentos del Método SPH]] vamos a llevar a cabo la definición de las características generales, enunciadas por Monaghan et al. [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77] en sus primeras propuestas, y ampliada a lo largo de las últimas décadas. A continuación, se establecerán las formulaciones matemáticas con las que se modelan las ecuaciones del fluido. Para finalizar el capítulo se establecerán las principales limitaciones que presenta SPH y que son consideradas a la hora de implementar la simulación del fluido planificada en este proyecto.
+
+** Fundamentos del Método SPH
+
+El método SPH, según se ha explicado en la sección [[*Introducción]], tiene dos pilares fundamentales, estos son: las partículas y las funciones kernel. Sobre cada una de las partículas, con las que se modela el fluido en para utilizar SPH, se definen cada una de las magnitudes necesarias para resolver la ecuación NS --ecuación [[ec:Navier--Stokes]]--, es decir, la velocidad, la presión, la densidad y la masa. Además, sobre cada una de las partículas se define una función kernel que ``\textit{pondera}'' cada una de esas magnitudes dinámicas, a partir del valor que tienen dichas magnitudes en sus partículas más próximas. Modelar un fluido mediante partículas que no está ligadas a través a una malla implica que el movimiento de las partículas sea el flujo del fluido. Debido a este hecho, se puede afirmar que SPH es un método lagrangiano.
+
+Desde un punto de vista numérico, cuando el fluido es modelado mediante partículas, y sus magnitudes se aproximan mediante SPH, la ecuación de NS se transforma en un conjunto de ecuaciones algebraicas que no están acopladas entre sí. Este desacoplamiento es gracias a la formulación de la función kernel. Según se afirma en Liu et al. [cite:@Liu-Liu03], esta formulación reduce el coste computacional y simplifica los cálculos si se compara con el modelado basado en mallas. No obstante, Price [cite:@Price12] advierte de que el número de partículas vecinas $j$, de cada una de las partículas $i$, debe ser relativamente alto, en un rango mínimo de $80-120$. Sin embargo, dependiendo del tipo de función kernel, y más concretamente de su formulación, este rango de valores puede disminuir, tal como se indica en [cite:@Price12; @Perea-Cordero16]. Así pues, se puede afirmar que las características analíticas condiciona la calidad de la simulación.
+
+Existe un consenso en relacionar las características analíticas de las diferentes funciones kernel, con la estabilidad y el realismo. A este respecto, se han llevado a cabo una gran cantidad de estudios que establecen cuales deben ser las características esenciales, que una función monótona decreciente, debe satisfacer para obtener simulaciones de fluido realistas. La primera función kernel fue propuesta por Monaghan et al. [cite:@Monaghan92; @Gingold-Monaghan77] y se trata de la función exponencial. Esta función puede proporcionar resultados adecuados, pero presenta una incompatibilidad, que es el hecho de que su radio de dominio soportado $h$ es infinito y dado este valor establece el número de partículas vecinas, se tendría un alto número, lo cual dificulta el cálculo de las magnitudes dinámicas del fluido, como es destacado en [cite:@Liu-Liu03].
+
+Además de la limitación destacada por Liu et al. [cite:@Liu-Liu03], se han desarrollado diversos estudios que establecen las características que hacen a cualquier función monótona decreciente una ``\textit{buena}'' función kernel. Estos estudios son:
+
+
+1. Fulk et al. [cite:@Fulk94] establece que el dominio de definición de la función kernel debe ser cerrado y acotado y además su decrecimiento debe ser suave.
+
+2. Otro estudio muy destacado es el llevado a cabo por Cappuzzo et al. [cite:@Capuzzo-DiLisio00] en el que se afirma que la función kernel debe ser una función positiva que induzca también un valor positivo de la densidad de masa.
+
+3. \label{punto:punto2} Dehnen et al. [cite:@Dehnen-Aly12] centra su estudio no sólo en la función kernel, sino también en las características que debe presentar la primera derivada de la función kernel. Según Dehnen  la función kernel debe ser una función par y su gradiente, con el que se obtiene la fuerza de presión en la ecuación [[ec:Navier--Stokes]], debe tener un valor nulo en el origen, es decir, en la posición de la partícula.
+
+4. De las investigaciones desarrolladas por Cabezón [cite:@CabGarRel08], Price [cite:@Price12] y Dehnen et al. [cite:@Dehnen-Aly12], se deduce que la mejor función kernel debería ser continua e infinitamente diferenciable, lo que el matemática analítica se denomina $\mathcal{C}^{\infty}$.
+
+Otras características que tiene el método SPH, que representan una ventaja cualitativa a lo hora de llevar a cabo la simulación son:
+
+1. \emph{La conservación de la masa} que es posible porque la masa de cada partícula  $m_{p_{i}}$, representa una fracción de la masa total del fluido, es decir $\sum_i m_{p_{i}} = M_f$, donde $M_f$ representa la masa total del fluido. La principal ventaja es que considerando exclusivamente la ecuación de NS es posible simular el fluido, tal como se desataca en [cite:@Monaghan92; @Liu-Liu03].
+
+2. \emph{Permite definir el límite liquido--aire}, conocida también como superficie libre, en el ámbito de CG [cite:@MulChaGro03] es consecuencia del modelado a través de partículas. Esta característica representa una clara ventaja frente a los modelos basados en mallas, como destaca [cite:@AkiIhmAkin.etal12].
+
+3. \emph{No requiere de la implementación del término de advección.} Por tratarse SPH de una técnica lagrangiana, y el hecho de que las partículas se desplazan con el flujo del fluido, no se debe considerar el término de advección, según se explica en [cite:@Liu-Liu03].
+
+4. \emph{La ecuación de NS se transforma en un conjunto de ecuaciones algebraicas desacopladas.} Comparativamente con los métodos basados en mallas esto representa una ventaja ya que no hay que resolver complejos sistemas de ecuaciones a la hora de implementar la simulación del fluido mediante SPH [cite:@Liu-Liu03]. Esta ventaja es muy importante si se desea paralelizar el cálculo de la dinámica del fluido.
+
+5. \emph{Simplifica las colisiones del fluido con el contorno}, como describiremos en el capítulo [[*Colisiones]] de esta memoria de proyecto. Se debe a que es más fácil calcular la colisión partícula contorno del cuerpo rígido que la colisión entre diferentes mallas, tal como se indica en [cite:@MulChaGro03].
+
+No obstante, aunque SPH presenta las ventajas que acabamos de describir, puede generar inestabilidades en las simulaciones que afecten a su realismo. Esta limitación se hace muy visible cuando la cantidad de partículas vecinas es baja, entorno a $20$, tal como destaca Yan et al. [cite:@YanPenLiu14]. La complejidad de diseñar una función kernel que evite este problema es una tarea compleja que sale fuera de los objetivos de este proyecto. En este proyecto utilizaremos la propuesta de Perea et al. [cite:@Perea-Cordero18; @Perea-Cordero16] donde se desarrolla un estudio de estabilidad y precisión en simulaciones de fluido mediante SPH y formulan una función kernel que garantiza buenos resultados aunque el número de partículas vecinas sea bajo.
+
+Tras esta breve introducción al método SPH, el resto del capítulo de organiza del siguiente modo. En la sección [[*Fundamentos del Método SPH]] vamos a llevar a cabo una descripción de los fundamentos de SPH, tal como las definión Monaghan et al. [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77]. Seguidamente, en la sección [[*Fundamentos de SPH y su Formulación]] expondremos cómo quedan las ecuaciones dinámicas del fluido modeladas mediante la formulación SPH. Así mismo, expondremos como se obtienen las ecuaciones discretas, que utilizaremos en nuestro simulador, y como éstas se obtienen a partir de la formulación integral, que es el punto de partida que desarrolló Monaghan et al. [cite:@Gingold-Monaghan77]. El proceso seguido en la descripción es el propuesto por Monaghan [cite:@Monaghan82; @monaghan1992smoothed], Liu [cite:@Liu-Liu03] y Price [cite:@Price12].
+
+** Fundamentos de SPH y su Formulación
+
+Desde la perspectiva de análisis funcional, tal como se describe en [cite:@Liu-Liu03], el método SPH se sitúa dentro de la denominada convolución funcional. Expresándola en otros términos, la convolución permite que cualquier función desconocida pueda calcularse a partir de la combinación de funciones conocidas (que en el ámbito de SPH son las ya mencionadas funciones kernel). A pesar de que este es el fundamento que permite operar con funciones conocidas, para obtener la solución desconocida de las ecuaciones en derivadas parciales que describen la dinámica del fluido, el origen del método SPH, tal como lo establecieron Monaghan [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77], difiere en parte. El punto de partida es desarrollar una formulación integral de una función incógnita, para posteriormente formular su expresión discreta, que será la utilizada en el sistema de partículas que modela el fluido a simular. Según esta ``visión'', Monaghan estableció que la formulación integral de cualquier función incógnita, se puede obtener siguiendo el mismo criterio establecido por Dirac para formular la denominada función $\delta$ de Dirac.
+
+Existe un consenso en descomponer, en dos etapas, las operaciones con las que Monaghan [cite:@Gingold-Monaghan77] establece la ecuación fundamental de SPH acorde con el criterio establecido por Dirac para formular su función $\delta$:
+
+1. \label{punto:paso1Cap2FormIntegral} La primera etapa se basa en considerar, tal como estableció Dirac, la formulación integral de la función  $\delta$, pero considerando que se trata, en lugar de una pulsiana, de una función cerrada y acotada, lo que el análisis de funciones se conoce como \textit{función compacta}, con un dominio espacial mayor que el de $\delta$. Llegados este punto, merece la pena destacar que esa función compacta, con la que se ``sustituye'' a $\delta$, es la función kernel de SPH, que será descrita con mayor profundidad en la sección [[*Fundamentos del Método SPH]]. De este modo, Monaghan establece la formulación integral del método SPH.
+
+2. \label{punto:paso2Cap2FormDiscreta} En la segunda etapa se opera sobre la formulación integral desarrollada en la primera etapa, para transformarla en una expresión discreta, esto es, transformar la integral en sumatoria. De este modo, las ecuaciones obtenidas pueden ser aplicadas sobre un sistema discreto como, por ejemplo, es el sistema de partículas con el que se modela el fluido a simular. Por ello, son estas ecuaciones discretas las que utilizaremos en nuestro simulador.
+
+En las próximas subsecciones [[*Formulación integral de las ecuaciones del método SPH]] y [[*Formulación discreta de las ecuaciones del método SPH]] llevaremos a cabo una descripción más exhaustiva de las dos etapas que, brevemente, acabamos de describir. En dichas secciones vamos a seguir las líneas establecidas por [cite:@monaghan1992smoothed; @AkiIhmAkin.etal12].
+
+*** Formulación integral de las ecuaciones del método SPH
+
+Esta sección se corresponde con la primera etapa, es decir, con la etapa \ref{punto:paso1Cap2FormIntegral}. Según formuló Monaghan [cite:@Gingold-Monaghan77], a partir de la función $\delta$ de Dirac, cualquier función desconocida  $f$ la expresa en términos de \ref{ec:deltaDirac}:
+
+\begin{equation}\label{ec:deltaDirac}
+f(r)=\int f(r')\delta(r-r')dr',
+\end{equation}
+donde $f$ hace referencia a la función desconocida, $r$ es a la posición, $r'$ es la posición de cualquier punto dentro del dominio de definición de $f$ y $\delta$ es la función de Dirac.
+
+El siguiente paso seguido por Monaghan [cite:@monaghan1992smoothed; @Gingold-Monaghan77] es sustituir la función $\delta$ por una función con extensión espacial. Haciendo ese se obtiene la ecuación fundamental del método SPH. La expresión obtenida es \ref{ec:kernelIntegral}.
+
+\begin{equation}\label{ec:kernelIntegral}
+\tilde{f}(r)=\int_{\Omega} f(r')W(r-r',h)dr'
+\end{equation}
+donde  $(\tilde{})$ se utiliza para indicar que $\tilde{f}(r)$ es el valor aproximado de $f(r)$, $W$ es la función con extensión espacial que sustituye a la función $\delta$, la que en SPH se denomina \textit{función kernel}, $\Omega$ es el volumen de definición de $W$ y $h$ es el radio  de dicho dominio de definición, que en el ámbito de SPH se conoce como \textit{radio del dominio soportado}.
+
+Puede deducirse que  la función $W$ de la ecuación \ref{ec:kernelIntegral}, la función kernel, es fundamental en SPH. ``\textit{A priori}'' cabría esperar que cualquier función compacta podría jugar el papel de función kernel, sin embargo, existe un conjunto de características, las cuales serán descritas posteriormente, que la función debe cumplir. Monaghan [cite:@Monaghan92], establece que, al menos, la función kernel debe satisfacer los siguientes criterios:
+
+1. \label{punto:SPH_1} Cualquier función $W$ candidata a ser función kernel, debe estar normalizada y cuando el radio del dominio soportado $h$ tienda a cero, $W$ debe ser una función pulsiana como es la $\delta$ de Dirac, es decir:
+
+   \begin{equation}\label{ec:condNormalizacion}
+   \int_\Omega W dr' = 1
+   \;\;\;\;\mbox{y}\;\;\;\;\lim_{h\rightarrow 0} W(r-r',h) = \delta(r-r').
+   \end{equation}
+
+2. \label{punto:SPH_3} $W$ tiene que ser compacta, es decir, debe ser una función serrada y acotada. Además, Monaghan sugiere que debe ser una función par, es decir, simétrica respecto del origen y decaer suavemente con la distancia.
+
+Cabe destacar que la elección de la función kernel, es uno de los problemas recurrentes en el ámbito de SPH. Una buena elección, sobre todo cuando el número de partículas vecinas es relativamente bajo, garantiza resultados precisos y, por lo tanto, simulaciones realistas. Existen diferentes estudios en los que se analizan las características que debe cumplir una función compacta y simétrica para ser una buena función kernel. Merece destacar los estudios de Dehnen et al. [cite:@Dehnen-Aly12] y Yan et al. [cite:@YanPenLiu14] donde, además, hace una exposición de como controlar el error cometido. Sin embargo, realizar un estudio de las diferentes funciones kernel, queda fuera del ámbito de este capítulo, en el que describimos los fundamentos del método SPH.
+
+*** Formulación integral de las derivadas de las ecuaciones de SPH
+
+Una vez expuesta la formulación integral de SPH, el siguiente paso es ``adaptar'' esa formulación a la ecuación dinámica del fluido, es decir, la ecuación NS [[ec:Navier--Stokes]]. Por lo tanto, es necesario exponer la formulación del gradiente y el laplaciano, en términos de la ecuación \ref{ec:kernelIntegral}, ya que son las funciones que intervienen en la ecuación NS. Siguiendo los términos expuestos en [cite:@Liu-Liu03], se obtiene la ecuación \ref{ec:SPH11}:
+
+\begin{equation}\label{ec:SPH11}
+\nabla \cdot \tilde{f}(r)=\int_{\Omega}
+\left[
+\nabla\cdot f(r')
+\right]W(r-r',h)dr',
+\end{equation}
+donde la expresión $\left[\nabla\cdot f(r')\right]$  se particulariza en $r'$ dentro del dominio soportado de $f$.
+
+Para calcular el integrando de la ecuación \ref{ec:SPH11}, Monaghan [cite:@Monaghan92] hace uso de la regla de la cadena. Con esta operación la ecuación \ref{ec:SPH11} se transforma en la ecuación:
+
+\begin{equation}\label{ec:SPH12}
+\left[\nabla \cdot f(r')\right] W(r-r',h)=
+\nabla\cdot\left[f(r') W(r-r',h)\right]-
+f(r')\cdot \nabla\left[ W(r-r',h)\right],
+\end{equation}
+
+Sustituyendo la ecuación \ref{ec:SPH12} en \ref{ec:SPH11}, se obtiene la expresión del gradiente en términos de SPH, la ecuación que se obtiene es la expresión  \ref{ec:SPH13}:
+
+\begin{equation}\label{ec:SPH13}
+\nabla\cdot \tilde{f}(r)= \int_{\Omega}
+\nabla\cdot\left[f(r')W(r-r',h)\right]dr'-
+\int_{\Omega}
+f(r')\cdot\nabla\left[W(r-r',h)\right]dr'.
+\end{equation}
+
+Tal como se indica en [cite:@Liu-Liu03], la ecuación \ref{ec:SPH13} es válida para calcular el gradiente de cualquier función. Sin embargo, para dotar de significado, se recomienda tener dos componente, una referida al volumen del dominio soportado y otro, específicamente, asociado al contorno. Expresándolo, en otros términos, en [cite:@Liu-Liu03], se recomienda que haya una componente de volumétrica y otra superficial (la asociada al contorno). Para que ello se cumpla, se hace uso del  \emph{Teorema de la Divergencia}, de este modo la ecuación \ref{ec:SPH13} se expresa en términos de la ecuación \ref{ec:SPH14}.
+
+\begin{equation}\label{ec:SPH14}
+\nabla\cdot \tilde{f}(r)= \int_{S}
+f(r')W(r-r',h)\cdot \vec{n}dS-
+\int_{\Omega}
+f(r')\cdot\nabla\left[W(r-r',h)\right]dr'.
+\end{equation}
+donde $\vec{n}$ es el vector normal de la superficie que recubre el dominio $\Omega$.
+
+La descomposición en dos componentes, una superficial y otra volumétrica, de la ecuación \ref{ec:SPH13} para obtener la ecuación \ref{ec:SPH14}, tiene un objetivo claro, tal como se indica en [cite:@Liu-Liu03], y es que si la función es compacta y el dominio soportado no ``penetra'' en los límites del fluido, por ejemplo en el contenedor en el que se encuentre confinado el fluido a simular, entonces la parte superficial de la ecuación \ref{ec:SPH14} se anula, por lo que se simplifica en términos de:
+\begin{equation}\label{ec:SPH15}
+\nabla\cdot \tilde{f}(r)=-\int_{\Omega}
+f(r')\cdot\nabla\left[W(r-r',h)\right]dr'.
+\end{equation}
+
+# %Cabe destacar que si la condición de compacidad no es satisfecha entonces la %ecuación \ref{ec:SPH15} no es adecuada para obtener la aproximación $\nabla\cdot %\tilde{f}(r)$.
+
+Siempre que se cumplan las condiciones para obtener la ecuación \ref{ec:SPH15}, se puede comprobar que el gradiente simplemente se obtiene como el producto de la función kernel por la función incógnita $f$, con lo que se simplifican los cálculos de las ecuaciones en derivadas parciales donde se utilicen, lo cual representa una ventaja operativa respecto de otras técnicas, como destaca Monaghan [cite:@Monaghan92].
+
+En este proyecto vamos a utilizar funciones compactas, con lo que podemos utilizar las ecuaciones que se obtengan a partir de la expresión \ref{ec:SPH15}.
+
+
+Para obtener ecuaciones diferenciales de orden superior, en Liu [cite:@Liu-Liu03], se propone extrapolar la ecuación \ref{ec:SPH15},para cualquier orden diferencial. Según su propuesta, la ecuación general que permitirá aproximar cualquier ecuación diferencial se expresa en términos de \ref{ec:SPHDerivadasGENERAL}:
+
+
+\begin{equation}\label{ec:SPHDerivadasGENERAL}
+\nabla ^l \tilde{f}(r)=-\int_{\Omega}
+f(r')\cdot\nabla^l\left[W(r-r',h)\right]dr'.
+\end{equation}
+donde con $l$ se hace referencia al orden diferencial, p.e. $l=1$ será el gradiente y $l=2$ será el laplaciano.
+
+*** Formulación discreta de las ecuaciones del método SPH
+
+Mediante las ecuaciones \ref{ec:kernelIntegral}--\ref{ec:SPH15}, se tienen las expresiones con las que es posible transformar, analíticamente, las ecuaciones en derivadas parciales, con las que se describe el fluido, en términos del método SPH. Sin embargo, tal como se ha dicho previamente, estas ecuaciones no se pueden aplicar sobre un sistema discretizado, como es el sistema de partículas con el que se modela el fluido a simular. Para poder aplicar las expresiones \ref{ec:kernelIntegral}--\ref{ec:SPH15} a un sistema discreto, es necesario transformar dichas ecuaciones. Sucintamente, el proceso consiste en transformar las integrales, por sumatorias, restringidas a las partículas. En los estudios de [cite:@Price12; @Monaghan92], se describe el proceso clave que permite dicha trasformación y consiste en considerar que, cada una  de las partículas, representa una fracción del fluido, visto como un continuo, cuyo valor es  $\rho dV$. Teniendo en cuenta esta hipótesis es posible transformar la expresión \ref{ec:kernelIntegral} en la ecuación \ref{ec:spHAproximada}:
+
+\begin{equation}\label{ec:spHAproximada}
+ \tilde{f}(r_i) =\sum_{j\in\mathcal{N}(i)}\frac{m_j}{\rho_{j}}f(x_j) W(r_i-r_j,h),
+\end{equation}
+donde $\mathcal{N}(i)$ son las partículas vecinas de la partícula $i$, cuya cantidad viene condicionada por el valor del radio de dominio soportado, $h$.
+
+Formulada la ecuación discreta con la que se aproxima la dunción $f$, el siguiente paso es formular las ecuaciones del gradiente. Siguiendo una línea de razonamiento análogo para obtener \ref{ec:spHAproximada}, Liu [cite:@Liu-Liu03] describe que la ecuación de partida es \ref{ec:gradientePre}.
+
+\begin{equation}\label{ec:gradientePre}
+\nabla \cdot \tilde{f}(r)=\int_{\Omega}
+\left[
+\nabla\cdot f(r')
+\right]W(r-r',h)dr'=
+\frac{\partial}{\partial r}\int \frac{f(r')}{\rho(r')}W(r-r',h)\rho(r')dr'
+\end{equation}
+
+A partir de la ecuación \ref{ec:gradientePre}, considerando que $f$ es compacta y no intersecta los límites del fluido, la ecuación \ref{ec:gradientePre} se reduce en términos de la ecuación \ref{ec:gradiente}:
+
+\begin{equation}\label{ec:gradiente}
+\nabla \tilde{f}(r)=\frac{\partial}{\partial r}\int \frac{f(r')}{\rho(r')}W(r-r',h)\rho(r')dr'\approx
+\sum_{j\in\mathcal{N}(i)}m_j\frac{f_j}{\rho_j}\nabla W(r_j-r_i,h).
+\end{equation}
+
+Operando sobre la expresión \ref{ec:gradiente}, con el objetivo de obtener una ecuación similar a la expresión \ref{ec:SPH15}. En Liu [cite:@Liu-Liu03] se concluye que la ecuación discreta con la que es posible calcular la ecuación discreta para calcular el gradiente, que se expresa en términos de :
+
+\begin{equation}\label{ec:SPH17}
+\nabla\cdot \tilde{f}(r_i)=-\sum_{j\in\mathcal{N}(i)} \frac{m_j}{\rho_{j}}f(r_j)\cdot \nabla W(r_i-r_j,h),
+\end{equation}
+donde $\nabla W$ es la función kernel que se particulariza sobre cada una de las  $i$ partículas en las que se ha discretizado el fluido a simular.
+
+Teniendo en cuenta la ecuación \ref{ec:SPH17}, y considerando la condición de compacidad, se puede obtener la ecuación discreta para calcular la derivada parcial para cualquier orden diferencial. La expresión que permite hacer ese cálculo es:
+
+\begin{equation}\label{ec:deDerivadaDiscreta}
+\nabla^l\cdot \tilde{f} (r)=-\sum_{j\in\mathcal{N}(i)} \frac{m_j}{\rho_{j}}f(r_j)\cdot \nabla^l W(r-r_j,h),
+\end{equation}
+
+Las expresiones obtenidas permite simplificar el cálculo de las complejas ecuaciones que describen la dinámica del fluido. Sin embargo, estas ecuaciones presentan dos importantes limitaciones:
+
+1. Que la función kernel debe ser compacta y la partícula $i$, sobre las que se particulariza cada función kernel, deben estar lejos del contorno del fluido.
+
+2. Las ecuaciones \ref{ec:deDerivadaDiscreta}, particularizadas para cada $l$, no satisfacen la conservación del momento, tal como advierten [cite:@Price12; @Monaghan92]. Para solventar este problema Monaghan [cite:@Monaghan92] propone el desarrollo de ecuaciones simétricas basadas en la regla de la cadena. El proceso que Monaghan sigue se describirá a continuación.
+
+*** Formulación simétricas de las derivadas de las ecuaciones en SPH
+
+Tal como se ha mencionado en la sección anterior, las ecuaciones discretas del método SPH obtenidas, aunque cumplen los criterios analíticos, nos satisfacen la conservación del momento, es decir, no satisface en principio acción--reacción. Monaghan [cite:@Monaghan92] advierte de este hecho y propone una metodología, basada en la regla de la cadena, para obtener ecuaciones simétricas que satisfagan dicha ley de conservación. Las ecuaciones que permiten simetrizar las derivadas parciales de las funciones desconocidas son \ref{ec:SPH18} y \ref{ec:SPH19}:
+
+\begin{equation}\label{ec:SPH18}
+\nabla^l f(r)=\frac{1}{\rho}\left[
+\nabla^l \left(\rho f(r)\right)-
+f(r)\nabla^l \rho
+\right],
+\end{equation}
+
+\begin{equation}\label{ec:SPH19}
+\nabla^l f(r)=\rho\left[
+\nabla^l\left(\frac{f(r)}{\rho}\right)+
+\frac{f(r)}{\rho^2}\nabla^l\rho
+\right].
+\end{equation}
+donde $\rho$ hace referencia a la densidad de masa.
+
+# %Las dos identidades anteriores pueden sustituirse por la integral en (11).
+
+
+Análogamente a como se hizo para calcular la  ecuación \ref{ec:SPH17}, se puede operar sobre las ecuaciones \ref{ec:SPH18} y \ref{ec:SPH19}. Tras realizar este proceso, tal como se describe en Moanghan [cite:@Monaghan92], se consiguen las ecuaciones \ref{ec:SPH20} y \ref{ec:SPH21}.
+
+# %Siguiendo el mismo procedimiento de aproximación utilizado para obtener la ecuación \ref{ec:SPH17} se va aplicar a las %ecuaciones \ref{ec:SPH18} y \ref{ec:SPH19}.  Con ello, estas dos ecuaciones
+# %Extrapolando este resultado para el caso de la divergencia se tiene:
+\begin{equation}\label{ec:SPH20}
+\nabla^l \tilde{f}(r_i) = \frac{1}{\rho_i}
+\left[ \sum_{j=1}^{N}m_j\left[f(r_j)-f(r_i)\right]\nabla^l_i W_{ij}
+\right]
+\end{equation}
+
+
+\begin{equation}\label{ec:SPH21}
+\nabla^l \tilde{f}(r_i) = \rho_i
+\left[
+ \sum_{j=1}^{N}m_j
+ \left[
+  \left(\frac{f(r_j)}{\rho_j^2}\right)+
+  \left(\frac{f(r_i)}{\rho_j^2}\right) \right]\cdot \nabla^l_i W_{ij}
+\right],
+\end{equation}
+
+Si bien ambas ecuaciones son simétricas y cumplen las premisas de SPH, Monaghan recomienda implementar \ref{ec:SPH21} ya que garantiza mejores resultados que utilizando la ecuación \ref{ec:SPH20}.
+
+
+** Descripción del Método SPH                                     :noexport:
 
 El método de partículas suaves (SPH, por sus siglas en inglés) fue propuesto originalmente por los investigadores G.R. Lucy [cite:@Lucy77] en 1977 y J.J. Monaghan [cite:@Monaghan82] en 1985. En estos trabajos iniciales, se presentó el método como una técnica numérica para resolver ecuaciones de fluidos mediante la representación del fluido como un conjunto de partículas, cada una con su posición y velocidad.
 
@@ -248,7 +491,7 @@ J.J. Monaghan: es uno de los principales investigadores en el desarrollo de la v
 
 D.J. Price: es otro investigador importante en el desarrollo del método SPH. En su trabajo "Smooth Particle Hydrodynamics: A Review of Recent Developments" (2012) presenta una revisión actualizada de los fundamentos y las aplicaciones del método SPH.
 
-** Formulación del Método SPH
+** Formulación del Método SPH                                     :noexport:
 
 La formulación integral de las ecuaciones del método SPH incluye tres pasos básicos:
 
