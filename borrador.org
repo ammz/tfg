@@ -60,6 +60,7 @@
   \frontmatter
   \tableofcontents
   \listoffigures
+  \listoftables
   \mainmatter
 #+END_SRC
 
@@ -72,11 +73,11 @@ El proyecto desarrollado para este Trabajo de Fin de Grado se centra en el uso d
 
 La simulación de un sistema dinámico implica resolver las complejas ecuaciones en derivadas parciales con las que se describe, cuantitativamente, su comportamiento. Para llevar a cabo esta tarea, es necesario utilizar métodos numéricos que transforman esas complejas ecuaciones diferenciales en un conjunto de ecuaciones algebraicas, relativamente más sencillas de manejar e implementables en sistemas computacionales.
 
-De forma aún más específica este proyecto se centrará en la simulación del comportamiento de los fluidos. La simulación de fluidos es una técnica utilizada en la ingeniería y en la ciencia para modelar y predecir el comportamiento de la dinámica de medios contínuos, como es el caso del flujo de un fluido, en un sistema determinado. Se utiliza en una gran variedad de aplicaciones, como la simulación de procesos industriales, el diseño de aeronaves, vehículos e incluso en la predicción meteorológica.
+De forma aún más específica este proyecto se centrará en la simulación del comportamiento de los fluidos. La simulación de fluidos es una técnica utilizada en la ingeniería y en la ciencia para modelar y predecir el comportamiento de la dinámica de medios continuos, como es el caso del flujo de un fluido, en un sistema determinado. Se utiliza en una gran variedad de aplicaciones, como la simulación de procesos industriales, el diseño de aeronaves, vehículos e incluso en la predicción meteorológica.
 
 Para que estas técnicas puedan ser utilizadas es necesario modelar la continuidad del fluido en un conjunto discreto de /entidades/ conexas.
 
-Entre los diferentes métodos numéricos que se han desarrollado, merecen destacar, por su extenso uso: el Método de Elementos Finitos o FEM (del inglés /Finite Element Method/), el Método de los Volúmenes Discretos o DVM (del inglés /Discrete Volume Method/) o /Particles in cell/ (PIC), en la que las /entidades/ conexas son polígonos conexos que forman una malla. Por otro lado, existen técnicas que no se basan en la discretización mediante mallas. Entre este tipo de metodologías destaca el Método /Smoothed Particles Hydrodynamics/ (SPH) en el que las entidades son partículas libres que se /conectan/ directamente a través de funciones contínuas decrecientes. Este último método es el que vamos a utilizar en nuestro proyecto.
+Entre los diferentes métodos numéricos que se han desarrollado, merecen destacar, por su extenso uso: el Método de Elementos Finitos o FEM (del inglés /Finite Element Method/), el Método de los Volúmenes Discretos o DVM (del inglés /Discrete Volume Method/) o /Particles in cell/ (PIC), en la que las /entidades/ conexas son polígonos conexos que forman una malla. Por otro lado, existen técnicas que no se basan en la discretización mediante mallas. Entre este tipo de metodologías destaca el Método /Smoothed Particles Hydrodynamics/ (SPH) en el que las entidades son partículas libres que se /conectan/ directamente a través de funciones continuas decrecientes. Este último método es el que vamos a utilizar en nuestro proyecto.
 
 Si bien se realizará una descripción más específica en el Capítulo [[*Fundamentos del Método SPH]], seguidamente se describen  algunas de las características más generales del método SPH.
 
@@ -102,7 +103,7 @@ $\rho$ es la densidad del fluido, $\frac{\mathrm {D}}{\mathrm {D} t}$ es la deri
 
 Esta ecuación expresa el comportamiento del fluido y su dinámica, describiendo cómo la velocidad, la presión y la densidad evolucionan en el tiempo y en el espacio.
 
-Aunque es indudable las ventajas que representa poder operar exclusivamente con la ecuación de Navier--Stokes en la simulación de fluidos, algunos autores como  han apuntado que precisamente en la simulación de fluidos, es conveniente incorporar la propiedad de /incompresibilidad/, sobre todo en el ámbito de la CG, ya que esta no está considerada en la ecuación de Navier--Stokes. Ha habido distintas propuestas técnicas como las de Solenthaler [cite:@Solenthaler-Pajarola09] y Teschner [cite:@BecTes07] que pretenden resolver el problema /imponiendo/ la incompresiblidad mediante procesos de adaptación de resultados calculando el valor instantáneo de la presión o a través de la composición de la ecuación de Navier--Stokes y la conservación de la masa. Debido a estas desventajas, en este proyecto consideraremos un modelo basado en la propuesta de Perea et al. [cite:@Perea-Cordero16] que impone implícitamente la incompresibilidad.
+Aunque es indudable las ventajas que representa poder operar exclusivamente con la ecuación de Navier--Stokes en la simulación de fluidos, algunos autores como  han apuntado que precisamente en la simulación de fluidos, es conveniente incorporar la propiedad de /incompresibilidad/, sobre todo en el ámbito de la CG, ya que esta no está considerada en la ecuación de Navier--Stokes. Ha habido distintas propuestas técnicas como las de Solenthaler [cite:@Solenthaler-Pajarola09] y Teschner [cite:@BecTes07] que pretenden resolver el problema /imponiendo/ la incompresibilidad mediante procesos de adaptación de resultados calculando el valor instantáneo de la presión o a través de la composición de la ecuación de Navier--Stokes y la conservación de la masa. Debido a estas desventajas, en este proyecto consideraremos un modelo basado en la propuesta de Perea et al. [cite:@Perea-Cordero16] que impone implícitamente la incompresibilidad.
 
 ** Diferentes métodos numéricos
 
@@ -138,15 +139,15 @@ A pesar de estas ventajas, el método SPH tiene algunos problemas asociados que 
 
 - Dificultad para manejar obstáculos sólidos: uno de los principales problemas de SPH es la dificultad para manejar obstáculos sólidos de manera efectiva. Esto puede dar lugar a penetraciones de partículas a través de los obstáculos lo que afecta al realismo de la simulación.
 
-- Pérdida de precisión en la modelización de ondas: SPH tiende a tener dificultades para reproducir ondas de alta frecuencia y amplitud, lo que puede afectar la precisión de la simulación en algunos casos. El resultado es la aparición de atenuación de este tipo de ondas lo que induce sobreamortiguamiento poco realista.
+- Pérdida de precisión en la modelización de ondas: SPH tiende a tener dificultades para reproducir ondas de alta frecuencia y amplitud, lo que puede afectar la precisión de la simulación en algunos casos. El resultado es la aparición de atenuación de este tipo de ondas lo que induce sobre-amortiguamiento poco realista.
 
 - Sensibilidad a los parámetros de entrada: el rendimiento de SPH puede ser sensible a los parámetros de entrada, lo que puede hacer difícil encontrar los valores óptimos para una simulación determinada.
 
 ** Objetivos
 
-El principal objetivo de este trabajo es desarrollar un simulador tridimensional que sea capaz de simular el comportamiento de un fluido de manera realista y conseguir alcanzar el máximo rendimiento posible utilizando el lenguaje de programación CUDA que permite programar en las GPUs de NVIDIA de manera relativamente sencilla y paralelizar los cálculos de SPH, tales como la búsqueda de partículas vecinas y la actualización de sus posiciones y velocidades, conseguiendo una mayor velocidad en la obtención de estos resultados.
+El principal objetivo de este trabajo es desarrollar un simulador tridimensional que sea capaz de simular el comportamiento de un fluido de manera realista y conseguir alcanzar el máximo rendimiento posible utilizando el lenguaje de programación CUDA que permite programar en las GPUs de NVIDIA de manera relativamente sencilla y paralelizar los cálculos de SPH, tales como la búsqueda de partículas vecinas y la actualización de sus posiciones y velocidades, consiguiendo una mayor velocidad en la obtención de estos resultados.
 
-En el desarrollo del proyecto también se ha investigado en solventar los principales inconvenientes que tiene el método SPH, en analizar los diferentes parámetros dentro de la simulación para que la simulación sea estable y estudiar otras propuestas, en desarrollar una implementación que nos permita colisionar de manera realista con diferentes tipos de solidos rígidos y en implementar exportadores para motores de renderizado para que el proyecto tenga un renderizado de mayor calidad
+En el desarrollo del proyecto también se ha investigado en solventar los principales inconvenientes que tiene el método SPH, en analizar los diferentes parámetros dentro de la simulación para que la simulación sea estable y estudiar otras propuestas, en desarrollar una implementación que nos permita colisionar de manera realista con diferentes tipos de sólidos rígidos y en implementar exportadores para motores de renderizado para que el proyecto tenga un renderizado de mayor calidad
 
 El proyecto deberá tener una estructura que sea escalable ya que no se pretende que este proyecto, dado lo ambicioso de sus objetivos, no es finalizar dentro del tiempo dado durante el TFG si no que se desarrolle más allá del ámbito de la universidad.
 
@@ -176,11 +177,11 @@ En este segundo capítulo explicaremos todo lo concerniente al estudio previo de
 
 ** Definición del problema real
 
-Se solicita el desarrollo de un simulador que de como resultado simulaciones de fluidos, con un comportamiento realista y que sea versatil, entendiendo un comportamiento realista como aquel que bajo las mismas condiciones que un evento real se comporta de manera similar al mismo. Y versátil que se puede modificar las variables del entorno sin que afecte a la precisión de la simulación. Además de intentar aumentar el rendimiento de este.
+Se solicita el desarrollo de un simulador que dé como resultado simulaciones de fluidos, con un comportamiento realista y que sea versátil, entendiendo un comportamiento realista como aquel que bajo las mismas condiciones que un evento real se comporta de manera similar al mismo. Con versátil que se pueden modificar las variables del entorno sin que afecte a la precisión de la simulación. Además de intentar aumentar el rendimiento de este.
 
 ** Problema Técnico – Product Design Specification (PDS)
 
-Aunque este proyecto de TFG sigue el desarrollo de un simulador y no es una aplicación software al uso, se va a utilizar la metodología PDS para explicar de una manera técnica desde la perspectiva de un desarrollador la estructura que sigue el simulador a desarrollar.
+Aunque este proyecto de TFG sigue el desarrollo de un simulador y no es una aplicación software al uso, se va a utilizar la metodología PDS para explicar de una manera técnica, desde la perspectiva de un desarrollador, la estructura que sigue el simulador a desarrollar.
 
 ** Funcionamiento
 
@@ -196,19 +197,17 @@ El funcionamiento del simulador será tal que a partir de unos parámetros de en
 
 ** Vida Esperada
 
-Al enmarcarse en un proyecto de investigación es extremadamente complejo especificar la vida esperada del simulador. El desarrollo de este simulador se basa en diferentes estudios ya propuestos como se explica en el capitulo 1, con el objetivo de tener una mejora de rendimiento utilizando la potencia de calculo que ofrecen de las GPU. Por tanto se espera que este simulador sirva como punto de partida hacia mejoras en el rendimiento de la simulación de fluidos basada en física y que tenga una duración prolongada, además de que se siga ampliando una vez acabado el ámbito de este TFG con los nuevos estudios y hardware futuros.
+Al enmarcarse en un proyecto de investigación es extremadamente complejo especificar la vida esperada del simulador. El desarrollo de este simulador se basa en diferentes estudios ya propuestos como se explica en el capitulo 1, con el objetivo de tener una mejora de rendimiento utilizando la potencia de calculo que ofrecen de las GPU. Por tanto, se espera que este simulador sirva como punto de partida hacia mejoras en el rendimiento de la simulación de fluidos basada en física y que tenga una duración prolongada, además de que se siga ampliando una vez acabado el ámbito de este TFG con los nuevos estudios y hardware futuros.
 
-También al ser CUDA una plataforma desarrollada por NVIDA una de las mayores empresas productoras de tarjetas graficas en el mundo, esta ofrece un soporte continuo a sus librerías y debido al éxito y potencial que ha demostrado el uso de esta, se puede suponer que CUDA no se dejara de mantener en el corto plazo.
+También al ser CUDA una plataforma desarrollada por NVIDA una de las mayores empresas productoras de tarjetas gráficas en el mundo, esta ofrece un soporte continuo a sus librerías y debido al éxito y potencial que ha demostrado el uso de esta, se puede suponer que CUDA no se dejara de mantener en el corto plazo.
 
 ** Ciclo de mantenimiento
 
-Al depender el desarrollo de este simulador gran parte en el lenguaje CUDA C este tendrá que ser revisado frente a posibles mejoras que se implementen en las nuevas versiones desarrolladas por NVIDIA, además de tener en cuenta nuevas publicaciones científicas que puedan resultar en un mejor rendimiento del simulador.
-
-Aunque sin esto el simulador seguirá siendo funcional no estará al día con los nuevos avances y su mejora de rendimiento, uno de los principales objetivos de este proyecto puede quedar en algo superficial.
+Al depender el desarrollo de este simulador en gran medida de la evolución del lenguaje CUDA C, éste tendrá que ser revisado frente a posibles mejoras que se implementen en las nuevas versiones desarrolladas por NVIDIA. Además se deberán tener en cuenta las nuevas publicaciones científicas que puedan resultar en un mejor rendimiento del simulador. Aunque sin esto el simulador seguirá siendo funcional, no estará al día con los nuevos avances y su mejora de rendimiento, por lo que uno de los principales objetivos de este proyecto puede quedar en algo superficial.
 
 ** Competencia
 
-Al tratarse del desarrollo de un simulador, podemos considerar como competencia a los diversos estudios presentados cada año en eventos comunitarios que desarrollan grupos de interés en la computación grafica como SIGGRAPH o Eurographics en los que se presentan los avances realizados cada año en este ámbito por diferentes grupos.
+Al tratarse del desarrollo de un simulador, podemos considerar como competencia a los diversos estudios presentados cada año en eventos comunitarios que desarrollan grupos de interés en la computación gráfica como SIGGRAPH o Eurographics en los que se presentan los avances realizados cada año en este ámbito por diferentes grupos de investigación y desarrolladores de Software.
 
 ** Aspecto Externo
 
@@ -216,21 +215,21 @@ El simulador junto con los resultados obtenidos de este y su aspecto renderizado
 
 ** Estandarización
 
-El lenguaje escogido CUDA C permite una estandarización ya que al ser C un lenguaje multiplataforma este se podría ejecutar en cualquier sistema operativo siempre que contara con una tarjeta NVIDA. Además, se ha realizado una exportación de resultados a archivos binarios que permiten renderizar la imagen en multitud de herramientas de renderizado, lo que resulta en una portabilidad para la visualización de la simulación aún mayor.
+El lenguaje escogido, CUDA C, permite una estandarización, ya que al ser C un lenguaje multiplataforma se podría ejecutar en cualquier sistema operativo, siempre que el equipo  contara con una tarjeta NVIDA. Además, se ha realizado una exportación de resultados a archivos binarios que permiten renderizar la imagen en multitud de herramientas de renderizado, lo que resulta en una portabilidad para la visualización de la simulación aún mayor.
 
 ** Calidad y Fiabilidad
 
-Al tratarse el desarrollo de este simulador un TFG el encargado principal del desarrollo de esta herramienta es el alumno Antonio Moreno Talero, siendo supervisado por el tutor académico Juan José Perea Rodríguez para controlar el correcto desarrollo del proyecto. También Juan José Perea Rodríguez al ser un experto en el ámbito de la computación gráfica y la simulación basada en fluidos, como demuestran sus artículos publicados (artículo de Juan José), se encargará de supervisar el proyecto para que cumpla con los fundamentos matemáticos que conlleva una simulación física basada en física.
+Al tratarse el desarrollo de este simulador un TFG el encargado principal del desarrollo de esta herramienta es el alumno Antonio Moreno Talero, siendo supervisado por el tutor académico Juan José Perea Rodríguez para controlar el correcto desarrollo del proyecto. También Juan José Perea Rodríguez al ser un experto en el ámbito de la computación gráfica y la simulación basada en fluidos se encargará de supervisar el proyecto para que cumpla con los fundamentos matemáticos que conlleva una simulación física basada en física.
 
 ** Programa de Tareas
 
-El desarrollo del simulador será llevado a cabo en diferentes partes.
+El desarrollo del simulador será llevado a cabo en diferentes partes:
 
-Primero se realizará un análisis y estudio previo de diferentes metodologías de simulación de fluidos junto con maneras de mejorar el rendimiento de este, con el objetivo de comprender las posibles alternativas existentes en el desarrollo de un simulador de fluidos y que ventajas e inconvenientes presenta cada uno.
+1. Primero se realizará un análisis y estudio previo de diferentes metodologías de simulación de fluidos junto con maneras de mejorar el rendimiento de este, con el objetivo de comprender las posibles alternativas existentes en el desarrollo de un simulador de fluidos y que ventajas e inconvenientes presenta cada uno.
 
-Una vez elegida la metodología a seguir en el desarrollo de la simulación, se planteará una estructura escalable y funcional que sea programable para su posterior desarrollo a la vez que se estudian las herramientas necesarias para llevar a cabo esta implementación.
+2. Una vez elegida la metodología a seguir en el desarrollo de la simulación, se planteará una estructura escalable y funcional que sea programable para su posterior desarrollo a la vez que se estudian las herramientas necesarias para llevar a cabo esta implementación.
 
-Una vez que se tenga una comprensión suficiente de las herramientas a utilizar se llevara a cabo su implementación en el lenguaje escogido, la programación de la estructura del simulador.
+3. Por último, tras alcanzar una comprensión suficiente de las herramientas a utilizar se llevará a cabo su implementación en el lenguaje escogido, la programación de la estructura del simulador.
 
 ** Pruebas
 
@@ -262,9 +261,9 @@ A continuación se presentan los requisitos de información, que presentan la in
 
 Los mínimos que debe alcanzar el simulador vienen dados por los siguientes requisitos funcionales
 
-- RF-01: El simulador debe ser capaz de colisionar con solidos rígidos
+- RF-01: El simulador debe ser capaz de colisionar con sólidos rígidos
 - RF-02: El simulador debe ejecutar parte del código en paralelo
-- RF-03: Se debe poder añadir diferentes solidos rígidos dentro del simulador
+- RF-03: Se debe poder añadir diferentes sólidos rígidos dentro del simulador
 - RF-04: Las partículas deben modificar sus posición y velocidad dentro del simulador
 - RF-05: El simulador debe implementar algún algoritmo de búsqueda de vecinas.
 
@@ -278,29 +277,32 @@ A continuación, con los requisitos no funcionales se determinan ciertas restric
 
 *** Matriz de Trazabilidad de Requisitos
 
-Después de haber especificado todos los requisitos necesarios para la simulación, se debe garantizar que estos van a cumplir los objetivos establecidos. Una herramienta gráfica muy útil para esto es la elaboración de matrices de trazabilidad. Una matriz de trazabilidad es una tabla en la que se relacionan todos los requisitos planteados con los objetivos (requisitos generales) establecidos y sirve para visualizar que resultado que alcanzara cada requisito. Las siguientes tablas muestran las matrices de trazabilidad de los requisitos generales respecto a los requisitos de información, requisitos funcionales y requisitos no funcionales respectivamente.
+Después de haber especificado todos los requisitos necesarios para la simulación, se debe garantizar que estos van a cumplir los objetivos establecidos. Una herramienta gráfica muy útil para esto es la elaboración de matrices de trazabilidad. Una matriz de trazabilidad es una tabla en la que se relacionan todos los requisitos planteados con los objetivos (requisitos generales) establecidos y sirve para visualizar qué resultado alcanzará cada requisito. Las siguientes tablas muestran las matrices de trazabilidad de los requisitos generales respecto a los requisitos de información, requisitos funcionales y requisitos no funcionales respectivamente.
 
-# | RI\RG | RG-01 | RG-02 | RG-03 |
-# |-------+-------+-------+-------|
-# | RI-01 | -     | X     | -     |
-# | RI-02 | X     | X     | -     |
-#
-#
-# | RF\RG | RG-01 | RG-02 | RG-03 |
-# |-------+-------+-------+-------|
-# | RF-01 | X     | X     | -     |
-# | RF-02 | -     | -     | X     |
-# | RF-03 | X     | X     | -     |
-# | RF-04 | X     | -     | -     |
-# | RF-05 | -     | -     | X     |
-#
-#
-# | RNF\RG | RG-01 | RG-02 | RG-03 |
-# |--------+-------+-------+-------|
-# | RNF-01 | X     | -     | -     |
-# | RNF-02 | -     | -     | X     |
-# | RNF-03 | X     | X     | X     |
+#+CAPTION: Matriz de trazabilidad de los requisitos generales respecto a los requisitos de información \\
+#+ATTR_LATEX: :align |c|c|c|c|
+| RI \ RG | RG-01 | RG-02 | RG-03 |
+|---------+-------+-------+-------|
+| RI-01   | -     | X     | -     |
+| RI-02   | X     | X     | -     |
 
+#+CAPTION: Matriz de trazabilidad de los requisitos generales respecto a los requisitos funcionales \\
+#+ATTR_LATEX: :align |c|c|c|c|
+| RF \ RG | RG-01 | RG-02 | RG-03 |
+|---------+-------+-------+-------|
+| RF-01   | X     | X     | -     |
+| RF-02   | -     | -     | X     |
+| RF-03   | X     | X     | -     |
+| RF-04   | X     | -     | -     |
+| RF-05   | -     | -     | X     |
+
+#+CAPTION:Matriz de trazabilidad de los requisitos generales respecto a los requisitos no funcionales \\
+#+ATTR_LATEX: :align |c|c|c|c|
+| RNF \ RG | RG-01 | RG-02 | RG-03 |
+|----------+-------+-------+-------|
+| RNF-01   | X     | -     | -     |
+| RNF-02   | -     | -     | X     |
+| RNF-03   | X     | X     | X     |
 
 * Fundamentos del Método SPH
 ** Introducción
@@ -309,7 +311,7 @@ En la introducción de esta memoria de TFG, describimos las características gen
 
 En este capítulo vamos a concretar las características generales y los fundamentos en los que se basa SPH. Además, describiremos los problemas de estabilidad que pueden presentar los resultados obtenidos mediante SPH. Problemas que hemos considerado para evitarlos y obtener simulaciones realistas en diferentes entorno de simulación.
 
-Si bien el método SPH fue desarrollado por Gingold--Monaghan [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77], para la simulación de sistemas de múltiples cuerpos, como ocurre en cosmología, rápidamente fue adaptado para sumular las ecuaciones dinámicas asociadas a medios continuos.  Específicamente, la formulación desarrollada por Gingold--Monaghan [cite:@Gingold-Monaghan77], es la que se utilizó para modelar las ecuaciones en derivadas parciales del fluido.
+Si bien el método SPH fue desarrollado por Gingold--Monaghan [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77], para la simulación de sistemas de múltiples cuerpos, como ocurre en cosmología, rápidamente fue adaptado para simular las ecuaciones dinámicas asociadas a medios continuos.  Específicamente, la formulación desarrollada por Gingold--Monaghan [cite:@Gingold-Monaghan77], es la que se utilizó para modelar las ecuaciones en derivadas parciales del fluido.
 
 Para poder aplicar el método SPH en la simulación del flujo del fluido, es necesario que el continuo que es el fluido, quede representado, unívocamente, por un sistema de partículas que puedan interactuar entre cada una de ellas. Así pues, para una correcta representación del fluido mediante partículas, se tiene que cumplir que la suma de la masa de todas las partículas sea igual a la masa de la totalidad del fluido. Así queda satisfecha una de las restricciones más importantes en física que es \textit{la conservación de la masa}.  Una vez que el fluido es transformado en un sistema de partículas, se tiene que \textit{modelar} la interacción entre las partículas. Aquí es donde entra en juego la formulación de SPH, que describiremos a lo largo de este capítulo, con las que se modela las ecuaciones en derivadas parciales del fluido. Resumidamente, las dos \textit{piedras angulares} de SPH son:
 
@@ -319,7 +321,7 @@ Para poder aplicar el método SPH en la simulación del flujo del fluido, es nec
 
 Visualmente, lo que acabamos de describir se ilustra en la figura \ref{fig:esquemaKernel}
 
-#+CAPTION: Ilustración de los pilares en los que se asienta el método SPH: partículas y función kernel. La interación está restringida por el dominio de la función, cuyo radio es $h$. Las partículas que cumplan que su distancia es inferior a $h$, se denominan partículas vecinas.
+#+CAPTION: Ilustración de los pilares en los que se asienta el método SPH: partículas y función kernel. La interacción está restringida por el dominio de la función, cuyo radio es $h$. Las partículas que cumplan que su distancia es inferior a $h$, se denominan partículas vecinas.
 #+ATTR_LATEX: :width 10cm
 [[./graficos/kernel.pdf]]
 
@@ -332,7 +334,7 @@ El método SPH, según se ha explicado en la sección [[*Introducción]], tiene 
 
 Desde un punto de vista numérico, cuando el fluido es modelado mediante partículas, y sus magnitudes se aproximan mediante SPH, la ecuación de NS se transforma en un conjunto de ecuaciones algebraicas que no están acopladas entre sí. Este desacoplamiento es gracias a la formulación de la función kernel. Según se afirma en Liu et al. [cite:@Liu-Liu03], esta formulación reduce el coste computacional y simplifica los cálculos si se compara con el modelado basado en mallas. No obstante, Price [cite:@Price12] advierte de que el número de partículas vecinas $j$, de cada una de las partículas $i$, debe ser relativamente alto, en un rango mínimo de $80-120$. Sin embargo, dependiendo del tipo de función kernel, y más concretamente de su formulación, este rango de valores puede disminuir, tal como se indica en [cite:@Price12; @Perea-Cordero16]. Así pues, se puede afirmar que las características analíticas condiciona la calidad de la simulación.
 
-Existe un consenso en relacionar las características analíticas de las diferentes funciones kernel, con la estabilidad y el realismo. A este respecto, se han llevado a cabo una gran cantidad de estudios que establecen cuales deben ser las características esenciales, que una función monótona decreciente, debe satisfacer para obtener simulaciones de fluido realistas. La primera función kernel fue propuesta por Monaghan et al. [cite:@Monaghan92; @Gingold-Monaghan77] y se trata de la función exponencial. Esta función puede proporcionar resultados adecuados, pero presenta una incompatibilidad, que es el hecho de que su radio de dominio soportado $h$ es infinito y dado este valor establece el número de partículas vecinas, se tendría un alto número, lo cual dificulta el cálculo de las magnitudes dinámicas del fluido, como es destacado en [cite:@Liu-Liu03].
+Existe un consenso en relacionar las características analíticas de las diferentes funciones kernel, con la estabilidad y el realismo. A este respecto, se han llevado a cabo una gran cantidad de estudios que establecen cuales deben ser las características esenciales, que una función monótona decreciente, debe satisfacer para obtener simulaciones de fluido realistas. La primera función kernel fue propuesta por Monaghan et al. [cite:@Gingold-Monaghan77; @Monaghan92] y se trata de la función exponencial. Esta función puede proporcionar resultados adecuados, pero presenta una incompatibilidad, que es el hecho de que su radio de dominio soportado $h$ es infinito y dado este valor establece el número de partículas vecinas, se tendría un alto número, lo cual dificulta el cálculo de las magnitudes dinámicas del fluido, como es destacado en [cite:@Liu-Liu03].
 
 Además de la limitación destacada por Liu et al. [cite:@Liu-Liu03], se han desarrollado diversos estudios que establecen las características que hacen a cualquier función monótona decreciente una ``\textit{buena}'' función kernel. Estos estudios son:
 
@@ -357,9 +359,9 @@ Otras características que tiene el método SPH, que representan una ventaja cua
 
 5. \emph{Simplifica las colisiones del fluido con el contorno}, como describiremos en el capítulo [[*Colisiones]] de esta memoria de proyecto. Se debe a que es más fácil calcular la colisión partícula contorno del cuerpo rígido que la colisión entre diferentes mallas, tal como se indica en [cite:@MulChaGro03].
 
-No obstante, aunque SPH presenta las ventajas que acabamos de describir, puede generar inestabilidades en las simulaciones que afecten a su realismo. Esta limitación se hace muy visible cuando la cantidad de partículas vecinas es baja, entorno a $20$, tal como destaca Yan et al. [cite:@YanPenLiu14]. La complejidad de diseñar una función kernel que evite este problema es una tarea compleja que sale fuera de los objetivos de este proyecto. En este proyecto utilizaremos la propuesta de Perea et al. [cite:@Perea-Cordero18; @Perea-Cordero16] donde se desarrolla un estudio de estabilidad y precisión en simulaciones de fluido mediante SPH y formulan una función kernel que garantiza buenos resultados aunque el número de partículas vecinas sea bajo.
+No obstante, aunque SPH presenta las ventajas que acabamos de describir, puede generar inestabilidades en las simulaciones que afecten a su realismo. Esta limitación se hace muy visible cuando la cantidad de partículas vecinas es baja, entorno a $20$, tal como destaca Yan et al. [cite:@YanPenLiu14]. La complejidad de diseñar una función kernel que evite este problema es una tarea compleja que sale fuera de los objetivos de este proyecto. En este proyecto utilizaremos la propuesta de Perea et al. [cite:@Perea-Cordero16; @Perea-Cordero18] donde se desarrolla un estudio de estabilidad y precisión en simulaciones de fluido mediante SPH y formulan una función kernel que garantiza buenos resultados aunque el número de partículas vecinas sea bajo.
 
-Tras esta breve introducción al método SPH, el resto del capítulo de organiza del siguiente modo. En la sección [[*Fundamentos del Método SPH]] vamos a llevar a cabo una descripción de los fundamentos de SPH, tal como las definión Monaghan et al. [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77]. Seguidamente, en la sección [[*Fundamentos de SPH y su Formulación]] expondremos cómo quedan las ecuaciones dinámicas del fluido modeladas mediante la formulación SPH. Así mismo, expondremos como se obtienen las ecuaciones discretas, que utilizaremos en nuestro simulador, y como éstas se obtienen a partir de la formulación integral, que es el punto de partida que desarrolló Monaghan et al. [cite:@Gingold-Monaghan77]. El proceso seguido en la descripción es el propuesto por Monaghan [cite:@Monaghan82; @monaghan1992smoothed], Liu [cite:@Liu-Liu03] y Price [cite:@Price12].
+Tras esta breve introducción al método SPH, el resto del capítulo de organiza del siguiente modo. En la sección [[*Fundamentos del Método SPH]] vamos a llevar a cabo una descripción de los fundamentos de SPH, tal como las definió Monaghan et al. [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77]. Seguidamente, en la sección [[*Fundamentos de SPH y su Formulación]] expondremos cómo quedan las ecuaciones dinámicas del fluido modeladas mediante la formulación SPH. Así mismo, expondremos como se obtienen las ecuaciones discretas, que utilizaremos en nuestro simulador, y como éstas se obtienen a partir de la formulación integral, que es el punto de partida que desarrolló Monaghan et al. [cite:@Gingold-Monaghan77]. El proceso seguido en la descripción es el propuesto por Monaghan [cite:@Monaghan82; @monaghan1992smoothed], Liu [cite:@Liu-Liu03] y Price [cite:@Price12].
 
 ** Fundamentos de SPH y su Formulación
 
@@ -371,7 +373,7 @@ Existe un consenso en descomponer, en dos etapas, las operaciones con las que Mo
 
 2. \label{punto:paso2Cap2FormDiscreta} En la segunda etapa se opera sobre la formulación integral desarrollada en la primera etapa, para transformarla en una expresión discreta, esto es, transformar la integral en sumatoria. De este modo, las ecuaciones obtenidas pueden ser aplicadas sobre un sistema discreto como, por ejemplo, es el sistema de partículas con el que se modela el fluido a simular. Por ello, son estas ecuaciones discretas las que utilizaremos en nuestro simulador.
 
-En las próximas subsecciones [[*Formulación integral de las ecuaciones del método SPH]] y [[*Formulación discreta de las ecuaciones del método SPH]] llevaremos a cabo una descripción más exhaustiva de las dos etapas que, brevemente, acabamos de describir. En dichas secciones vamos a seguir las líneas establecidas por [cite:@monaghan1992smoothed; @AkiIhmAkin.etal12].
+En las próximas subsecciones [[*Formulación integral de las ecuaciones del método SPH]] y [[*Formulación discreta de las ecuaciones del método SPH]] llevaremos a cabo una descripción más exhaustiva de las dos etapas que, brevemente, acabamos de describir. En dichas secciones vamos a seguir las líneas establecidas por [cite:@AkiIhmAkin.etal12; @monaghan1992smoothed].
 
 *** Formulación integral de las ecuaciones del método SPH
 
@@ -479,7 +481,7 @@ Mediante las ecuaciones \ref{ec:kernelIntegral}--\ref{ec:SPH15}, se tienen las e
 
 donde $\mathcal{N}(i)$ son las partículas vecinas de la partícula $i$, cuya cantidad viene condicionada por el valor del radio de dominio soportado, $h$.
 
-Formulada la ecuación discreta con la que se aproxima la dunción $f$, el siguiente paso es formular las ecuaciones del gradiente. Siguiendo una línea de razonamiento análogo para obtener \ref{ec:spHAproximada}, Liu [cite:@Liu-Liu03] describe que la ecuación de partida es \ref{ec:gradientePre}.
+Formulada la ecuación discreta con la que se aproxima la función $f$, el siguiente paso es formular las ecuaciones del gradiente. Siguiendo una línea de razonamiento análogo para obtener \ref{ec:spHAproximada}, Liu [cite:@Liu-Liu03] describe que la ecuación de partida es \ref{ec:gradientePre}.
 
 \begin{equation}\label{ec:gradientePre}
 \nabla \cdot \tilde{f}(r)=\int_{\Omega}
@@ -593,27 +595,25 @@ La formulación integral de las ecuaciones del método SPH incluye tres pasos b�
 
 ** Introducción
 
-La búsqueda de partículas vecinas es una de las tareas fundamentales en el método de partículas suaves (SPH).
-
-Tal como se indicó en el Capítulo [[*Fundamentos del Método SPH]] el modo en que se propagan las interacciones, en el método SPH, es a través de las partículas que se encuentran dentro del dominio soportado de la función kernel, las partículas vecinas. Determinar cuáles son las partículas vecinas de cada una de las partículas que componen el modelado del fluido, constituye uno de los retos más importantes en la simulación mediante SPH. Es decir, resulta necesario encontrar las partículas vecinas de una partícula dada para poder calcular las propiedades del fluido en ese punto utilizando la función kernel.
+La búsqueda de partículas vecinas es una de las tareas fundamentales en el método SPH. Tal como se indicó en el Capítulo [[*Fundamentos del Método SPH]], el modo en que se propagan las interacciones, en el método SPH, es a través de las partículas que se encuentran dentro del dominio soportado de la función kernel, las partículas vecinas. Determinar cuáles son las partículas vecinas de cada una de las partículas que componen el modelado del fluido, constituye uno de los retos más importantes en la simulación mediante SPH, desde un punto de vista de consumo de tiempo de cómputo. Es decir, resulta necesario encontrar las partículas vecinas de una partícula dada para poder calcular las propiedades del fluido en ese punto utilizando la función kernel.
 
 Hay varios métodos para buscar partículas vecinas en SPH. Algunos de los métodos más comunes incluyen:
 
-- /Listas de vecindad estáticas/: en este método, se construye una lista de vecindad estática para cada partícula al principio de la simulación y se utiliza para todo el tiempo de simulación. Es importante reconstruir la lista de vecindad en caso de que las particulas se salgan de su vecindario original.
+- /Listas de vecindad estáticas/: en este método, se construye una lista de vecindad estática para cada partícula al principio de la simulación y se utiliza para todo el tiempo de simulación. Es importante reconstruir la lista de vecindad en caso de que las partículas se salgan de su vecindario original.
 
 - /Búsqueda vecinal dinámica/: en este método, se buscan las partículas vecinas de una partícula dada en cada paso de tiempo. Se puede utilizar estructuras de datos como el octree o el kd-tree para hacer esta búsqueda de manera eficiente.
 
-- /Grids/: Es una aproximación de malla de cuadros regular, es decir, se divide el espacio en celdas regulares y se clasifican las partículas en las celdas correspondientes, permitiendo una búsqueda eficiente de las particulas vecina.
+- /Grids/: Es una aproximación de malla de cuadros regular, es decir, se divide el espacio en celdas regulares y se clasifican las partículas en las celdas correspondientes, permitiendo una búsqueda eficiente de las partículas vecina.
 
 - /Búsqueda exhaustiva o por fuerza bruta/:
 
 En general, el tiempo de cálculo para la búsqueda vecinal es proporcional al número de partículas, y puede ser un cuello de botella importante en las simulaciones con un alto número de partículas. Por esta razón, es importante seleccionar el método de búsqueda vecinal adecuado para cada simulación y optimizarlo para mejorar el rendimiento.
 
-** Búsqueda de vecinas basadas Fuerza bruta
+** Búsqueda de vecinas mediante Fuerza bruta
 
 La búsqueda de vecinos en el método de partículas suaves (SPH) mediante fuerza bruta consiste en comparar la posición de cada partícula con la posición de todas las demás partículas para encontrar las partículas vecinas. Es una técnica simple, pero tiene un tiempo de ejecución que crece de manera cuadrática con el número de partículas, lo que la hace ineficiente para simular grandes conjuntos de partículas.
 
-En esta técnica se recorren todas las partículas, y se compara su posición con la de cada otra particula para determinar si la distancia es inferior al radio del dominio soportado, $h$, de la función kernel. Se puede utilizar un radio fijo o un radio variable para determinar el dominio soportado, tal como se sugiere en Price [cite:@Price12].
+En esta técnica se recorren todas las partículas, y se compara su posición con la de cada otra partícula para determinar si la distancia es inferior al radio del dominio soportado, $h$, de la función kernel. Se puede utilizar un radio fijo o un radio variable para determinar el dominio soportado, tal como se sugiere en Price [cite:@Price12].
 
 Este método es útil para pequeñas cantidades de partículas, pero se vuelve ineficiente para sistemas grandes debido a su complejidad computacional. En lugar de esto, se recomiendan técnicas de búsqueda vecinal más eficientes, como el uso de estructuras de datos como /octree/, /kd-tree/ o etiquetado /hash/.
 
@@ -630,9 +630,35 @@ Sin embargo, esta técnica tiene algunas desventajas. El problema es que si el n
 En general, la búsqueda de vecinos basada en etiquetado hash es una técnica eficiente para encontrar vecinos en SPH, pero requiere una buena comprensión de los detalles y puede requerir ajustes para adaptarse a diferentes situaciones.
 * Método de integración temporal
 
-** Introducción
+La ecuación de NS tiene dependencia espacial y temporal. La componente espacial, esto es, el gradiente, el laplaciano y la densidad la calculamos mediante el método SPH, descrito en el capítulo [[*Fundamentos del Método SPH]]. Sin embargo, la componente temporal, evidenciada mediante la derivada sustantiva, requiere de un tratamiento específico no contemplado en el método SPH. Para tal fin se utilizan otros métodos numéricos tanto explícitos como implícitos, en Modak et al. [cite:@Modak-Sotelino02] se realiza una descripción de las diferentes metodologías. En nuestro proyecto nos vamos a centrar en los métodos explícitos y semi-implícitos algunos de los cuales procederemos a describir a continuación.
 
-La ecuación de N-S, tiene dependencia espacial y temporal. La componente espacial, esto es, el gradiente, el laplaciano y la densidad la caclulamos mediante el método SPH, descrito en el capítulo [[*Fundamentos del Método SPH]]. Sin embargo, la componente temporal, evidenciada mediante la derivada sustantiva, requiere de un tratamiento específico no contemplado en el método SPH. Para tal fin se utilizan otros métodos numéricos tanto explícitos como implícitos, en Modak et al. [cite:@Modak-Sotelino02] se realiza una descripción de las diferentes metodologías. En nuestro proyecto nos vamos a centrar en los métodos explícitos y semi-implícitos algunos de los cuales procederemos a describir a continuación.
+** Fundamentos del Método de integración Temporal
+
+La idea principal bajo la que operan todos estos métodos numéricos es la de dividir el tiempo en pequeños intervalos, en el que cada uno se separa del anterior por un pequeño incremento de tiempo, ampliamente conocido en el ámbito de las CG como $\Delta\;t$.
+
+En otras palabras, la idea subyacente en la integración temporal numérica es aproximar la solución de una ecuación diferencial ordinaria (EDO) mediante el uso de valores discretos en intervalos de tiempo específicos, en lugar de tratar de encontrar la solución analítica exacta. Esto se logra mediante el uso de un algoritmo numérico, como un método de integración temporal, que utiliza una serie de pasos para avanzar en el tiempo y calcular los valores de la solución en momentos discretos.
+
+Todos los métodos existentes se pueden dividir en dos categorías: métodos explícitos y métodos implícitos. La principal diferencia entre ellos radica en que mientras que en los explícitos, se considera que las acciones sobre el sistema, /las fuerzas/, se mantienen constantes a los largo de todo el paso de tiempo, lo que implica que es posible conocer las aceleraciones en el siguiente paso, ya que son las mismas que en el paso actual. Conocida la aceleración actual, es fácil resolver las ecuaciones de la velocidad y de la posición. Esta hipótesis, la de que las fuerzas se mantienen constante dentro de cada paso de tiempo, no es considerada en los implícitos, por lo que no se conoce ni la aceleración, ni la velocidad, ni la posición en el siguiente paso. Por lo tanto, es necesario poner en función de la aceleración, tanto la velocidad, como la posición y la ecuación obtenida, sustituirla en la ecuación dinámica. Todo ello implica una complejidad que se hace mayor si la aplicamos al sistema de partículas con el que se modela el fluido, ya que, en ese caso, para cada paso de tiempo hay que resolver un sistema de ecuaciones con un número de ecuaciones igual al de partículas.
+
+Computacionalmente, los métodos explícitos son más sencillos de implementar y su resolución es casi directa, ya que con la aceleración se despeja directamente la velocidad y con la velocidad, y/o la aceleración (dependiendo del orden del método de integración), la posición, sin necesidad de procesar un sistema de ecuaciones. No obstante, la principal limitación de los explícitos radica en la hipótesis fundamental en la que se basan: "las fuerzas se mantienen constante dentro de cada paso de tiempo", y esto sólo se satisface para pasos de tiempo muy cortos, del orden de fracciones de milésimas de segundo, y en problemas que no sean /stiffness (véase  Modak et al. [cite:@Modak-Sotelino02])/. Así pues, se puede afirmar, que los métodos explícitos tienen su convergencia a resultados correctos condicionada, mientras que los implícitos se puede decir que no está condicionada, tal como se expone en Modak et al. [cite:@Modak-Sotelino02].
+
+Existe otra posibilidad que aúna características de métodos explícitos e implícitos, son los denominados métodos semi-implícitos. En síntesis, estos métodos consideran la hipótesis de los implícitos, es decir, consideran que las fuerzas se mantienen constantes dentro de cada paso de tiempo, con lo que se conoce la aceleración y con ella se calcula la velocidad en el siguiente paso, y con esta nueva velocidad y aceleración se obtiene la nueva posición. Con este proceso se mejoran los resultados, con pasos de tiempo hasta dos órdenes de magnitud mayores que en los explícitos. Sin embargo, su convergencia sigue estando condicionada. A pesar de ello, los métodos semi-implícitos son muy utilizados en el ámbito de CG y es la tipología que vamos a seleccionar en nuestro proyecto.
+
+Algunos de estos algoritmos numéricos son por ejemplo:
+
+- /Método de Euler/: Este es uno de los métodos de integración temporal más simples y fáciles de implementar en comparación con otros. Utiliza una aproximación de diferencias finitas para calcular el valor de la solución en el siguiente paso temporal a partir del valor actual. Sin embargo, el método de Euler es poco preciso y puede dar lugar a soluciones inestables si el paso temporal es demasiado grande.
+
+- /Método de Runge-Kutta/: Este es uno de los métodos de integración temporal más populares y utilizados. Utiliza una combinación de aproximaciones de diferencias finitas y diferencias progresivas para calcular el valor de la solución en el siguiente paso temporal. Es más preciso y estable que el método de Euler, pero también es más complejo de implementar.
+
+- /Euler semi-implícito/: Calcula las nuevas velocidades a partir las velocidades actuales y de las nuevas aceleraciones. Para las nuevas posiciones, considera las posiciones actuales, pero utiliza las nuevas velocidades y aceleraciones.
+
+Es este último el que utilizaremos en nuestro simulador.
+
+** Explicación Método Euler semi-implícito
+
+** Introducción                                                   :noexport:
+
+La ecuación de NS tiene dependencia espacial y temporal. La componente espacial, esto es, el gradiente, el laplaciano y la densidad la calculamos mediante el método SPH, descrito en el capítulo [[*Fundamentos del Método SPH]]. Sin embargo, la componente temporal, evidenciada mediante la derivada sustantiva, requiere de un tratamiento específico no contemplado en el método SPH. Para tal fin se utilizan otros métodos numéricos tanto explícitos como implícitos, en Modak et al. [cite:@Modak-Sotelino02] se realiza una descripción de las diferentes metodologías. En nuestro proyecto nos vamos a centrar en los métodos explícitos y semi-implícitos algunos de los cuales procederemos a describir a continuación.
 
 - Método de Euler: es el método más simple de integración temporal. Consiste en calcular las nuevas posiciones y velocidades de las partículas a partir de las velocidades y aceleraciones actuales utilizando las ecuaciones de movimiento. Sin embargo, este método tiene una baja estabilidad temporal y suele ser utilizado solo para problemas simples.
 
@@ -640,7 +666,7 @@ La ecuación de N-S, tiene dependencia espacial y temporal. La componente espaci
 
 - Método de Verlet: es un método de integración temporal que se basa en el uso de la posición actual y la posición anterior para calcular la velocidad y la nueva posición de las partículas. Es un método más estable que el método de Euler y se utiliza comúnmente en SPH.
 
-** Ecuación fundamental para la integración temporal numérica
+** Ecuación fundamental para la integración temporal numérica     :noexport:
 
 La idea subyacente en la integración temporal numérica es la de dividir el tiempo en pequeños intervalos (llamados pasos de tiempo) y calcular la solución en cada uno de estos intervalos. En cada paso de tiempo, se utilizan las condiciones iniciales (como la posición y velocidad de las partículas) y las ecuaciones de movimiento para calcular la solución en el siguiente paso de tiempo. Esto se repite sucesivamente para todos los pasos de tiempo, generando una serie de soluciones que representan la evolución del sistema en el tiempo.
 
@@ -652,7 +678,7 @@ En resumen, la integración temporal numérica busca aproximar la solución de u
 
 (Ecuaciones)
 
-** Comparativa entre métodos implícitos y explícitos
+** Comparativa entre métodos implícitos y explícitos              :noexport:
 
 En la integración temporal numérica, los métodos implícitos y explícitos se refieren a cómo se utilizan las soluciones en un paso de tiempo para calcular la solución en el siguiente paso de tiempo.
 
@@ -663,124 +689,169 @@ Por otro lado, los métodos implícitos son aquellos en los que las soluciones e
 En resumen, la diferencia entre los métodos implícitos y explícitos de integración numérica radica en cómo se utilizan las soluciones en un paso de tiempo para calcular la solución en el siguiente paso de tiempo. Los métodos explícitos son fáciles de implementar y rápidos pero con menor estabilidad temporal, mientras que los métodos implícitos son más estables temporalmente pero más complejos de implementar.
 
 * Colisiones
-** Introducción
 
-Las colisiones es uno de los principales comportamientos a simular en las simulaciones físicas, saber como reaccionan dos elementos al encontrarse en el mismo espacio y tiempo. Para responder a esta pregunta se necesita saber el material, textura y lo más importante geometría de los objetos para saber si se encuentran en el mismo espacio de tiempo y como responden después de encontrarse en ese instante de tiempo.
+En el mundo real los fluidos interactúan con objetos y debido a esta interacción se modifica su comportamiento dinámico. Cuantitativamente, la interacción o colisión del fluido con objetos se modela imponiendo restricciones tanto a las variables de estado como a las magnitudes dinámicas. Estas restricciones son conocidas como condiciones de contorno y son las responsables de alterar el flujo del fluido descrito por la ecuación NS.
 
-Al tratar en nuestro proyecto con una metodología SPH que trata el conjunto de nuestro fluido como partículas independientes, se puede suponer que la forma geométrica de estas partículas será la de un punto o, de una forma más compleja, la de una esfera, ya que las operaciones para detectar que una partícula (punto o esfera) ha colisionado con un sólido rígido son análogas. Sólo que cuando se considera como una esfera habrá que tener en cuenta el radio.
+Al tratar en nuestro proyecto con la metodología SPH que trata el conjunto de nuestro fluido como partículas independientes, se puede suponer que la forma geométrica de estas partículas será la de un punto o, de una forma más compleja, la de una esfera, ya que las operaciones para detectar que una partícula (punto o esfera) ha colisionado con un sólido rígido son análogas. Sólo que cuando se considera como una esfera habrá que tener en cuenta el radio.
 
-** Colisión con cuerpos rígidos con alta simetría
+Hay un consenso en dividir la colisión en dos partes, la primera es la detección, la segunda es la respuesta. En la detección se realizan operaciones vectoriales cuyo objetivo es determinar la distancia relativa entre las partículas y los objetos con los que puede colisionar. En caso de que se detecte colisión, se «activa» la segunda etapa. En la segunda etapa, la etapa de respuesta, se realizan operaciones sobre las magnitudes dinámicas y variables de estado de la partícula de modo que satisfagan las condiciones de contorno.
 
-A contiuación se desarrollará una explicación sobre las diferentes colisiones que puede tener una esfera con otros cuerpos rígidos.
+** Detección de la colisión
 
-- *Colisión caja*:
+Dependiendo de la simetría del contorno, el proceso de detección puede simplificarse, tal como describiremos a continuación. En nuestro simulador distinguiremos entre dos tipos de contornos, los de alta simetría geométrica, relativamente fáciles de operar en la detección, y los que tienen una geometría más compleja que normalmente están discretizados mediante triángulos. En las siguientes secciones vamos a realizar una descripción de las distintas técnicas de detección utilizadas.
 
-  Para saber si una esfera (o partícula en nuestro caso) ha colisionado con un cuerpo geométrico con la forma de un cubo. Sabiendo que un cubo tiene todos sus lados perpendiculares podemos definir este mismo a través de los límites de sus tres dimensiones, o dicho de otra manera las posiciones de sus extremos que llamaremos /límites/. Una vez conocidos los límites inferiores y superiores de nuestro cuerpo geométrico podemos razonar que si la posición de nuestra partícula se encuentra dentro de la figura geométrica y sus coordenadas son menores o superiores a alguno de los límites del cubo esta ha colisionado con alguna de las caras del cubo. Análogamente si suponemos que la partícula se encuentra en el exterior de la caja seguiríamos necesitando los mismos parámetros para definir nuestro cubo pero esta vez la colisión se detectaría si estuviera dentro de esos límites.
+*** Colisión con cuerpos rígidos con alta simetría
 
-  #+CAPTION: Colisión caja
-  #+ATTR_LATEX: :width 8cm
-  [[./graficos/caja-vacia.pdf]]
+A continuación, se desarrollará una explicación sobre las diferentes colisiones que puede tener una esfera, ya que en nuestro simulador cada partícula es tratada geométricamente como una esfera, con otros cuerpos rígidos.
 
-  Ya que los dos métodos son análogos para la detección nos centraremos en explicar la partícula dentro del cubo ya que es uno de los usos más comunes para representar un fluido contenido en un espacio cerrado.
+**** Colisión caja
 
-  La manera de implementar esto de una manera algorítmica se puede definir con la siguiente fórmula:
+Para saber si una esfera (o partícula en nuestro caso) ha colisionado con un cuerpo geométrico con la forma de un cubo o hexaedro rectangular, que en lo sucesivo designaremos como hexaedro. Sabiendo que un hexaedro tiene todos sus lados perpendiculares podemos definir este mismo a través de los límites de sus tres dimensiones, o dicho de otra manera las posiciones de sus extremos que llamaremos límites. Una vez conocidos los límites inferiores y superiores de nuestro cuerpo geométrico podemos razonar si la posición de nuestra partícula se encuentra dentro de la figura geométrica y sus coordenadas son menores o superiores a alguno de los límites del cubo esta ha colisionado con alguna de las caras del cubo. Análogamente si suponemos que la partícula se encuentra en el exterior de la caja seguiríamos necesitando los mismos parámetros para definir nuestro hexaedro, pero esta vez la colisión se detectaría si estuviera dentro de esos límites.
 
-- *Colisión cilindro*:
+#+CAPTION: Colisión caja
+#+ATTR_LATEX: :width 8cm
+[[./graficos/caja-vacia.pdf]]
 
-  Igual que con otra colisión con una forma geométrica simple conocida podemos resolver si se ha producido una colisión entre nuestra partícula y el cuerpo rígido conociendo su altura o el límite de su coordenada Y (suponiendo que el cilindro tiene una posición vertical paralela al eje Y de nuestro sistema global) y el radio de éste con respecto a su eje. La partícula estará colisionando si la distancia de la partícula hacia el eje es menor que el radio y si cumple la condición de estar entre los límites de la altura del cilindro. La partícula ha colisionado con el cilindro
+Ya que los dos métodos son análogos para la detección nos centraremos en explicar la partícula dentro del cubo ya que es uno de los usos más comunes para representar un fluido contenido en un espacio cerrado.
 
-  #+CAPTION: Colisión cilindro
-  #+ATTR_LATEX: :width 8cm
-  [[./graficos/cilindro.pdf]]
+La manera de implementar esto de una manera algorítmica se puede definir con la siguiente expresión lógica:
+\begin{align*}
+(P_x < \lim X_{inf} &\lor P_x > \lim X_{sup})\; \lor \\
+(P_y < \lim Y_{inf} &\lor P_y > \lim Y_{sup})\; \lor \\
+(P_z < \lim Z_{inf} &\lor P_z > \lim Z_{sup})
+\end{align*}
 
-  La manera de implementar esto de una manera algorítmica se puede definir con la siguiente formula:
+**** Colisión cilindro
 
-- *Colisión esfera*:
+Igual que con otra colisión con una forma geométrica simple conocida podemos resolver si se ha producido una colisión entre nuestra partícula y el cuerpo rígido conociendo su altura o el límite de su coordenada $Y$ (suponiendo que el cilindro tiene una posición vertical paralela al eje Y de nuestro sistema global), el radio del cilindro con respecto a su eje y el eje mismo. La partícula estará colisionando si la distancia de la partícula hacia el eje es menor que el radio y si cumple la condición de estar entre los límites de la altura del cilindro. La partícula ha colisionado con el cilindro.
 
-  La colisión esfera partícula es una de las más sencillas de implementar y entender pues solo se necesita conocer el radio y el centro de la esfera con la que se va a colisionar para calcular la distancia entre nuestra partícula y la esfera con la que se quiere detectar la colisión. Al conocer estos parámetros solo necesitaríamos aplicar una operación vectorial que nos dijera el módulo o distancia entre nuestra partícula y el centro y una vez obtenida esa distancia calcular si es menor que el radio de la esfera si el resultado es verdadero nuestra esfera ha colisionado con la particula.
+La manera de implementar esto de una manera algorítmica se puede definir con la siguiente expresión lógica:
+\[
+(P_y < \lim Y_{inf} \lor P_y > \lim Y_{sup}) \land (\text{distancia} < \text{radio})
+\]
+siendo la distancia la magnitud del vector entre la posición de la partícula y el eje del cilindro, expresado matemáticamente sería:
+\[
+\text{Distancia} = \left|(P_x - \text{eje x}, 0, P_z - \text{eje z})\right|
+\]
 
-  #+CAPTION: Colisión esfera
-  #+ATTR_LATEX: :width 8cm
-  [[./graficos/esfera.pdf]]
+#+CAPTION: Colisión cilindro
+#+ATTR_LATEX: :width 8cm
+[[./graficos/cilindro.pdf]]
 
-  La manera de implementar esto de una manera algorítmica se puede definir con la siguiente formula:
+**** Colisión esfera
 
-** Colisión basada en distancia
+La colisión esfera partícula es una de las más sencillas de implementar y entender pues solo se necesita conocer el radio y el centro de la esfera con la que se va a colisionar para calcular la distancia entre nuestra partícula y la esfera con la que se quiere detectar la colisión. Al conocer estos parámetros solo necesitaríamos aplicar una operación vectorial que nos dijera el módulo o distancia entre nuestra partícula y el centro y una vez obtenida esa distancia calcular si es menor que el radio de la esfera, si el resultado es verdadero nuestra esfera ha colisionado con la partícula.
 
-- *Colisión triangulo*:
+#+CAPTION: Colisión esfera
+#+ATTR_LATEX: :width 8cm
+[[./graficos/esfera.pdf]]
 
-  La colisión de triángulo partícula es más costosa computacionalmente, ya que requiere de una gran cantidad de operaciones matemáticas para calcular si la particula ha colisionado o no con un triángulo. Esto conlleva un alto coste computacional que “perderíamos” si la partícula no llegara a colisionar pero de todas maneras es necesario explicarlo junto con su implementación ya que la mayoría de modelos existentes no son figuras geométricas con alta simetría que nos permiten calcular rápidamente sus colisiones si no que son mallas de triángulos que forman todo tipo de figuras, además el estándar en la industria es que los modelados sean mallas de triángulos ya que con esto se puede representar cualquier figura o modelo, desde una caja 8 triángulos hasta al famoso conejo /Stanford bunny/ compuesto por 69.451 triángulos.
+La manera de implementar esto de una manera algorítmica se puede definir con la siguiente fórmula:
 
-  #+CAPTION: Colisión triángulo
-  #+ATTR_LATEX: :width 8cm
-  [[./graficos/triangulo.pdf]]
+\[
+(\text{distancia} < \text{radio})
+\]
+
+siendo la distancia la magnitud entre la posición de la partícula y el centro de la esfera, expresado matemáticamente sería:
+\[
+\text{Distancia} = \left|(P_x - C_x, P_y - C_y, P_z - C_z)\right|
+\]
+*** Colisión con contorno discretizado en triángulos
+
+La mayoría de los modelos existentes no son figuras geométricas con alta simetría que nos permiten calcular rápidamente sus colisiones, si no que son mallas de triángulos que forman todo tipo de figuras, además el estándar en la industria es que los modelados sean mallas de triángulos ya que con esto se puede representar cualquier figura o modelo, desde una caja 8 triángulos hasta al famoso conejo /Stanford bunny/ compuesto por 69.451 triángulos.
+
+#+CAPTION: Stanford bunny triángulos
+#+ATTR_LATEX: :width 8cm
+[[./graficos/caja-conejo.pdf]]
+
+Para ello expondremos los pasos necesarios para calcular si una partícula ha colisionado con un triángulo, debido a que esta seria la operación que tendríamos que aplicar a todos los triángulos de un modelo discretizado por estos.
+
+**** Colisión triangulo
+
+La colisión de triángulo con una partícula es más costosa computacionalmente, ya que resulta en una gran cantidad de operaciones matemáticas para calcular si la partícula ha colisionado o no con un triángulo. Esto conlleva un alto coste computacional que “perderíamos” si la partícula no llegara a colisionar, a pesar de esto como hemos explicado anteriormente los modelos discretizados por triángulos son ampliamente utilizados y la técnica de detección de una colisión con un triángulo también lo es.
+
+Los parámetros necesarios para conocer si existe la colisión entre una partícula y un triángulo en un espacio 3D es conocer los vértices del triángulo junto con la posición de la partícula.
+
+#+CAPTION: Colisión triángulo
+#+ATTR_LATEX: :width 8cm
+[[./graficos/triangulo.pdf]]
+
+Este proceso denominado campo de distancia nos permite determinar si existe colisión entre la partícula y el triángulo independientemente de la orientación y posición en la que se encuentre el triángulo. Para ello nuestro primer paso es determinar si la partícula está a una distancia en la que es posible que colisionara con el triángulo.
+
+Los pasos a seguir son los que se relacionan a continuación:
+
+1. Determinamos la posición de cada vértice del triángulo junto con la posición de la partícula en ese instante. Escogemos dos aristas del triángulo y calculamos el producto vectorial de esos dos vectores lo que da lugar a un vector perpendicular al triángulo, que al calcular el módulo de este producto vectorial obtenemos la superficie de nuestro triángulo. Como se observa en la figura [[fig:triangulo01]].
+
+   #+NAME: fig:triangulo01
+   #+CAPTION: Producto vectorial
+   #+ATTR_LATEX: :width 10cm
+   [[./graficos/producto-vectorial.pdf]]
+
+2. Obtenemos también el vector resultante de nuestra partícula hacia el vértice del que nacen nuestros vectores o aristas elegidos. Como vemos en la figura  [[fig:triangulo02]].
+
+   #+NAME: fig:triangulo02
+   #+CAPTION: Representación del vector distancia desde el vértice elegido hacia la partícula
+   #+ATTR_LATEX: :width 10cm
+   [[./graficos/producto-triangulo.pdf]]
+
+3. Calculamos el producto escalar del producto vectorial junto al vector con dirección hacia la partícula. La magnitud de nuestro producto escalar es el volumen de nuestro trapecio imaginario.
+
+4. Si la altura de ese trapecio es menor a una distancia dada en la que es posible que nuestra partícula colisione, entonces comprobamos si la partícula ha intersectado con nuestro triángulo.
+
+5. Una vez realizado este proceso para saber si la partícula está a una distancia del triángulo en la que es posible que colisione, calculamos si la partícula ha colisionado en nuestro triángulo. Para este segundo proceso necesitamos proyectar la posición de nuestra partícula en la superficie o plano.
+
+Para proyectar un punto sobre un plano, respetando las propiedades que lo definen, se utiliza la siguiente fórmula:
+
+\[
+P_pr = \Biggl(\biggl(P_x + \dfrac{\text{altura}}{\text{superficie}}\biggr) S_x, \biggl(P_y + \dfrac{\text{altura}}{\text{superficie}}\biggr) S_y, \biggl(P_z + \dfrac{\text{altura}}{\text{superficie}}\biggr) S_z\Biggr),
+\]
+
+siendo $P$ la posición de la partícula, altura es la distancia de nuestra partícula al triangulo, superficie es la magnitud del producto vectorial que define el plano y $S$ es el producto vectorial
+
+#+NAME: fig:triangulo03
+#+CAPTION: Representación del punto proyectado sobre el plano
+#+ATTR_LATEX: :width 10cm
+[[./graficos/triangulo-punto.pdf]]
 
 
-  #+CAPTION: Stanford bunny triángulos
-  #+ATTR_LATEX: :width 8cm
-  [[./graficos/caja-conejo.pdf]]
+Una vez proyectada la posición de la partícula es necesario comprobar si la partícula está dentro del triángulo. El proceso que utilizaremos para calcular que el punto se encuentra en el interior del triángulo es a partir de los ángulos de este, ya que la suma de los ángulos del punto proyectado hacia los vértices del triángulo tiene que sumar 2\pi.
 
+#+NAME: fig:triangulo04
+#+CAPTION: Representación del punto proyectado junto con las aristas interiores apuntando hacia los vértices
+#+ATTR_LATEX: :width 10cm
+[[./graficos/triangulo-punto2.pdf]]
 
-  Los parámetros necesarios para conocer si existe la colisión entre una partícula y un triángulo en un espacio 3D es conocer los vértices del triangulo junto con la posición de la particula.
+Y por geometría el ángulo de cada triángulo interior es el arco coseno del producto escalar de las dos aristas entre su magnitud.
 
-  Para este proceso denominado campo de distancia nos permite determinar si existe colisión entre la particula y el triangulo independientemente de la orientación y posición en la que se encuentre el triangulo. Para ello nuestro primer paso es determinar si la particula esta a una distancia en la que es posible que colisionara con el triangulo.
+\[
+\theta = \cos^{-1} \left( \frac{\mathbf{A}\cdot\mathbf{B}}{|\mathbf{A}||\mathbf{B}|}\right)
+\]
 
-  Los pasos ha seguir serían:
+Calculamos esto para cada ángulo interior y los sumamos para comprobar si se encuentra dentro del triángulo en cuyo caso ha colisionado.
 
-  - Determinamos la posición de cada vértice del triángulo junto con la posición de la partícula en ese instante. Escogemos dos aristas del triángulo y calculamos el producto vectorial de esos dos vectores lo que da lugar a un vector perpendicular al triángulo, que al hacer el módulo de este producto vectorial obtenemos la superficie de nuestro triángulo.
+** Respuesta de la colisión
 
-    #+CAPTION: Producto vectorial
-    #+ATTR_LATEX: :width 10cm
-    [[./graficos/producto-vectorial.pdf]]
+Hasta ahora solo se ha determinado si la partícula ha colisionado con alguna geometría, pero no como responde esta misma ni que valores internos se modifican.
 
-  - Obtenemos también el vector resultante de nuestra partícula hacia el vértice del que nacen nuestros vectores o aristas elegidos.
+El segundo paso para simular correctamente una colisión en el medio continuo de un fluido, compuesto por partículas, es entender no solo si la partícula ha colisionado con alguna geometría si no cómo reacciona ante esa geometría y como cambian las propiedades constitutivas de esta como son por ejemplo la velocidad y la posición.
 
-  - Calculamos el producto escalar del producto vectorial junto al vector con dirección hacia la partícula.
+En un primer momento se puede llegar a pensar que, igual que en la colisión podemos llegar a necesitar varias respuestas para diferentes cuerpos geométricos, pero se puede estandarizar la respuesta de la colisión para diferentes tipos de detecciones (figuras geométricas como cubos, esferas, cilindros o detecciones basadas en distancia que usan triángulos como se hace referencia en el apartado anterior). Este proceso de estandarización se puede llevar a cabo siempre que almacenemos en la estructura de nuestros modelos, ya sea una malla de triángulos o una figura geométrica con alta simetría, los vectores normales de estos planos con respecto a la dirección que queremos que interactúe la partícula.
 
-    La magnitud de nuestro producto escalar es el volumen de nuestro trapecio imaginario.
+Remarcar también que la técnica que se explica a continuación esta avalada por diferentes autores como Di Monaco et al. [cite:@MonManGal.etal11], Li et al. [cite:@li2014efficient] o Perea et al. [cite:@Perea-Cordero18]
 
-    Si la altura de ese trapecio es menor a una distancia dada en el que es posible que colisione entonces comprobamos si la partícula ha intersectado con nuestro triángulo.
+Nuestro objetivo es hallar la velocidad final, una de las propiedades constitutivas de nuestra partícula que queremos modificar cuando se encuentra con una colisión, esta velocidad se resuelve a través de varias operaciones vectoriales que nos permiten conocer el vector resultante de velocidad a asignar. Para esto también necesitaremos algunos parámetros como la tasa de rozamiento y rebote que modificaran nuestra velocidad final, el primer paso es obtener la velocidad incidente al detectarse la colisión, una vez realizado esto con el vector normal almacenado calculamos el vector proyección de la velocidad incidente sobre el vector normal del plano además de la velocidad inicial tangencial que es la resultante de la resta de los vectores de la velocidad inicial menos la proyección de la velocidad inicial sobre el plano. A estas dos velocidades descompuestas le aplicamos una tasa de rebote y una tasa de rozamiento respectivamente. La suma de estos dos vectores de velocidad descompuesta da como resultado la velocidad resultante final que le aplicamos a nuestra partícula una vez detectada la colisión.
 
-  - Una vez realizado este proceso para saber si la partícula está a una distancia del triángulo en el que es posible que colisione entonces calculamos si la partícula ha colisionado en nuestro triángulo. Para este segundo proceso necesitamos proyectar la posición de nuestra particula en la superficie.
-
-  Pasos:
-
-  - Para proyectar un punto sobre un plano cumpliendo las propiedades de un plano nos da en la siguiente formula:
-
-  - Una vez proyectada la posición de la partícula es necesario comprobar si la partícula esta en dentro del triángulo. EL proceso ue utilizaremos para calcular que el punto se encuentra en el interior del triangulo es uno a partir de los ángulos ya que la suma de los ángulos del punto proyectado hacia los vértices del triángulo tiene que sumar $2\pi$.
-
-  - Para calcular los ángulos del punto proyectado calculamos los vectores de los vértices del triangulo hacia nuestro punto proyectado.
-
-    Y por geometría el ángulo de cada triángulo interior es el arco coseno de e producto escalar de las dos aristas entre su magnitud.
-
-  - Calculamos esto para cada ángulo interior y los sumamos para comprobar si se encuentra dentro del triángulo en cuyo caso ha colisionado.
-
-** Respuesta colisión
-
-Hasta ahora solo se ha determinado si la partícula ha colisionado con alguna geometría pero no como responde esta misma ni que valores internos se modifican. El segundo paso para simular correctamente una colisión en el medio contínuo de un fluido, compuesto por partículas, es entender no solo si la partícula ha colisionado con alguna geometría si no como reacciona ante esa geometría y como cambian las propiedades constitutivas de esta como son por ejemplo la velocidad, la posición, la presión y viscosidad de la particula (presión y velocidad están sujetos a desaparecer de esta frase ya que en mi respuesta implementada no se aplican).
-
-En un primer momento se puede llegar a pensar que igual que en la colisión podemos llegar a necesitar varias respuestas para diferentes cuerpos geométricos, pero se puede estandarizar la respuesta de la colisión para diferentes tipos de detecciones (figuras geométricas como cubos, conos, esferas, cilindros o detecciones basadas en distancia que usan triángulos como se hace referencia en el apartado anterior). Este proceso de estandarización se puede llevar a cabo siempre que almacenemos en la estructura de nuestros modelos, ya sea una malla de triángulos o una figura geométrica con alta simetría, los vectores normales de estos planos con respecto a la dirección que queremos que interactúe la partícula.
-
-Remarcar también que la técnica que se explica a continuación esta avalada por diferentes autores
-como: (preguntar a juan jose que autores poner aqui).
-
-Nuestro objetivo es hallar la velocidad final, una de las propiedades constitutivas de nuestra partícula que queremos modificar cuando se encuentra con una colisión, esta velocidad se resuelve a través de varias operaciones vectoriales que nos permiten conocer el vector resultante de velocidad a asignar. Para esto también necesitaremos algunos parámetros como la tasa de rozamiento y rebote que modificaran nuestra velocidad final, el primer paso es obtener la velocidad incidente al detectarse la colisión, una vez realizado esto con el vector normal almacenado calculamos el vector proyección de la velocidad incidente sobre el vector normal del plano además de la velocidad inicial tangencial que es la resultante de la resta de los vectores de la velocidad inicial menos la proyección de la velocidad inicial sobre el plano. A estas dos velocidades descompuestas le aplicamos una tasa de rebote y una tasa de rozamiento respectivamente. La suma de estas dos vectores de velocidad descompuesta da como resultado la velocidad resultante final que le aplicamos a nuestra partícula una vez detectada la colisión.
-
-#+CAPTION: Esquema
+#+CAPTION: Representación esquemática de las tres fases para corregir la velocidad: antes de la colisión, durante la colisión y después de la colisión
 #+ATTR_LATEX: :width 12cm
 [[./graficos/pelotas.pdf]]
 
-Para la propiedad constitutiva de la posición en la partícula el proceso es similar. Necesitamos obtener la posición una vez detectada la colisión de la partícula con algún solido rígido, y a este vector de la posición inicial le aplicamos la suma de una tolerancia de posición que es el resultado del producto del vector normal almacenado en el plano por una tasa de penetración, esto nos posiciona la particula para que salga del estado de colision.
+Para la propiedad constitutiva de la posición en la partícula el proceso es similar. Necesitamos obtener la posición una vez detectada la colisión de la partícula con algún sólido rígido, y a este vector de la posición inicial le aplicamos la suma de una tolerancia de posición que es el resultado del producto del vector normal almacenado en el plano por una tasa de penetración, esto nos posiciona la partícula para que salga del estado de colisión.
 
-#+CAPTION: Corrección rebote
+#+CAPTION: Representación esquemática de la corrección de la posición después de la colisión
 #+ATTR_LATEX: :width 6cm
 [[./graficos/rebote.pdf]]
 
-Esta respuesta estandariza es extremadamente útil ya que permite a través del almacenamiento de los vectores normales de las figuras geométricas con los que colisiona y las propiedades inherentes de los vectores resolver uno de los problemas principales en las colisiones el cual es tratar con aristas que son la intersección de dos o mas figuras geométricas diferentes ya que la suma de estos vectores normales resulta en una dirección coherente en el que la partícula modifica su velocidad y posición. Además de permitirnos implementar diferentes métodos de detección de colisiones.
-
-** Estructura del proceso de colisión
-
-Hasta ahora solo se ha determinado si la partícula ha colisionado con alguna geometría pero no como responde esta misma ni que valores internos se modifican. Para ello vamos ha explicar primero matemáticamente como se cambian la posición y la velocidad cuando una particula colisiona.
+Esta respuesta estandariza es extremadamente útil ya que permite a través del almacenamiento de los vectores normales de las figuras geométricas con los que colisiona y las propiedades inherentes de los vectores resolver uno de los problemas principales en las colisiones el cual es tratar con aristas que son la intersección de dos o más figuras geométricas diferentes ya que la suma de estos vectores normales resulta en una dirección coherente en el que la partícula modifica su velocidad y posición. Además de permitirnos implementar diferentes métodos de detección de colisiones.
 
 * Características de las herramientas de implementación del proyecto
 ** Introducción
@@ -796,9 +867,9 @@ C también es por si solo uno de los lenguajes multiplataforma que permite una g
 
 *** Introducción
 
-Seguidamente se va a presentar la herramienta sobre la que se fundamenta uno de los pilares de este proyecto el cual es la mejora de rendimiento del simulador, puesto que el coste computacional es uno de los mayores problemas en el ámbito de las Computer Graphics. Para solventar este problema se ha decidido utilizar CUDA para acelerar los cálculos. Por ello vamos a hacer una introducción sobre lo que es CUDA y como opera.
+Seguidamente se va a presentar la herramienta sobre la que se fundamenta uno de los pilares de este proyecto el cual es la mejora de rendimiento del simulador, puesto que el coste computacional es uno de los mayores problemas en el ámbito de las /Computer Graphics/. Para solventar este problema se ha decidido utilizar CUDA para acelerar los cálculos. Por ello vamos a hacer una introducción sobre lo que es CUDA y como opera.
 
-CUDA acrónimo en ingles de Compute Unified Device Architecture es el nombre de la arquitectura desarrollada por NVIDIA (una de las desarrolladoras mas importantes de tarjetas graficas) para sus tarjetas graficas. El objetivo de esta arquitectura es hacer asequible las tarjetas graficas a cualquier programador a través de lenguajes de alto nivel y así poder utilizarlas para realizar computos de propósito general. Esto quiere decir que podemos desarrollar aplicaciones que aprovechen el potencial de la arquitectura CUDA a través de lenguajes de alto nivel como pueden ser C, OpenCL, Fortran, C++, DirectX Compute, Python…
+CUDA acrónimo en ingles de /Compute Unified Device Architecture/ es el nombre de la arquitectura desarrollada por NVIDIA (una de las desarrolladoras mas importantes de tarjetas gráficas) para sus tarjetas gráficas. El objetivo de esta arquitectura es hacer asequible las tarjetas gráficas a cualquier programador a través de lenguajes de alto nivel y así poder utilizarlas para realizar cómputos de propósito general. Esto quiere decir que podemos desarrollar aplicaciones que aprovechen el potencial de la arquitectura CUDA a través de lenguajes de alto nivel como pueden ser C, OpenCL, Fortran, C++, DirectX Compute, Python…
 
 #+CAPTION: Arquitectura CUDA
 #+ATTR_LATEX: :width 8cm
@@ -806,7 +877,7 @@ CUDA acrónimo en ingles de Compute Unified Device Architecture es el nombre de 
 
 *** Arquitectura CUDA
 
-A continuación vamos a descibrir como se compone físicamente una GPU (Graphic Processin Unit) CUDA.
+A continuación vamos a describir como se compone físicamente una GPU (/Graphic Processin Unit/) CUDA.
 
 Una GPU CUDA esta formada por varios multiprocesadores cada uno de ellos esta constituido por distintos espacios de almacenamiento y cientos de núcleos de computo, estos núcleos de computo son los encargados de ejecutar las instrucciones serian similares a una ALU en un procesador tradicional, cada uno de estos núcleos de computo según la terminología de CUDA son llamados CUDA cores.
 
@@ -814,7 +885,7 @@ Una GPU CUDA esta formada por varios multiprocesadores cada uno de ellos esta co
 #+ATTR_LATEX: :width 15cm
 [[./graficos/cuda-core.pdf]]
 
-Una tarjeta grafica con arquitectura CUDA se puede clasificar como un computador con arquitectura SIMD (Single Instruction Multiple Data), es decir un flujo único de instrucciones un flujo multiple de datos. Esto permite aprovechar el paralelismo de datos dentro de una aplicación, ya que todos los núcleos de la GPU ejecutan la misma instrucción sobre datos distintos, esta característica fue una de las claves para decidir usar CUDA sobre otras herramientas ya que en el ámbito de las CG y  en nuestro caso una simulación lagrangiana con magnitudes altas en el numero de partículas, siempre vamos a utilizar las mismas operaciones sobre estas lo que en un sistema tradicional requeriría un alto coste computacional ya que tiene que ejecutar estas operaciones de manera secuencial sobre cada particula, usando CUDA nos permite ejecutar estas mismas operaciones de manera paralela.
+Una tarjeta gráfica con arquitectura CUDA se puede clasificar como un computador con arquitectura SIMD (/Single Instruction Multiple Data/), es decir, un flujo único de instrucciones un flujo múltiple de datos. Esto permite aprovechar el paralelismo de datos dentro de una aplicación, ya que todos los núcleos de la GPU ejecutan la misma instrucción sobre datos distintos, esta característica fue una de las claves para decidir usar CUDA sobre otras herramientas ya que en el ámbito de las CG y  en nuestro caso una simulación lagrangiana con magnitudes altas en el numero de partículas, siempre vamos a utilizar las mismas operaciones sobre estas lo que en un sistema tradicional requeriría un alto coste computacional ya que tiene que ejecutar estas operaciones de manera secuencial sobre cada partícula, usando CUDA nos permite ejecutar estas mismas operaciones de manera paralela.
 
 Esta ventaja de paralelismo también se aplica sobre diferentes aplicaciones ya que permite incrementar el rendimiento aprovechando las altas prestaciones de una GPU para realizar calculo paralelo.
 
@@ -828,19 +899,19 @@ En este modelo computacional la CPU se encarga de ejecutar la parte secuencial d
 
 *** Programación en CUDA
 
-En los capítulos anteriores hemos revisado la composición de la arquitectura CUDA y en este apartado vamos a dedicarnos a hacer una breve introducción sobre como se programa en una tarjeta grafica que no posee una arquitectura CUDA y como esta ultima presenta ventajas ante las otras.
+En los capítulos anteriores hemos revisado la composición de la arquitectura CUDA y en este apartado vamos a dedicarnos a hacer una breve introducción sobre como se programa en una tarjeta gráfica que no posee una arquitectura CUDA y como esta ultima presenta ventajas ante las otras.
 
-El problema de programar en una tarjeta grafica tradicional para computos de propósito general es que se necesita utilizar lenguajes de programación específicos para gráficos como OpenGL o Cg para programar en la GPU. Esto implica que el desarrollador debe modificar su aplicación para que convirtiera su problema en uno que dibujara triángulos o polígonos, esto limito el uso de las GPUs como parte intrínseca del desarrollo de aplicaciones de propósito general.
+El problema de programar en una tarjeta gráfica tradicional para cómputos de propósito general es que se necesita utilizar lenguajes de programación específicos para gráficos como OpenGL o Cg para programar en la GPU. Esto implica que el desarrollador debe modificar su aplicación para que convirtiera su problema en uno que dibujara triángulos o polígonos, esto limito el uso de las GPUs como parte intrínseca del desarrollo de aplicaciones de propósito general.
 
-Las tarjetas graficas con arquitectura CUDA por otro lado, se pueden programar utilizando CUDA C/C++, este es un pequeño conjunto de extensiones del lenguaje C/C++ lo que nos permite empezar a programar sobre una tarjeta grafica teniendo conocimientos de programación en C. Además NVDIA la empresa desarrolladora de las GPUs con arquitectura CUDA, proporciona un compilador y un conjunto de herramientas de desarrollo que facilitan el proceso de creación de aplicaciones.
+Las tarjetas gráficas con arquitectura CUDA por otro lado, se pueden programar utilizando CUDA C/C++, este es un pequeño conjunto de extensiones del lenguaje C/C++ lo que nos permite empezar a programar sobre una tarjeta gráfica teniendo conocimientos de programación en C. Además NVDIA la empresa desarrolladora de las GPUs con arquitectura CUDA, proporciona un compilador y un conjunto de herramientas de desarrollo que facilitan el proceso de creación de aplicaciones.
 
-El principal problema de CUDA es que solo se puede utilizar sobre dispositivos NVDIA, una alternativa valida para cualquier tipo de tarjeta grafica es OpenCL, sin embargo el proceso de aprendizaje de OpenCL es mucho más costoso en cambio la transición de CUDA C a OpenCL es mucho menor. Son estas las razones además de la proliferación de las tarjetas NVDIA en la mayoría de dispositivos junto con las ventajas anteriormente mencionadas que se ha decidido utilizar esta sobre otras alternativas.
+El principal problema de CUDA es que solo se puede utilizar sobre dispositivos NVDIA, una alternativa valida para cualquier tipo de tarjeta gráfica es OpenCL, sin embargo el proceso de aprendizaje de OpenCL es mucho más costoso en cambio la transición de CUDA C a OpenCL es mucho menor. Son estas las razones además de la proliferación de las tarjetas NVDIA en la mayoría de dispositivos junto con las ventajas anteriormente mencionadas que se ha decidido utilizar esta sobre otras alternativas.
 
 *** Estructura de programación en CUDA C
 
-En los apartados anteriores se ha introducido lo que implica un modelo de computación heterogéneo lo que implica que un programa en CUDA C se va a diferenciar dos partes, una parte correspondiente al código que se va a ejecutar en la tarjeta grafica, que corresponde a la función que se quiere paralelizar, y la parte correspondiente a la CPU en esta parte del código se ejecutarían funciones secuenciales y el programa principal o main. Este main se ejecuta de forma secuencial en la CPU y en algún momento de esa ejecución secuencial se harán llamadas a la funcion que se ejecuta en la tarjeta grafica, cuya ejecución es en paralelo, una vez finalizada la función paralela, se volvería a la parte secuencial de nuestro código que se terminaría de ejecutar en la CPU.
+En los apartados anteriores se ha introducido lo que implica un modelo de computación heterogéneo lo que implica que un programa en CUDA C se va a diferenciar dos partes, una parte correspondiente al código que se va a ejecutar en la tarjeta gráfica, que corresponde a la función que se quiere paralelizar, y la parte correspondiente a la CPU en esta parte del código se ejecutarían funciones secuenciales y el programa principal o main. Este main se ejecuta de forma secuencial en la CPU y en algún momento de esa ejecución secuencial se harán llamadas a la función que se ejecuta en la tarjeta gráfica, cuya ejecución es en paralelo, una vez finalizada la función paralela, se volvería a la parte secuencial de nuestro código que se terminaría de ejecutar en la CPU.
 
-#+CAPTION: Modelo de programación heterogéna
+#+CAPTION: Modelo de programación heterogénea
 #+ATTR_LATEX: :width 10cm
 [[./graficos/prog-heterogenea.pdf]]
 
@@ -849,7 +920,7 @@ Para terminar de entender como se ejecuta CUDA C es importante conocer su termin
 - Host: CPU y su memoria
 - Device: GPU y su memoria
 - Kernel: Función principal que se ejecuta en el device.
-- Hilo (thread): Cada una de las copias del kernelque se ejecuta en el device
+- Hilo (thread): Cada una de las copias del kernel que se ejecuta en el device
 
   #+CAPTION: Thread
   #+ATTR_LATEX: :width 6cm
@@ -866,11 +937,11 @@ Para terminar de entender como se ejecuta CUDA C es importante conocer su termin
   #+ATTR_LATEX: :width 8cm
   [[./graficos/grid.pdf]]
 
-Análogamente se puede entender desde el punto de vista del Hardware como se agrupa la memoria en CUDA. Correspondiendo así un hilo se ejecuta en un CUDA core, un bloque se ejecuta en un CUDA Streaming Multiprocessor y una malla se reparte entre todos los multiprocesadores que dispusiera la tarjeta grafica.
+Análogamente se puede entender desde el punto de vista del Hardware como se agrupa la memoria en CUDA. Correspondiendo así un hilo se ejecuta en un CUDA core, un bloque se ejecuta en un CUDA Streaming Multiprocessor y una malla se reparte entre todos los multiprocesadores que dispusiera la tarjeta gráfica.
 
 Una vez ya explicada la estructura que posee un programa en CUDA hay que analizar como se comparten datos entre el host y el device.
 
-En primer lugar se copian los datos desde la memoria de la CPU hacia la memoria de la GPU, el siguiente paso consiste en cargar el código de la función kernel en la GPU que se ejecutara en paralelo en tantos hilos como se halla decidido, estos hilos comparten los datos de la memoria de la tarjeta grafica. Una vez finalizada la ejecución del Kernel se copian los resultados desde la memoria de la GPU a la memoria de la CPU.
+En primer lugar se copian los datos desde la memoria de la CPU hacia la memoria de la GPU, el siguiente paso consiste en cargar el código de la función kernel en la GPU que se ejecutara en paralelo en tantos hilos como se halla decidido, estos hilos comparten los datos de la memoria de la tarjeta gráfica. Una vez finalizada la ejecución del Kernel se copian los resultados desde la memoria de la GPU a la memoria de la CPU.
 
 
 *** Texto previo                                                 :noexport:
@@ -893,19 +964,19 @@ Algunas de las características más relevantes del lenguaje CUDA son:
 
 En general, CUDA es un lenguaje de programación eficiente para el desarrollo de aplicaciones paralelas en GPU. Pero es importante notar que solo es compatible con tarjetas gráficas de NVIDIA y que es necesario tener un conocimiento específico de paralelismo y GPU's para sacarle provecho.
 
-#+CAPTION: Sistema de computación en sistemas heterogénos CPU + GPU
+#+CAPTION: Sistema de computación en sistemas heterogéneos CPU + GPU
 #+ATTR_LATEX: :width 8cm
 [[./graficos/CPU+GPU.pdf]]
 
 Pero para entender verdaderamente como funciona CUDA primero hay entender como funciona la programación tradicional o secuencial y como trabaja CUDA con programación en paralelo. La programación secuencial, la que se utiliza mayoritariamente para en toda la computación clásica, es aquella en la que solo se ejecuta una instrucción a la vez y hay que esperar que el ordenador termine para ejecutar la siguiente. Es el modelo de programación clásica y debido a que los sistemas informáticos son extremadamente rápidos en estos momentos no es perceptible. Pero para aplicaciones en las que el tiempo de ejecución es vital y existe un alto coste computacional no se puede permitir ese desperdicio de recursos ya que técnicamente en la programación secuencial al esperar que se acaba cada instrucción se están desperdiciando recursos del sistema en vez de utilizarlos para otra tarea. Es por eso que surge la programación en paralelo en la que varias instrucciones se ejecutan a la vez utilizando la mayor cantidad de recursos disponibles del sistema.
 
-Por otra parte, el desarrollo del hardware ha hecho que los procesadores de las tarjetas gráficas, el componente hardware encargado del procesamiento de datos relacionados con imágenes y videos, sean extremadamente potentes en la actualidad, optimamente capacitadas para este tipo de cálculos intensivos. Su rendiemiento es muy superior al que se obtiene con los otros procesadores, utilizados para ejecutar la mayoría de programas. Es en este contexto, donde CUDA realiza un trabajo excelente, al permitir programar paralelamente en estas tarjetas gráficas de una manera sencilla.
+Por otra parte, el desarrollo del hardware ha hecho que los procesadores de las tarjetas gráficas, el componente hardware encargado del procesamiento de datos relacionados con imágenes y vídeos, sean extremadamente potentes en la actualidad, óptimamente capacitadas para este tipo de cálculos intensivos. Su rendimiento es muy superior al que se obtiene con los otros procesadores, utilizados para ejecutar la mayoría de programas. Es en este contexto, donde CUDA realiza un trabajo excelente, al permitir programar paralelamente en estas tarjetas gráficas de una manera sencilla.
 
-Cuda permite utilizar el procesador del sistema y utilizar los múltiples núcleos de programación de las tarjetas gráficas, además de permitir creación de funciones que se ejecutaran paralelamente en los núcleos de GPU.
+CUDA permite utilizar el procesador del sistema y utilizar los múltiples núcleos de programación de las tarjetas gráficas, además de permitir creación de funciones que se ejecutaran paralelamente en los núcleos de GPU.
 
-La tecnología CUDA se basa en dos pilares el /host/ (el procesador principal) y el /device/ (la tarjeta grafica). El código secuencial se ejecutara en el /host/ y el código que alto coste computacional se ejecutara en el /device/.
+La tecnología CUDA se basa en dos pilares el /host/ (el procesador principal) y el /device/ (la tarjeta gráfica). El código secuencial se ejecutara en el /host/ y el código que alto coste computacional se ejecutara en el /device/.
 
-#+CAPTION: Modelo de programación heterogéna
+#+CAPTION: Modelo de programación heterogénea
 #+ATTR_LATEX: :width 10cm
 [[./graficos/prog-heterogenea.pdf]]
 
@@ -919,11 +990,11 @@ La tecnología CUDA se basa en dos pilares el /host/ (el procesador principal) y
 
 ** Características de OpenGL
 
-Una librería gráfica es conjunto de programas que implementan versiones optimizadas de funciones y métodos que facilitan al programador la renderización de gráficos para mostrarlos en un dispositivo electrónico de salida de video, ya sean monitores de computadora o cascos RV. Incluyen rutinas de gestión de texturas, de generación de efectos de iluminación y sombreado, y que pueden aprovechar hardware de las actuales tarjetas gráficas
+Una librería gráfica es conjunto de programas que implementan versiones optimizadas de funciones y métodos que facilitan al programador la renderización de gráficos para mostrarlos en un dispositivo electrónico de salida de vídeo, ya sean monitores de computadora o cascos RV. Incluyen rutinas de gestión de texturas, de generación de efectos de iluminación y sombreado, y que pueden aprovechar hardware de las actuales tarjetas gráficas
 
 Existen diferentes librerías gráficas de bajo nivel, es decir, aquellas que permiten sacar el máximo partido al hardware, aunque también son más complejas de programar. De entre estas se pueden destacar debido a su amplio uso en el sector de la computación gráfica, Vulkan, DirectX y OpenGL. Todas ellas tienen sus ventajas e inconvenientes y destacan en ciertos aspectos sobre otros. En este proyecto para una ilustración previa de los resultados se ha utilizado OpenGL.
 
-Debido a que OpenGL no es solo una API o librería si no una especificación de como ciertas funciones tienen que devolver cierto tipos de resultados, se han desarrollado varias librerías implementadas normalmente por los creadores de las tarjetas graficas (/OpenGL Utility Toolkit/ - GLUT, /Simple DirectMedia Layer/ - SDL, /Simple and Fast Multimedia Library/ - SMFL o /Graphics Library Framework/ - GLFW), que deben ser implementadas conforme a las especificaciones de OpenGL. Esto ha llevado a que la implementación de OpenGL pueda tener comportamientos extraños debido a incompatibilidades con algunas tarjetas graficas o la falta de mantenimiento de ciertas librerías por parte de sus desarrolladores.
+Debido a que OpenGL no es solo una API o librería si no una especificación de como ciertas funciones tienen que devolver cierto tipos de resultados, se han desarrollado varias librerías implementadas normalmente por los creadores de las tarjetas gráficas (/OpenGL Utility Toolkit/ - GLUT, /Simple DirectMedia Layer/ - SDL, /Simple and Fast Multimedia Library/ - SMFL o /Graphics Library Framework/ - GLFW), que deben ser implementadas conforme a las especificaciones de OpenGL. Esto ha llevado a que la implementación de OpenGL pueda tener comportamientos extraños debido a incompatibilidades con algunas tarjetas gráficas o la falta de mantenimiento de ciertas librerías por parte de sus desarrolladores.
 
 GLFW (/Graphics Library Framework/) es una pequeña librería en C que permite la creación y gestión de ventanas con contextos OpenGL, haciendo posible también el uso de múltiples monitores y modos de vídeo. Proporciona acceso a la entrada del teclado, ratón y joysticks. La API proporciona una fina capa de abstracción multiplataforma, principalmente para aplicaciones cuya única salida gráfica es a través de la API OpenGL. Aunque GLFW es muy útil cuando se desarrollan aplicaciones OpenGL multiplataforma, los desarrolladores de una sola plataforma también pueden beneficiarse de su uso al evitar tener que lidiar con diferentes API específicas de la plataforma.
 
@@ -931,7 +1002,57 @@ En este proyecto se utiliza la librería GLFW debido a la disponibilidad de gran
 
 * Estructura del simulador y resultados
 ** Introducción
-** Estructura del simulador
+
+A lo largo de los capítulos anteriores hemos introducido el ámbito de las computer graphics, su importancia en diferentes industrias y cómo es un importante campo de investigación, se ha realizado un análisis previo desde el punto de vista de un desarrollador para dar una visión clara del proyecto que se quiere implementar. En nuestro caso, una simulación de fluidos basada en física, donde se ha hecho un recorrido por los fundamentos matemáticos necesarios y técnicas para ser capaz de simular un fluido de manera realista y versátil, siempre mencionando a los autores que avalan estas técnicas y, finalmente, se ha escogido uno en concreto. Igualmente, se ha explicado el concepto de la búsqueda de vecinas, sin el cual no se puede realizar el método de simulación escogido, junto con los diferentes tipos de búsqueda existentes y el motivo por el cual se ha seleccionado uno sobre otro. También, se ha dado una explicación general sobre los métodos de integración temporal y la razón por la que se necesitan en un campo como la simulación por ordenador. Del mismo modo, se ha establecido la importancia de que nuestro fluido sea capaz de reaccionar ante sólidos rígidos para que éste cumpla con los requisitos de versatilidad, así como las diferentes técnicas que podemos implementar para desarrollarlos. Por ultimo, se han explicado las diferentes herramientas que se han utilizado en el desarrollo de este proyecto y qué características presentan para ser preferidas frente a otras herramientas similares.
+
+Después de haber explicado todos los pormenores que conlleva la realización de un simulador de fluidos basado en física, y comprender todas las piezas necesarias para construirlo, en este capítulo vamos a explicar cómo se ha llevado a cabo este desarrollo y la estructura interna que tiene el simulador.
+
+** Diagrama de Clases
+
+Debido a las peculiaridades que tiene el lenguaje CUDA C, alcanza su máximo rendimiento al no usar una estructura orientada a objetos por ello no podemos hablar de un diagrama de clases al uso ya que no vamos a trabajar con clases, pero debido a que seguimos necesitando almacenar información en el simulador vamos a representar sus funciones y variables más importantes como pseudo-clases, junto con los tipos de datos que se ingresan y devuelven.
+
+- /Partícula/: Es una estructura (/struct/) que nos almacena la posición, velocidad, aceleración y masa de cada partícula, además de almacenar la fuerza interna, un indicador de si ha colisionado junto con un array de vecinas y su número.
+
+- /Esfera/: Es una estructura (/struct/) en el que guardamos la posición y radio de la esfera.
+
+- /Caja/: Es una estructura (/struct/) en la que guardamos los limites que definen a un hexaedro regular y su posición.
+
+- /Cilindro/: Es una estructura (/struct/) en la que guardamos el eje y limite que definen un cilindro junto con su posición.
+
+- /Modelo/: Es una estructura (/struct/) que nos almacena modelos formados por triángulos, guardando sus vértices, aristas y normales.
+
+- /MetodoEulerSemImplcito/: Este es el método encargado de recalcular las nuevas velocidades y posiciones del conjunto de partículas que recibe, a través de la aceleración y el paso del tiempo. Al ser una función kernel cuyo objetivo es que se ejecute en el device, es necesario que previamente se reserve un espacio de memoria en la GPU para que este se	 pueda ejecutar en paralelo.
+
+- /respuestaColision/: Este el método que dada una partícula y un vector normal calcula la posición y velocidad rectificadas.
+
+- /detectaColisionCilindro/: Este es el método que dado un /struct/ cilindro determina a través de las operaciones vectoriales mencionadas en el capítulo [[*Colisiones]] si existe o no colisión con un cilindro y modifica el estado de colisión del conjunto de partículas recibidas.
+
+- /detectaColisionEsfera/: Este es el método que dado un struct esfera determina a través de las operaciones vectoriales mencionados en el capítulo [[*Colisiones]] si existe o no colisión con una esfera y modifica el estado de colisión del conjunto de partículas recibidas.
+
+- /detectaColisionCaja/: Este es el método que dado un struct caja determina a través de las operaciones vectoriales mencionados en el capítulo [[*Colisiones]] si existe o no colisión con una caja y modifica el estado de colisión del conjunto de partículas recibidas.
+
+- /detectaColisionModelo/: Este es el método que dado un struct modelo determina a través de las operaciones vectoriales mencionados en el capítulo [[*Colisiones]] si existe o no colisión con un modelo formado por triángulos y modifica el estado de colisión del conjunto de partículas recibidas
+
+- /vecinasFuerzaBruta/: Este es el método que determina las partículas vecinas que tiene cada partícula recorriendo todas las partículas existentes en la simulación. Modifica los atributos del conjunto de partículas y almacena en ellas el número de partículas vecinas de cada una.
+
+- /vecinasHash/: Este es el método que determina las partículas vecinas usando la búsqueda de vecinas basada en hash explicada en el capítulo [[*Método de integración temporal]]. Modifica los atributos del conjunto de partículas y almacena en ellas el número de partículas vecinas de cada una.
+
+- /fuerzaMuelle/: Este es el método que calcula las fuerzas internas de cada partícula basándose en la ecuación de la fuerza del muelle. Modifica las fuerzas internas del conjunto de partículas.
+
+- /FuncionKernel/: Calculo de la función kernel vista en el capitulo [[*Fundamentos del Método SPH]].
+
+- /GradienteKernel/: Calculo del gradiente del kernel visto en el capitulo  [[*Fundamentos del Método SPH]].
+
+- /LaplacianoKernel/: Calculo del Laplaciano del kernel visto en el capitulo  [[*Fundamentos del Método SPH]].
+
+- /Densidad/: Este es el método que determina la densidad del conjunto de partículas
+
+- /fuerzaSPH/: Este es el método que calcula las fuerzas internas resultantes de aplicar el método SPH. Determina las fuerzas internas del conjunto de partículas.
+
+- /newAcceleration/: Determina a través de las fuerzas internas, externas y la masa la nueva aceleración o cinemática de cada partícula.
+
+- /exportador/: Dado un conjunto de partículas exporta sus atributos en archivos binarios entendibles por motores de renderizado.
+
 ** Bucle de simulación
 ** Resultados obtenidos
 *** Comparativa en tiempo de renderizado

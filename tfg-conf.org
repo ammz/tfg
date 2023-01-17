@@ -175,6 +175,9 @@ Para que el espaciado entre oraciones y palabras sea igual. La tradición ingles
   \usepackage{array}
   \usepackage{tabularx}
   \usepackage{booktabs}
+
+  \setlength{\tabcolsep}{18pt}
+  \renewcommand{\arraystretch}{1.5}
 #+end_SRC
 
 * Cabeceras, títulos e índices
@@ -221,7 +224,7 @@ Se carga =titlesec= y =titletoc= pero como son necesarias las cabeceras dinámic
   \pagestyle{fancy}
 #+END_SRC
 
-** Estilos de las secciones con titlesec
+** COMMENT Estilos de las secciones con titlesec
 
 #+BEGIN_SRC latex
   % sección
