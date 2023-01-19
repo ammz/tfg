@@ -338,7 +338,6 @@ Existe un consenso en relacionar las características analíticas de las diferen
 
 Además de la limitación destacada por Liu et al. [cite:@Liu-Liu03], se han desarrollado diversos estudios que establecen las características que hacen a cualquier función monótona decreciente una ``\textit{buena}'' función kernel. Estos estudios son:
 
-
 1. Fulk et al. [cite:@Fulk94] establece que el dominio de definición de la función kernel debe ser cerrado y acotado y además su decrecimiento debe ser suave.
 
 2. Otro estudio muy destacado es el llevado a cabo por Cappuzzo et al. [cite:@Capuzzo-DiLisio00] en el que se afirma que la función kernel debe ser una función positiva que induzca también un valor positivo de la densidad de masa.
@@ -563,34 +562,6 @@ Análogamente a como se hizo para calcular la  ecuación \ref{ec:SPH17}, se pued
 
 Si bien ambas ecuaciones son simétricas y cumplen las premisas de SPH, Monaghan recomienda implementar \ref{ec:SPH21} ya que garantiza mejores resultados que utilizando la ecuación \ref{ec:SPH20}.
 
-** Descripción del Método SPH                                     :noexport:
-
-El método de partículas suaves (SPH, por sus siglas en inglés) fue propuesto originalmente por los investigadores G.R. Lucy [cite:@Lucy77] en 1977 y J.J. Monaghan [cite:@Monaghan82] en 1985. En estos trabajos iniciales, se presentó el método como una técnica numérica para resolver ecuaciones de fluidos mediante la representación del fluido como un conjunto de partículas, cada una con su posición y velocidad.
-
-En estas publicaciones se propuso el uso de una función de interpolación suave (/función kernel/) para calcular las propiedades del fluido en cualquier punto del espacio a partir de las posiciones y velocidades de las partículas. Con este método, se logró simular una gran variedad de problemas y geometrías complejas y con movimiento libre de la malla.
-
-En los años siguientes, investigadores como M.L. Beckermann y J.C. Rieger (1994) y M. S. Long (1995) han extendido y mejorado el método, añadiendo mejoras como la posibilidad de simular problemas multi-materiales y la inclusión de términos de viscosidad artificial.
-
-Otros autores incluyen a:
-
-G.R. Liu y M.B. Liu: en su libro "Smooth Particle Hydrodynamics: A Meshfree Particle Method" (2003) presentan una revisión detallada de la historia, fundamentos y aplicaciones del método SPH.
-
-J.J. Monaghan: es uno de los principales investigadores en el desarrollo de la versión original del método SPH. En su trabajo "Smooth Particle Hydrodynamics" (1992) presenta una revisión detallada de los fundamentos y las aplicaciones del método SPH.
-
-D.J. Price: es otro investigador importante en el desarrollo del método SPH. En su trabajo "Smooth Particle Hydrodynamics: A Review of Recent Developments" (2012) presenta una revisión actualizada de los fundamentos y las aplicaciones del método SPH.
-
-** Formulación del Método SPH                                     :noexport:
-
-La formulación integral de las ecuaciones del método SPH incluye tres pasos básicos:
-
-- Calculo de la densidad de cada partícula: se utiliza una función de suavizado (como por ejemplo, una función de Kernel Gaussiana) para interpolación entre las partículas y calcular la densidad de cada una de ellas. Esto se hace mediante la siguiente ecuación:
-
-- Calculo de la velocidad de cada partícula: una vez que se conocen las densidades de todas las partículas, se puede calcular la velocidad de cada una de ellas utilizando la ecuación de movimiento y teniendo en cuenta las fuerzas que actúan sobre ellas. Esto se hace mediante la siguiente ecuación:
-
-- Actualización de la posición de cada partícula: una vez que se conocen las velocidades de todas las partículas, se puede actualizar su posición utilizando la siguiente ecuación:
-
-  Es importante tener en cuenta que estas ecuaciones son solo una parte de la formulación completa del método SPH. Además, hay muchas variantes y modificaciones posibles de estas ecuaciones para mejorar la precisión y robustez del método.
-
 * Búsqueda de partículas vecinas
 
 ** Introducción
@@ -619,7 +590,7 @@ Este método es útil para pequeñas cantidades de partículas, pero se vuelve i
 
 ** Búsqueda basada en Grids con marcado Hashing
 
-La búsqueda de vecinos basada en etiquetado hash es una técnica utilizada para encontrar partículas vecinas en el método de partículas suaves (SPH). Esta técnica se basa en el uso de una tabla hash para almacenar las partículas en diferentes "celdas" en función de su posición en el espacio.
+La búsqueda de vecinos basada en etiquetado hash es una técnica utilizada para encontrar partículas vecinas en el método de partículas suaves (SPH). Esta técnica se basa en el uso de una tabla hash para almacenar las partículas en diferentes ``celda'' en función de su posición en el espacio.
 
 Sucintamente, esta técnica opera sobre divisiones del espacio mediante mallas, cada una de las cuales, y siempre que contengan al menos una partícula, es marcada o etiquetada con un número primo obtenido de una operación lógico-algebraica, la función hash. Luego, se buscan las partículas vecinas a través de un recorrido de las celdas adyacentes a la celda de la partícula dada.
 
@@ -640,7 +611,7 @@ En otras palabras, la idea subyacente en la integración temporal numérica es a
 
 Todos los métodos existentes se pueden dividir en dos categorías: métodos explícitos y métodos implícitos. La principal diferencia entre ellos radica en que mientras que en los explícitos, se considera que las acciones sobre el sistema, /las fuerzas/, se mantienen constantes a los largo de todo el paso de tiempo, lo que implica que es posible conocer las aceleraciones en el siguiente paso, ya que son las mismas que en el paso actual. Conocida la aceleración actual, es fácil resolver las ecuaciones de la velocidad y de la posición. Esta hipótesis, la de que las fuerzas se mantienen constante dentro de cada paso de tiempo, no es considerada en los implícitos, por lo que no se conoce ni la aceleración, ni la velocidad, ni la posición en el siguiente paso. Por lo tanto, es necesario poner en función de la aceleración, tanto la velocidad, como la posición y la ecuación obtenida, sustituirla en la ecuación dinámica. Todo ello implica una complejidad que se hace mayor si la aplicamos al sistema de partículas con el que se modela el fluido, ya que, en ese caso, para cada paso de tiempo hay que resolver un sistema de ecuaciones con un número de ecuaciones igual al de partículas.
 
-Computacionalmente, los métodos explícitos son más sencillos de implementar y su resolución es casi directa, ya que con la aceleración se despeja directamente la velocidad y con la velocidad, y/o la aceleración (dependiendo del orden del método de integración), la posición, sin necesidad de procesar un sistema de ecuaciones. No obstante, la principal limitación de los explícitos radica en la hipótesis fundamental en la que se basan: "las fuerzas se mantienen constante dentro de cada paso de tiempo", y esto sólo se satisface para pasos de tiempo muy cortos, del orden de fracciones de milésimas de segundo, y en problemas que no sean /stiffness (véase  Modak et al. [cite:@Modak-Sotelino02])/. Así pues, se puede afirmar, que los métodos explícitos tienen su convergencia a resultados correctos condicionada, mientras que los implícitos se puede decir que no está condicionada, tal como se expone en Modak et al. [cite:@Modak-Sotelino02].
+Computacionalmente, los métodos explícitos son más sencillos de implementar y su resolución es casi directa, ya que con la aceleración se despeja directamente la velocidad y con la velocidad, y/o la aceleración (dependiendo del orden del método de integración), la posición, sin necesidad de procesar un sistema de ecuaciones. No obstante, la principal limitación de los explícitos radica en la hipótesis fundamental en la que se basan: ``las fuerzas se mantienen constante dentro de cada paso de tiempo'', y esto sólo se satisface para pasos de tiempo muy cortos, del orden de fracciones de milésimas de segundo, y en problemas que no sean /stiffness (véase  Modak et al. [cite:@Modak-Sotelino02])/. Así pues, se puede afirmar, que los métodos explícitos tienen su convergencia a resultados correctos condicionada, mientras que los implícitos se puede decir que no está condicionada, tal como se expone en Modak et al. [cite:@Modak-Sotelino02].
 
 Existe otra posibilidad que aúna características de métodos explícitos e implícitos, son los denominados métodos semi-implícitos. En síntesis, estos métodos consideran la hipótesis de los implícitos, es decir, consideran que las fuerzas se mantienen constantes dentro de cada paso de tiempo, con lo que se conoce la aceleración y con ella se calcula la velocidad en el siguiente paso, y con esta nueva velocidad y aceleración se obtiene la nueva posición. Con este proceso se mejoran los resultados, con pasos de tiempo hasta dos órdenes de magnitud mayores que en los explícitos. Sin embargo, su convergencia sigue estando condicionada. A pesar de ello, los métodos semi-implícitos son muy utilizados en el ámbito de CG y es la tipología que vamos a seleccionar en nuestro proyecto.
 
@@ -656,44 +627,54 @@ Es este último el que utilizaremos en nuestro simulador.
 
 ** Explicación Método de Euler semi-implícito
 
-La ecuación del método de Euler semi-implícito se obtiene a través de la serie de Taylor, la segunda ley de Newton y la idea conceptual que las fuerzas se mantienen para el siguiente paso de tiempo.
+La ecuación del método de Euler semi-implícito se basa en la serie de Taylor, la segunda ley de Newton y la idea conceptual que las fuerzas se mantienen para el siguiente paso de tiempo, como se menciona en el apartado anterior.
 
-A continuación realizaremos una serie de pasos para demostrar cómo se llega a la ecuación del método Euler semi-implícito:
-
-Partimos de la conocida ecuación de la segunda ley de Newton que estable que las aceleraciones que experimenta un cuerpo son proporcionales a las fuerzas que le afectan:
+A continuación realizaremos una serie de pasos para demostrar cómo se llega a la ecuación del método Euler semi-implícito. Partimos de la conocida ecuación de la segunda ley de Newton que establece que las aceleraciones que experimenta un cuerpo son proporcionales a las fuerzas que le afectan:
 \[
-\mathbf{F} = m \cdot \mathbf{a}
+\sum\mathbf{F} = m \cdot \mathbf{a}
 \]
-El otro instrumento matemático que utilizaremos es la serie de Taylor, que nos permite aproximarnos a las funciones mediante una serie de potencias o suma de potencias enteras de polinomios que se prolonga hasta el infinito, donde cada uno de los sumandos está elevado a una potencia mayor al antecedente como se muestra en la siguiente ecuación:
-\[
+El otro instrumento matemático que utilizaremos es la serie de Taylor, que nos permite aproximarnos a las funciones mediante una serie de potencias o suma de potencias enteras de polinomios que se prolonga hasta el infinito, donde cada uno de los sumandos está elevado a una potencia mayor al precedente como se muestra en la siguiente ecuación:
+
+#+NAME: ec:taylor1
+\begin{equation}
 F(x) = f(a) + \dfrac{f’(a)}{1!} (x-a) + \dfrac{f’’(a)}{2!} (x-a)^2 + \dots
-\]
-Aplicando esto con el concepto de la integración temporal obtenemos la siguiente ecuación:
-\[
+\end{equation}
+
+Considerando que la variable independiente $x$, como el tiempo, tal como se ha mostrado en la ecuación anterior, y teniendo en cuenta que el valor conocido es en el instante de tiempo actual, podemos decir que el valor de $\mathbf{F}$ en el siguiente paso satisfará la reasignación de variables. Por lo que la expresión anterior quedaría como:
+
+#+NAME: ec:taylor2
+\begin{equation}
 F(t_{n+1}) = f(t_n) + \dfrac{f’(t_n)}{1!} (t_{n+1}-t_n) + \dfrac{f’’(t_n)}{2!} (t_{n+1} - t_n)^2 + \dots
-\]
-Y sabemos que la derivada de la posición es velocidad y la derivada de la velocidad es la aceleración
+\end{equation}
 
-Podemos despejar la serie de Taylor
-\[
-S(t_{n+1}) = s(t_n) + v(t_n) \cdot (t_{n+1} -  t_n) + \dfrac{1}{2} a(t_n) \cdot (t_{n+1} – t_n)^2
-\]
-\[
-S(t_{n+1}) = s(t_n) + v(t_n) \cdot (\Delta t) + \dfrac{1}{2} a (t_n) \cdot (\Delta t)^2
-\]
-Despejando la aceleración obtenemos las siguientes ecuaciones:
+Como es sabido, la derivada de la posición respecto del tiempo es la velocidad, al igual que la derivada de la velocidad es la aceleración, así pues podemos calcular la nueva velocidad y posición utiizando la formulación recogida en la ecuación [[ec:taylor2]].
 
+Se puede despejar la serie de Taylor como mostramos a continuación:
+
+\[
+s(t_{n+1}) = s(t_n) + v(t_n) \cdot (t_{n+1} -  t_n) + \dfrac{1}{2} a(t_n) \cdot (t_{n+1} – t_n)^2
+\]
+\[
+v(t_{n+1}) = v(t_n) + a(t_{n}) \cdot (t_{n+1} -  t_n)
+\]
+\[
+s(t_{n+1}) = s(t_n) + v(t_n) \cdot \Delta t + \dfrac{1}{2} a (t_n) \cdot (\Delta t)^2
+\]
+\[
+v(t_{n+1}) = v(t_n) + a(t_{n}) \cdot \Delta t
+\]
+
+Por lo que se obtienen las expresiones del método de Euler explícito de segundo orden. Sin embargo, nosotros vamos a utilizar el semi-implícito, por lo que habrá que realizar operaciones sobre la ecuación de posición y velocidad para obtener las expresiones válidas. Como indicamos en el apartado anterior, el método semi-implícito conjuga aceleraciones del siguiente paso para obtener la nueva velocidad y utiliza tanto la nueva velocidad como la aceleración para calcular la nueva posición. Así pues, las expresiones que nos van a permitir calcular estas magnitudes a través del método semi-implícito de Euler de segundo orden son:
 \begin{align*}
 F_n &= m \cdot a_n \\
 F_n &= F_{n+1} \\
 a_n &= \dfrac{F_n}{m} \\
 a_{n+1} &= a_n \\
-v_{n+1} &= v_n + a_n \cdot \Delta t \\
-s_{n+1} &= s_n + v_{n+1} \cdot \Delta t + \dfrac{(a_n \cdot \Delta t^2)}{2}
+v_{n+1} &= v_n + a_{n+1} \cdot \Delta t \\
+s_{n+1} &= s_n + v_{n+1} \cdot \Delta t + \dfrac{(a_{n+1} \cdot \Delta t^2)}{2}
 \end{align*}
 
-Estas ecuaciones han de ejecutarse en orden, ya que dependen la posición depende de la velocidad y la aceleración y la velocidad depende de la aceleración y la aceleración se puede calcular siempre que supongamos que las fuerzas para el siguiente instante de tiempo son iguales. Esto funciona para intervalos de tiempo pequeños.
-
+Estas ecuaciones han de ejecutarse en orden, ya que la posición depende de la velocidad y la aceleración, la velocidad depende de la aceleración y la aceleración se puede calcular siempre que supongamos que las fuerzas para el siguiente instante de tiempo son iguales. Recordemos que estas operaciones van a dar resultados precisos si los $\Delta t$ son relativamente bajos, del orden de milisegundos.
 
 ** Introducción                                                   :noexport:
 
@@ -733,11 +714,11 @@ En el mundo real los fluidos interactúan con objetos y debido a esta interacci�
 
 Al tratar en nuestro proyecto con la metodología SPH que trata el conjunto de nuestro fluido como partículas independientes, se puede suponer que la forma geométrica de estas partículas será la de un punto o, de una forma más compleja, la de una esfera, ya que las operaciones para detectar que una partícula (punto o esfera) ha colisionado con un sólido rígido son análogas. Sólo que cuando se considera como una esfera habrá que tener en cuenta el radio.
 
-Hay un consenso en dividir la colisión en dos partes, la primera es la detección la segunda es la respuesta. En la detección se realizan operaciones vectoriales cuyo objetivo es determinar la distancia relativa entre las partículas y los objetos con los que puede colisionar. En caso de que se detecte colisión, se "activa" la segunda etapa. En la segunda etapa, la etapa de respuesta, se realizan operaciones sobre las magnitudes dinámicas y variables de estado de la partícula de modo que satisfagan las condiciones de contorno.
+Hay un consenso en dividir la colisión en dos partes, la primera es la detección la segunda es la respuesta. En la detección se realizan operaciones vectoriales cuyo objetivo es determinar la distancia relativa entre las partículas y los objetos con los que puede colisionar. En caso de que se detecte colisión, se ``activa'' la segunda etapa. En la segunda etapa, la etapa de respuesta, se realizan operaciones sobre las magnitudes dinámicas y variables de estado de la partícula de modo que satisfagan las condiciones de contorno.
 
 ** Detección de la colisión
 
-Dependiendo de la simetría del contorno, el proceso de detección puede simplificarse, tal como describiremos a continuación. En nuestro simulador distinguiremos entre dos tipos de contornos, los de alta simetría geométrica, relativamente fáciles de operar en la detección, y los que tienen una geometría más compleja que normalmente están discretizados mediante triángulos. En las siguientes secciones vamos a realizar una descripción de las distintas técnicas de detección utilizadas.
+Dependiendo de la simetría del contorno, el proceso de detección puede simplificarse, tal como describiremos a continuación. En nuestro simulador distinguiremos entre dos tipos de contornos, los de alta simetría geométrica, relativamente fáciles de operar en la detección, y los que tienen una geometría más compleja, que normalmente están discretizados mediante triángulos. En las siguientes secciones vamos a realizar una descripción de las distintas técnicas de detección utilizadas.
 
 *** Colisión con cuerpos rígidos con alta simetría
 
@@ -749,11 +730,11 @@ Para saber si una esfera (o partícula en nuestro caso) ha colisionado con un cu
 
 Es decir, conociendo tres aristas perpendiculares entre sí se pueden obtener los límites inferiores y superiores de cada dimensión con los que puede colisionar la partícula.
 
-Una vez conocidos estos límites podemos determinar si la posición de nuestra partícula se encuentra dentro o fuera de la figura geométrica.
+Una vez conocidos estos límites, podemos determinar si la posición de nuestra partícula se encuentra dentro o fuera de la figura geométrica.
 
-Si suponemos que la partícula se encuentra en movimiento en el interior del hexaedro, podemos determinar si la partícula ha colisidonado con una de las caras, cuando alguna de las coordenadas de su posición se encuentra fuera de los límites calculados anteriormente.
+Si suponemos que la partícula se encuentra en movimiento en el interior del hexaedro, podemos determinar que la partícula ha colisidonado con una de las caras, cuando alguna de las coordenadas de su posición se encuentre /fuera/ de los límites calculados anteriormente.
 
-Análogamente, si suponemos que la partícula se encuentra en el exterior del hexaedro seguiríamos necesitando los mismos parámetros para definir nuestro hexaedro, pero esta vez la colisión se detectaría si los valores de la posición de la partícula estuvieran dentro de esos límites.
+Análogamente, si suponemos que la partícula se encuentra en el exterior, seguiríamos necesitando los mismos parámetros para definir nuestro hexaedro, pero esta vez la colisión se detectaría si los valores de la posición de la partícula estuvieran /dentro/ de esos límites.
 
 #+CAPTION: Colisión caja
 #+ATTR_LATEX: :width 8cm
@@ -761,30 +742,30 @@ Análogamente, si suponemos que la partícula se encuentra en el exterior del he
 
 Por tanto, al implementar un procedimiento de detección de la colisión de una partícula con un hexaedro se deberá tener en cuenta la posición inicial de la partícula.
 
-En este trabajo, nos centraremos en explicar el caso en el que la partícula se encuentra dentro del hexaedro, ya que nos resultará muy conveniente al permitir representar un fluido contenido en un espacio cerrado.
+En este trabajo, nos centraremos en explicar el caso en el que la partícula se encuentra dentro del hexaedro, ya que nos resultará muy conveniente, al permitirnos representar un fluido contenido en un espacio cerrado.
 
-El algoritmo que se utilizará para determinar las colisiones deberá respetar las restricciones anteriores sintetizadas en las siguientes expresiones lógicas:
+El algoritmo que se utilizará para determinar las colisiones deberá respetar las restricciones anteriores que se sintetizan en las siguientes expresiones lógicas:
 \begin{align*}
 (P_x < \lim X_{inf} &\lor P_x > \lim X_{sup})\; \lor \\
 (P_y < \lim Y_{inf} &\lor P_y > \lim Y_{sup})\; \lor \\
 (P_z < \lim Z_{inf} &\lor P_z > \lim Z_{sup})
 \end{align*}
 
-**** Colisión cilindro
+**** Colisión partícula-cilindro
 
-Otro de los objetos con alta simetría geometría, es el cilindro. Los parámetros que tendremos en cuenta en este caso son su altura, el radio y el eje.
+Otro de los objetos con alta simetría geometría es el cilindro. Los parámetros que tendremos en cuenta en este caso son su altura, el radio y el eje.
 
 En este caso, primero habrá que determinar si la distancia de la partícula al eje es menor que el radio. Seguidamente, en caso de que esta restricción se cumpla, se tiene que comprobar si la posición de la partícula es compatible con la altura del cilindro.
 
-Finalmente, cuando estas dos condiciones se satisfagan, entonces la partícula habrá colisionado con el cilindro.
+Finalmente, cuando ambas condiciones se satisfagan, entonces podremos asegurar que la partícula habrá colisionado con el cilindro.
 
-El algoritmo que se utilizará para determinar las colisiones deberá respetar las restricciones anteriores sintetizadas en las siguientes expresiones
+El algoritmo que se utilizará para determinar las colisiones deberá respetar las restricciones anteriores  que se sintetizan en las siguientes expresiones lógicas:
 \[
 (P_y < \lim Y_{inf} \lor P_y > \lim Y_{sup}) \land (\text{distancia} < \text{radio})
 \]
-siendo la distancia la magnitud del vector entre la posición de la partícula y el eje del cilindro, expresado matemáticamente sería:
+siendo la distancia la magnitud del vector entre la posición de la partícula y el eje del cilindro, representada matemáticamente en la siguiente ecuación:
 \[
-\text{Distancia} = \left|(P_x - \text{eje x}, 0, P_z - \text{eje z})\right|
+\text{Distancia} = \left|(P_x - \text{eje}_x, 0, P_z - \text{eje}_z)\right|
 \]
 
 #+CAPTION: Colisión cilindro
@@ -793,120 +774,123 @@ siendo la distancia la magnitud del vector entre la posición de la partícula y
 
 **** Colisión partícula-esfera
 
-La colisión partícula-esfera es la más fácil de implementar, ya que sólo se tiene que comprobar si la distancia que separa la esfera y la partícula es inferior o superior, dependiendo de si la colisión es exterior o interior, a la suma de los radios de la esfera y la partícula. Así pues, los únicos parámetros que tenemos que tener en cuanta son el radio y el centro de la esfera con la que se va a colisionar. Al conocer estos parámetros solo necesitaríamos aplicar una operación vectorial que nos dijera el módulo o distancia entre nuestra partícula y el centro y una vez obtenida esa distancia calcular si es menor que el radio de la esfera, si el resultado es verdadero nuestra esfera ha colisionado con la partícula.
+La colisión partícula-esfera es la más fácil de implementar, ya que sólo se tiene que comprobar si la distancia que separa la esfera y la partícula es inferior o superior, dependiendo de si la colisión es exterior o interior, al radio de la esfera. Así pues, los únicos parámetros que tenemos que tener en cuenta son el radio y el centro de la esfera con la que se va a colisionar. Al conocer estos parámetros solo necesitaríamos aplicar una operación vectorial que nos calcule el módulo o distancia entre nuestra partícula y el centro de la esfera. Una vez obtenida esa distancia, se debe comprobar si la distancia es menor que el radio de la esfera. Si el resultado es afirmativo, sabremos que la partícula habrá colisionado con la esfera.
 
 #+CAPTION: Colisión esfera
 #+ATTR_LATEX: :width 8cm
 [[./graficos/esfera.pdf]]
 
-El algoritmo que se utilizará para determinar las colisiones deberá respetar las restricciones anteriores sintetizadas en la siguiente expresione:
+El algoritmo que se utilizará para determinar la colisión se ajustará a la restricción planteada en la siguiente expresion lógica:
 \[
 (\text{distancia} < \text{radio})
 \]
-
-siendo la distancia la magnitud entre la posición de la partícula y el centro de la esfera, expresado matemáticamente sería:
+donde la distancia es la magnitud entre la posición de la partícula y el centro de la esfera, representada matemáticamente en la siguiente ecuación:
 \[
 \text{Distancia} = \left|(P_x - C_x, P_y - C_y, P_z - C_z)\right|
 \]
 *** Colisión con contorno discretizado en triángulos
 
-La mayoría de los modelos existentes no son figuras geométricas con alta simetría que nos permiten calcular rápidamente sus colisiones, si no que son mallas de triángulos que forman todo tipo de figuras. Nos centramos en triángulos, ya que el estándar en en el ámbito de CG es que los modelados sean mallas de triángulos por ser el polígono que mejor se adapta a contornos complejos.
+La mayoría de los modelos existentes no son figuras geométricas con alta simetría, que tienen la característica de que sus colisiones son fáciles de calcular e implementar, si no que son mallas de cuadrados o de triángulos que permiten formar todo tipo de figuras. Sin embargo, en el ámbito de CG, el estándar es que los modelados sean mallas de triángulos, por ser el polígono que mejor se adapta a contornos complejos y resulta más fácil de operar vectorialmente. Por ello, en este estudio, nos centramos únicamente en triángulos.
 
-La principal desventaja que presenta un objeto complejo es su alto número de triángulos, lo que va a reducir la efiencia computacional, ya que de los 12 triángulos en los que se puede discretizar una caja se puede pasar a los 69.451 triángulos que conforman el contorno del Stanford bunny.
+La principal desventaja que presenta un objeto complejo es su alto número de triángulos, lo que va a reducir la efiencia computacional, ya que de los 12 triángulos en los que se puede discretizar una caja se puede pasar a los 69.451 triángulos que conforman el contorno del /Stanford bunny/.
 
 #+CAPTION: Stanford bunny triángulos
 #+ATTR_LATEX: :width 8cm
 [[./graficos/caja-conejo.pdf]]
 
-Seguidamente explicaremos los pasos necesarios para calcular si una partícula ha colisionado con un triángulo, debido a que esta seria la operación que tendríamos que aplicar a todos los triángulos de un modelo discretizado por estos.
 
 **** Colisión partícula-triángulo
 
 La colisión partícula-triángulo es más costosa computacionalmente que las que hemos descrito con objetos de alta simetría geométrica, ya que requiere de una gran cantidad de operaciones matemáticas para calcular si la partícula ha colisionado o no con un triángulo. A pesar de ello, como hemos explicado anteriormente, los modelos discretizados por triángulos son ampliamente utilizados, al igual que la técnica de detección de una colisión con un triángulo también lo es.
 
-Los parámetros necesarios para conocer si existe la colisión entre una partícula y un triángulo en un espacio 3D, son los vértices del triángulo y la posición de la partícula.
+Los parámetros necesarios para conocer si existe la colisión entre una partícula y un triángulo, en un espacio 3D, son los vértices del triángulo y la posición de la partícula.
 
 #+CAPTION: Colisión triángulo
 #+ATTR_LATEX: :width 8cm
 [[./graficos/triangulo.pdf]]
 
-Este proceso, denominado campo de distancia, nos permite determinar si existe colisión entre la partícula y el triángulo independientemente de la orientación y posición en la que se encuentre el triángulo. Para ello, el primer paso es determinar si la partícula está a una distancia en la que es posible que colisione con el triángulo.
+Seguidamente explicaremos la secuencia de pasos necesarios para calcular si una partícula ha colisionado con un triángulo. Esta secuencia es la que tendríamos que aplicar a cada uno de los triángulos que conforman el modelo discretizado en triángulos.
 
-Para llevar a cabo esta tarea, se deben realizar una secuencia de pasos que vamos a describir a continuación:
+Este proceso, denominado campo de distancia, nos permite determinar si existe colisión entre la partícula y el triángulo independientemente de la orientación y posición en la que se encuentre el triángulo.
 
-1. Determinamos la posición de cada vértice del triángulo junto con la posición de la partícula en ese instante. Escogemos dos aristas del triángulo y calculamos el producto vectorial de esos dos vectores. Como resultado obtenemos un vector perpendicular al triángulo. El módulo de dicho vector perpendicular nos da la área del paralelogramo que definen ambos vectores, según la expresión matemática $|\mathbf{b} \times \mathbf{c}| = |\mathbf{b}||\mathbf{c}||\sin \theta|$, tal como se ilustra en la figura [[fig:triangulo01]].
+El primer paso consiste en determinar si la partícula está a una distancia en la que es posible que colisione con el triángulo. Para ello, se debe realizar secuencialmente las siguientes tareas:
+
+1. Determinar la posición de cada vértice del triángulo y la posición de la partícula en el instante de la posible colisión. Para ello, escogemos dos aristas del triángulo y calculamos el producto vectorial de esos dos vectores. Como resultado obtenemos un vector perpendicular al triángulo. El módulo de dicho vector perpendicular nos da la área del paralelogramo que definen ambos vectores, según la expresión matemática $|\mathbf{b} \times \mathbf{c}| = |\mathbf{b}||\mathbf{c}||\sin \theta|$, tal como se ilustra en la figura [[fig:triangulo01]].
 
    #+NAME: fig:triangulo01
    #+CAPTION: Producto vectorial
    #+ATTR_LATEX: :width 10cm
    [[./graficos/producto-vectorial.pdf]]
 
-2. Obtenemos el vector resultante de nuestra partícula hacia el vértice del que nacen nuestros vectores o aristas elegidos. Como vemos en la figura  [[fig:triangulo02]].
+2. Obtener el vector posición de nuestra partícula que tiene origen en el vértice del que nacen nuestros vectores o aristas elegidos. Como vemos en la figura  [[fig:triangulo02]].
 
    #+NAME: fig:triangulo02
    #+CAPTION: Representación del vector distancia desde el vértice elegido hacia la partícula
    #+ATTR_LATEX: :width 10cm
    [[./graficos/producto-triangulo.pdf]]
 
-3. Calculamos el producto escalar del producto vectorial y el vector con dirección hacia la partícula. La magnitud de este producto escalar representa el volumen de nuestro trapecio imaginario.
+3. Calcular el producto escalar del vector resultante del producto vectorial y el vector posición de la partícula. La magnitud de este producto escalar representa el volumen de un trapecio imaginario, cuya altura representa la distancia vertical de la partícula respecto al plano.
 
-4. Si la altura de ese trapecio es menor a una distancia dada, en la que es posible que nuestra partícula colisione, entonces comprobamos si la partícula ha intersectado con nuestro triángulo.
+   Si la altura de ese trapecio es menor una distancia determinada, en la que es posible que nuestra partícula colisione, entonces se debe comprobar si la partícula y el triángulo se intersecan.
 
-5. Una vez realizado este proceso, para saber si la partícula está a una distancia del triángulo en la que es posible que colisione, calculamos si la partícula ha colisionado en nuestro triángulo. Para este segundo proceso necesitamos proyectar la posición de nuestra partícula en la superficie o plano.
+Una vez realizadas estas tareas, que han permitido conocer si la partícula está a una distancia del triángulo en la que es posible colisionar, debemos determinar, en un segundo paso, si la partícula ha colisionado con nuestro triángulo. Para ello, necesitamos proyectar la posición de nuestra partícula en la superficie o plano.
 
-Para proyectar un punto sobre un plano, respetando las propiedades que lo definen, se utiliza la siguiente fórmula:
+La proyección de un punto sobre un plano, respetando las propiedades que lo definen, se describe mediante la siguiente fórmula:
 \[
 P_{pr} = \Biggl(\biggl(P_x + \dfrac{\text{altura}}{\text{superficie}}\biggr) S_x, \biggl(P_y + \dfrac{\text{altura}}{\text{superficie}}\biggr) S_y, \biggl(P_z + \dfrac{\text{altura}}{\text{superficie}}\biggr) S_z\Biggr),
 \]
-donde $P$ es la posición de la partícula, altura es la distancia de nuestra partícula al triángulo, superficie es la magnitud del producto vectorial que define el plano y $S$ es el producto vectorial.
+donde $P$ es la posición de la partícula, altura es la distancia de nuestra partícula al plano, superficie es la magnitud del producto vectorial que define el plano y $S$ es el producto vectorial.
 
 #+NAME: fig:triangulo03
 #+CAPTION: Representación del punto proyectado sobre el plano
 #+ATTR_LATEX: :width 10cm
 [[./graficos/triangulo-punto.pdf]]
 
-Una vez proyectada la posición de la partícula es necesario comprobar si la partícula está dentro del triángulo. El proceso que utilizaremos para calcular que el punto se encuentra en el interior del triángulo es a partir de los ángulos de este, ya que la suma de los ángulos del punto proyectado hacia los vértices del triángulo tiene que sumar 2\pi.
+Una vez proyectada la posición de la partícula, será necesario comprobar si la partícula está dentro del triángulo. El proceso que utilizaremos para calcular si el punto se encuentra en el interior del triángulo se basa, en calcular el producto escalar entre los vectores que se forman al unir el punto proyectado con los vértices del triángulo, lo que permite obtener los tres ángulos que se forman entre ellos, aplicando la expresión que relaciona un ángulo con el producto escalar de sus lados:
+\[
+\theta = \cos^{-1} \left( \frac{\mathbf{A}\cdot\mathbf{B}}{|\mathbf{A}||\mathbf{B}|}\right)
+\]
+Si la suma de los tres ángulos es igual a 2\pi, podemos determinar que el punto proyectado se encuentra dentro del triángulo y, por tanto, que la partícula ha colisionado.
 
 #+NAME: fig:triangulo04
 #+CAPTION: Representación del punto proyectado junto con las aristas interiores apuntando hacia los vértices
 #+ATTR_LATEX: :width 10cm
 [[./graficos/triangulo-punto2.pdf]]
 
-Y por geometría el ángulo de cada triángulo interior es el arco coseno del producto escalar de las dos aristas entre su magnitud.
-\[
-\theta = \cos^{-1} \left( \frac{\mathbf{A}\cdot\mathbf{B}}{|\mathbf{A}||\mathbf{B}|}\right)
-\]
-Calculamos esto para cada ángulo interior y los sumamos para comprobar si se encuentra dentro del triángulo en cuyo caso ha colisionado.
-
 ** Respuesta de la colisión
 
-Una vez que se ha detectado que la partícula ha colisionado, independientemente de la simetría del contorno, el siguiente paso es aplicar la respuesta a la colisión. Es decir, imponer las condiciones de contorno, que modificará las magnitudes dinámicas y las variables de estado, para evidenciar la interacción.
+Una vez que se ha detectado que la partícula ha colisionado, independientemente de la simetría del contorno, el siguiente paso es aplicar la respuesta a la colisión. Es decir, imponer las condiciones de contorno, que modificarán las magnitudes dinámicas y las variables de estado, para evidenciar la interacción.
 
-En un primer momento se puede llegar a pensar que, igual que en la colisión podemos llegar a necesitar varias respuestas para diferentes cuerpos geométricos, pero se puede estandarizar la respuesta de la colisión para diferentes tipos de detecciones (figuras geométricas como cubos, esferas, cilindros o detecciones basadas en distancia que usan triángulos como se hace referencia en el apartado anterior). Este proceso de estandarización se puede llevar a cabo siempre que almacenemos en la estructura de nuestros modelos, ya sea una malla de triángulos o una figura geométrica con alta simetría, los vectores normales de estos planos con respecto a la dirección que queremos que interactúe la partícula.
+En un primer momento se puede llegar a pensar que, al igual que en la colisión, podemos llegar a necesitar varias respuestas para diferentes cuerpos geométricos. Sin embargo, se puede estandarizar la respuesta de la colisión para los diferentes tipos de detecciones con figuras geométricas como cubos, esferas, cilindros o detecciones de modelos que usan triángulos. Este proceso de estandarización se puede llevar a cabo siempre que almacenemos en la estructura de nuestros modelos, ya sean mallas de triángulos o figuras geométricas con alta simetría, los vectores normales de los planos con respecto a la dirección que queremos que interactúe la partícula.
 
 Remarcar también que la técnica que se explica a continuación esta avalada por diferentes autores como Di Monaco et al. [cite:@MonManGal.etal11], Li et al. [cite:@li2014efficient] o Perea et al. [cite:@Perea-Cordero18]
 
-Esencialmente, el proceso que se sigue tiene como objetivo calcular la nueva velocidad de la partícula.
+Esencialmente, el proceso que se sigue tiene como objetivo calcular la nueva velocidad de la partícula después de la colisión y rectificar su posición.
 
-una de las propiedades constitutivas de nuestra partícula que queremos modificar cuando se encuentra con una colisión,
+Este cálculo se lleva a cabo mediante la realización de varias operaciones vectoriales que nos permitirán conocer el vector resultante de la velocidad a asignar. Además, también necesitaremos algunos parámetros adicionales, como la tasa de rozamiento y de rebote, ya que tendrán influencia en nuestra velocidad final.
 
-Este cálculo se lleva a cabo mediante la realización de varias operaciones vectoriales que nos permiten conocer el vector resultante de velocidad a asignar. Además, también necesitaremos algunos parámetros adicionales como la tasa de rozamiento y rebote, ya que tendrán influencia en nuestra velocidad final.
+El primer paso que debemos realizar es obtener la velocidad incidente al detectarse la colisión. Una vez conocida esta velocidad, se procede a calcular la proyección de este vector sobre el vector normal almacenado. Seguidamente, se calcula la velocidad tangencial que es el resultado de restar la velocidad proyectada a la velocidad inicial. Esta velocidad tangencial debe ser modificada para tener en cuenta el rozamiento de la partícula. Para ello, habrá que multiplicar el vector por una tasa de rozamiento determinada.
 
-El primer paso es obtener la velocidad incidente al detectarse la colisión. Una vez realizado esto, con el vector normal almacenado, calculamos el vector proyección de la velocidad incidente sobre el vector normal del plano además de la velocidad inicial tangencial que es la resultante de la resta de los vectores de la velocidad inicial menos la proyección de la velocidad inicial sobre el plano.
+Por otro lado, el vector normal de la partícula se obtendrá multiplicando el vector proyectado por una tasa de rebote, lo que resultará en que su dirección sea contraria a la del vector proyectado.
 
-A estas dos velocidades descompuestas le aplicamos una tasa de rebote y una tasa de rozamiento, respectivamente. La suma de estos dos vectores de velocidad descompuesta da como resultado la velocidad resultante final que será la que le apliquemos a nuestra partícula una vez detectada la colisión.
+La suma de la velocidad tangencial modificada y la velocidad normal modificada dará como resultado la velocidad final que asignaremos a nuestra partícula, como se ilustra en al figura [[fig:fases]].
 
+#+NAME: fig:fases
 #+CAPTION: Representación esquemática de las tres fases para corregir la velocidad: antes de la colisión, durante la colisión y después de la colisión
 #+ATTR_LATEX: :width 12cm
 [[./graficos/pelotas.pdf]]
 
-Para la propiedad constitutiva de la posición en la partícula el proceso es similar. Necesitamos obtener la posición una vez detectada la colisión de la partícula con algún sólido rígido, y a este vector de la posición inicial le aplicamos la suma de una tolerancia de posición que es el resultado del producto del vector normal almacenado en el plano por una tasa de penetración, esto nos posiciona la partícula para que salga del estado de colisión.
+Para corregir la posición de la partícula se sigue un proceso similar. Primero, obtendremos el vector posición una vez detectada la colisión con algún sólido rígido. A este vector habrá que sumarle el vector que resulta de multiplicar el vector normal almacenado por una tasa de penetración dada, para obtener finalmente el vector de la posición rectificada. Con esto conseguimos que la partícula no siga colisionando con el plano.
 
 #+CAPTION: Representación esquemática de la corrección de la posición después de la colisión
 #+ATTR_LATEX: :width 6cm
 [[./graficos/rebote.pdf]]
 
-Esta respuesta estandarizada es extremadamente útil, ya que permite, a través del almacenamiento de los vectores normales de las figuras geométricas con los que colisiona y las propiedades inherentes de los vectores, resolver uno de los problemas principales en las colisiones, como es el de tratar con aristas que son la intersección de dos o más figuras geométricas diferentes.  ya que la suma de estos vectores normales resulta en una dirección coherente en el que la partícula modifica su velocidad y posición. Además de permitirnos implementar diferentes métodos de detección de colisiones.
+Esta respuesta estandarizada es extremadamente útil, ya que permite resolver uno de los principales problemas en las colisiones, como es el de tratar con colisiones múltiples, que son las que se producen al interacturar con vértices, aristas o intersecciones de diferentes cuerpos geométricos.
+
+La suma de los vectores normales almacenados implicados en la colisión múltiple dará como resultado un vector normal, cuya dirección es coherente con lo que se espera en la realidad. Así, por ejemplo, la dirección de la respuesta de una partícula, cuando colisiona con una arista, la podemos calcular a través de la suma de los diferentes vectores normales almacenados de las caras que forman dicha arista.
+
+Además, esta respuesta estandarizada también va a permitirnos implementar diferentes métodos de detección de colisiones, lo que implica una mayor versatilidad y escalabilidad.
 
 * Características de las herramientas de implementación del proyecto
 ** Introducción
@@ -1058,47 +1042,48 @@ En este proyecto se utiliza la librería GLFW debido a la disponibilidad de gran
 * Estructura del simulador y resultados
 ** Introducción
 
-A lo largo de los capítulos anteriores hemos introducido el ámbito de las computer graphics, su importancia en diferentes industrias y cómo es un importante campo de investigación, se ha realizado un análisis previo desde el punto de vista de un desarrollador para dar una visión clara del proyecto que se quiere implementar. En nuestro caso, una simulación de fluidos basada en física, donde se ha hecho un recorrido por los fundamentos matemáticos necesarios y técnicas para ser capaz de simular un fluido de manera realista y versátil, siempre mencionando a los autores que avalan estas técnicas y, finalmente, se ha escogido uno en concreto. Igualmente, se ha explicado el concepto de la búsqueda de vecinas, sin el cual no se puede realizar el método de simulación escogido, junto con los diferentes tipos de búsqueda existentes y el motivo por el cual se ha seleccionado uno sobre otro. También, se ha dado una explicación general sobre los métodos de integración temporal y la razón por la que se necesitan en un campo como la simulación por ordenador. Del mismo modo, se ha establecido la importancia de que nuestro fluido sea capaz de reaccionar ante sólidos rígidos para que éste cumpla con los requisitos de versatilidad, así como las diferentes técnicas que podemos implementar para desarrollarlos. Por ultimo, se han explicado las diferentes herramientas que se han utilizado en el desarrollo de este proyecto y qué características presentan para ser preferidas frente a otras herramientas similares.
-
-Después de haber explicado todos los pormenores que conlleva la realización de un simulador de fluidos basado en física, y comprender todas las piezas necesarias para construirlo, en este capítulo vamos a explicar cómo se ha llevado a cabo este desarrollo y la estructura interna que tiene el simulador.
+A lo largo de los capítulos anteriores hemos hablado del ámbito de las computer graphics, de su importancia en diferentes industrias y de cómo es un importante campo de investigación. Además, se ha realizado un análisis previo, desde el punto de vista de un desarrollador, del proyecto que se quiere implementar. En nuestro caso, se trata de una simulación de fluidos basada en física, donde hemos realizado un recorrido por los fundamentos matemáticos necesarios y las técnicas existentes, capaces de simular un fluido de manera realista y versátil. Se han estudiado los trabajos de aquellos autores que avalan estas técnicas y, finalmente, se ha seleccionado una técnica concreta. Igualmente, se ha explicado el concepto de la búsqueda de vecinas, sin el cual no se puede realizar el método de simulación escogido. También, se vieron los diferentes tipos de búsqueda existentes, y se expuso el motivo por el que se ha seleccionado uno sobre los otros.
+Seguidamente, se introdujeron los métodos de integración temporal y las razones por las que se necesitan en un campo como la simulación gráfica por ordenador. Del mismo modo, se ha establecido la importancia de que el fluido sea capaz de reaccionar ante sólidos rígidos para que éste cumpla con los requisitos de versatilidad, así como las diferentes técnicas que podemos implementar para que el fluido reaccione a su entorno. Por ultimo, se han explicado las herramientas que se han utilizado en el desarrollo de este proyecto, así como aquellas características que las distinguen favorablemente frente a otras herramientas similares. Después de haber explicado todos los pormenores que conlleva la realización de un simulador de fluidos basado en física, y comprender todas las piezas necesarias para construirlo, en este capítulo vamos a explicar cómo se ha llevado a cabo este desarrollo y la estructura interna que tiene el simulador.
 
 ** Diagrama de Clases
 
-Debido a las peculiaridades que tiene el lenguaje CUDA C, alcanza su máximo rendimiento al no usar una estructura orientada a objetos por ello no podemos hablar de un diagrama de clases al uso ya que no vamos a trabajar con clases, pero debido a que seguimos necesitando almacenar información en el simulador vamos a representar sus funciones y variables más importantes como pseudo-clases, junto con los tipos de datos que se ingresan y devuelven.
+El lenguaje CUDA C tiene como particularidad que alcanza su máximo rendimiento cuando no utiliza una estructura orientada a objetos. Para aprovechar esta característica, no contaremos con un diagrama de clases al uso, ya que no vamos a trabajar con clases. No obstante, seguimos necesitando almacenar información en el simulador, por lo que vamos a representar sus funciones y variables más importantes como pseudo-clases, junto con los tipos de datos que se ingresan y devuelven.
+
+A continuación se hace una relación de las pseudo-clases que hemos utilizado en la elaboración de nuestro proyecto.
 
 - /Partícula/: Es una estructura (/struct/) que nos almacena la posición, velocidad, aceleración y masa de cada partícula, además de almacenar la fuerza interna, un indicador de si ha colisionado junto con un array de vecinas y su número.
 
 - /Esfera/: Es una estructura (/struct/) en el que guardamos la posición y radio de la esfera.
 
-- /Caja/: Es una estructura (/struct/) en la que guardamos los limites que definen a un hexaedro regular y su posición.
+- /Caja/: Es una estructura (/struct/) en la que guardamos los límites que definen a un hexaedro regular y su posición.
 
-- /Cilindro/: Es una estructura (/struct/) en la que guardamos el eje y limite que definen un cilindro junto con su posición.
+- /Cilindro/: Es una estructura (/struct/) en la que guardamos el eje y límite que definen un cilindro junto con su posición.
 
 - /Modelo/: Es una estructura (/struct/) que nos almacena modelos formados por triángulos, guardando sus vértices, aristas y normales.
 
-- /MetodoEulerSemImplcito/: Este es el método encargado de recalcular las nuevas velocidades y posiciones del conjunto de partículas que recibe, a través de la aceleración y el paso del tiempo. Al ser una función kernel cuyo objetivo es que se ejecute en el device, es necesario que previamente se reserve un espacio de memoria en la GPU para que este se	 pueda ejecutar en paralelo.
+- /MetodoEulerSemImplcito/: Este es el método encargado de recalcular las nuevas velocidades y posiciones del conjunto de partículas que recibe, a través de la aceleración y el paso del tiempo. Al ser una función kernel, cuyo objetivo es que se ejecute en el device, es necesario que previamente se reserve un espacio de memoria en la GPU para que este método se pueda ejecutar en paralelo.
 
-- /respuestaColision/: Este el método que dada una partícula y un vector normal calcula la posición y velocidad rectificadas.
+- /respuestaColision/: Este el método que, dada una partícula y un vector normal, calcula la posición y velocidad rectificadas.
 
-- /detectaColisionCilindro/: Este es el método que dado un /struct/ cilindro determina a través de las operaciones vectoriales mencionadas en el capítulo [[*Colisiones]] si existe o no colisión con un cilindro y modifica el estado de colisión del conjunto de partículas recibidas.
+- /detectaColisionCilindro/: Este es el método que, dado un /struct/ cilindro, determina, a través de las operaciones vectoriales mencionadas en el capítulo [[*Colisiones]], si existe o no colisión con un cilindro y modifica el estado de colisión del conjunto de partículas recibidas.
 
-- /detectaColisionEsfera/: Este es el método que dado un struct esfera determina a través de las operaciones vectoriales mencionados en el capítulo [[*Colisiones]] si existe o no colisión con una esfera y modifica el estado de colisión del conjunto de partículas recibidas.
+- /detectaColisionEsfera/: Este es el método que, dado un /struct/ esfera, determina, a través de las operaciones vectoriales mencionadas en el capítulo [[*Colisiones]], si existe o no colisión con una esfera y modifica el estado de colisión del conjunto de partículas recibidas.
 
-- /detectaColisionCaja/: Este es el método que dado un struct caja determina a través de las operaciones vectoriales mencionados en el capítulo [[*Colisiones]] si existe o no colisión con una caja y modifica el estado de colisión del conjunto de partículas recibidas.
+- /detectaColisionCaja/: Este es el método que, dado un /struct/ caja, determina, a través de las operaciones vectoriales mencionadas en el capítulo [[*Colisiones]], si existe o no colisión con una caja y modifica el estado de colisión del conjunto de partículas recibidas.
 
-- /detectaColisionModelo/: Este es el método que dado un struct modelo determina a través de las operaciones vectoriales mencionados en el capítulo [[*Colisiones]] si existe o no colisión con un modelo formado por triángulos y modifica el estado de colisión del conjunto de partículas recibidas
+- /detectaColisionModelo/: Este es el método que dado un /struct/ modelo, determina, a través de las operaciones vectoriales mencionadas en el capítulo [[*Colisiones]], si existe o no colisión con un modelo formado por triángulos y modifica el estado de colisión del conjunto de partículas recibidas
 
-- /vecinasFuerzaBruta/: Este es el método que determina las partículas vecinas que tiene cada partícula recorriendo todas las partículas existentes en la simulación. Modifica los atributos del conjunto de partículas y almacena en ellas el número de partículas vecinas de cada una.
+- /vecinasFuerzaBruta/: Este es el método que calcula las partículas vecinas que tiene cada partícula, aplicando el método de búsqueda exhaustiva explicado en el capítulo [[*Búsqueda de partículas vecinas]]. Modifica los atributos del conjunto de partículas y almacena en ellas el número de partículas vecinas de cada una.
 
-- /vecinasHash/: Este es el método que determina las partículas vecinas usando la búsqueda de vecinas basada en hash explicada en el capítulo [[*Método de integración temporal]]. Modifica los atributos del conjunto de partículas y almacena en ellas el número de partículas vecinas de cada una.
+- /vecinasHash/: Este es el método que calcula las partículas vecinas usando la búsqueda de vecinas basada en hash explicada en el capítulo [[*Método de integración temporal]]. Modifica los atributos del conjunto de partículas y almacena en ellas el número de partículas vecinas de cada una.
 
-- /fuerzaMuelle/: Este es el método que calcula las fuerzas internas de cada partícula basándose en la ecuación de la fuerza del muelle. Modifica las fuerzas internas del conjunto de partículas.
+- /fuerzaMuelle/: Este es el método que calcula las fuerzas internas de cada partícula basándose en la ley de elasticidad de Hooke. Modifica las fuerzas internas del conjunto de partículas.
 
-- /FuncionKernel/: Calculo de la función kernel vista en el capitulo [[*Fundamentos del Método SPH]].
+- /FuncionKernel/: Calcula la función kernel vista en el capítulo [[*Fundamentos del Método SPH]].
 
-- /GradienteKernel/: Calculo del gradiente del kernel visto en el capitulo  [[*Fundamentos del Método SPH]].
+- /GradienteKernel/: Calcula el gradiente del kernel visto en el capítulo [[*Fundamentos del Método SPH]].
 
-- /LaplacianoKernel/: Calculo del Laplaciano del kernel visto en el capitulo  [[*Fundamentos del Método SPH]].
+- /LaplacianoKernel/: Calcula el laplaciano del kernel visto en el capítulo [[*Fundamentos del Método SPH]].
 
 - /Densidad/: Este es el método que determina la densidad del conjunto de partículas
 
@@ -1106,43 +1091,70 @@ Debido a las peculiaridades que tiene el lenguaje CUDA C, alcanza su máximo ren
 
 - /newAcceleration/: Determina a través de las fuerzas internas, externas y la masa la nueva aceleración o cinemática de cada partícula.
 
-- /exportador/: Dado un conjunto de partículas exporta sus atributos en archivos binarios entendibles por motores de renderizado.
+- /exportador/: Dado un conjunto de partículas, exporta sus atributos en archivos binarios entendibles por motores de renderizado.
 
 ** Bucle de simulación
 
-Una vez descritas las funciones desarrolladas para este simulador vamos a presentar la estructura que sigue el bucle y las actividades que se llevan a cabo
+Una vez descritas las pseudo-clases desarrolladas para este simulador, vamos a presentar la estructura que sigue el bucle de simulación y las actividades que se llevan a cabo.
 
 Los pasos que sigue el bucle son:
 
-- inicialización de las variables: definiremos las variables como objetos a colisionar y límites del espacio de nuestro simulador. En el que también inicializamos las variables como el número de partículas, posiciones velocidades y aceleraciones iniciales, así como la masa, densidad y paso de tiempo de nuestro bucle de simulación
+1. /Inicialización de las variables/: se definen las variables del entorno, es decir, los objetos a colisionar y los límites del espacio de nuestro simulador. También se inicializan las variables que representan los atributos iniciales de las partículas: el número de partículas, las posiciones, las velocidades y las aceleraciones iniciales, la masa, la densidad y el paso de tiempo del bucle de simulación.
 
-- cálculo de vecinas: Una vez inicializada las variables del entorno a simular realizamos un calculo de las partículas vecinas, en el que le asignaremos a cada partícula un numero de vecinas usando ya sea fuerza bruta o por etiquetado hash
+2. /Cálculo de vecinas/: una vez inicializadas las variables del entorno a simular, se realiza el cálculo de las partículas vecinas, en el que se le asigna a cada partícula un número de vecinas, usando bien el método de búsqueda exhaustiva o el método de discretización del espacio usando etiquetado hash.
 
-- colisiones: Justo después hay que detectar si las partículas han colisionado esto se hace a través de la detección de colisiones de diferentes cuerpos geométricos con alta simetría o de modelos discretizados con triángulos.
+3. /Colisiones/: se determina si las partículas han colisionado. Para ello, se detectan las colisiones de diferentes cuerpos geométricos con alta simetría o de modelos discretizados con triángulos. Como resultado se pueden dar dos posibles estados:
 
-  - No colisiona: Calculamos las fuerzas internas de cada partícula con SPH, para lo que necesitamos las vecinas del método anterior, calculamos las nuevas aceleraciones de este paso de tiempo a través de la suma de fuerzas y la masa de cada partícula, con esto decimos que hemos calculado la dinámica para el fluido cuando no existe colisión
+   - Colisiona: en este caso, se aplica la /respuesta colisión/ que nos modifica la velocidad y la posición de la partícula, para que en el siguiente paso de tiempo no colisione.
 
-  - Colisiona: Se aplica la respuesta colisión que nos modifica la velocidad y posición de la partícula para que en el siguiente paso de tiempo no colisione.
+   - No colisiona: en este caso, se calculan las fuerzas internas de cada partícula con SPH. Para ello, se necesitan las vecinas obtenidas del paso anterior. También, se calculan las nuevas aceleraciones de este paso de tiempo, utilizando la suma de fuerzas y la masa de cada partícula. En este momento, se puede decir que se ha calculado la dinámica para el fluido cuando no existe colisión.
 
-- Método de Euler: Se calculan las nuevas velocidades y posiciones de las partículas a través de la aceleración siempre que esta no haya colisionado.
+4. /Método de Euler/: se calculan las nuevas velocidades y posiciones de las partículas a través de la aceleración, siempre que éstas no hayan colisionado.
 
-- Por último, reinicializan las variables de posición, velocidad y densidad y el bucle se repite.
+Por último, se reinicializan las variables de posición, velocidad y densidad, y el bucle se repite.
 
 #+CAPTION: Bucle de simulación
 #+ATTR_LATEX: :width 12cm
 [[./graficos/diagrama.pdf]]
 
+Para mejorar el rendimiento del bucle de simulación se han paralelizado los siguientes procesos, aprovechando las posibilidades que ofrece el lenguaje CUDA C:
 
-Para mejorar el rendimiento  de este bucle de simulación se han paralelizado los siguientes procesos.
-
-- Cálculo de vecinas: todo el calculo de vecinas se lleva a cabo paralelamente con CUDA
-- La detección de colisiones y respuesta de colisiones se lleva a cabo de forma paralela para cada partícula
-- El cálculo de las fuerzas del fluido se lleva a cabo de forma paralela para cada partícula
-- El cálculo de las nuevas aceleraciones se lleva a cabo de manera paralela para cada partícula
-- El cálculo de las nuevas posiciones, velocidades, densidad y presión también se lleva a cabo de manera paralela para cada partícula.
+- Cálculo de vecinas: (/vecinasFuerzaBruta/, /vecinasHash/)
+- La detección de colisiones y respuesta de colisiones: (/respuestaColision/, /detectaColisionCilindro/, /detectaColisionEsfera/, /detectaColisionCaja/, /detectaColisionModelo/)
+- El cálculo de las fuerzas del fluido: (/fuerzaMuelle/, /FuncionKernel/, /GradienteKernel/, /LaplacianoKernel/, /fuerzaSPH/)
+- El cálculo de las nuevas aceleraciones: (/newAcceleration/)
+- El cálculo de las nuevas posiciones, velocidades, densidades y presiones: (/Densidad/, /MetodoEulerSemImplcito/)
 
 ** Resultados obtenidos
 *** Comparativa en tiempo de renderizado
 * Conclusiones y trabajo futuro
+
+En este último capítulo del trabajo de fin de grado se expondrán las conclusiones que se han obtenido durante el desarrollo de un ``Simulador de fluidos basado en física con arquitectura CUDA''.
+
+A lo largo del proyecto se han definido como objetivos mínimos del desarrollo, la creación de un simulador de fluidos funcional, que resulte realista, versátil y que aproveche el óptimamente el rendimiento del nuevo hardware de los sistemas informáticos actuales.
+
+Para alcanzar estos objetivos se ha realizado una serie de estudios, trabajos y prácticas que vamos a concretar a continuación
+
+- Se ha comenzado, analizando y estudiando en profundidad los distintos métodos numéricos existentes utilizados para la simulación física, seleccionando finalmente el Método /Smoothed Particles Hydrodynamics/ (SPH). Este nos ha proporcionado los fundamentos teóricos para poder realizar simulaciones de una manera realista y versátil. Las principales conclusiones de este estudio se han presentado en el capítulo 3
+
+- Uno de los primeros problemas que se nos presentó fué la búsqueda de partículas vecinas, que es una de las mayores debilidades del método SPH. En un primer momento, se han desarrollado en CUDA C las funciones necesarias para implementar una búsqueda exhaustiva para un número pequeño de partícules. Posteriormente, se desarrolló un método de búsqueda de vecinas, discretizando el espacio y usando etiquetado hash.
+
+- A continuación, se necesitaba conocer las posiciones y velocidades de las particulas por lo que se estudiaron los diferentes métodos de integración temporal numérica, lo que ha permitido seleccionar e implementar en CUDA C, el que más se adecuaba a las peculiaridades de nuestro simulador: el método de Euler semi-implícito.
+
+- Por último, era necesario contar con gestor de colisiones que se encargara de detectar las colisiones con distintas figuras geométricas y generar una respuesta realista. En su desarrollo se ha implementado una serie de funciones capaces de modificar las propiedades de las partículas que conforman el fluido simulado. Todos el conocimiento adquirido se explica en el capítulo [[*Colisiones]].
+
+- En todo momento, se entendió que, para aumentar el rendimiento del simulador lo máximo posible, se necesitaba un conocimiento amplio y extenso de la arquitectura CUDA y el lenguaje C. Esta ha sido una de las principales tareas y que más tiempo ha consumido, ya que la disponibilidad de documentación y recursos es escasa en comparación con otros lenguajes, por tratarse de un lenguaje de uso muy específico, que permite programar directamente sobre las tarjetas gráficas de NVIDIA
+
+- Igualmente, se emprendió el aprendizaje de la librería OpenGL y diferentes sistemas de renderizado. Además de profundizar en los conceptos de CG. Todo este conocimiento se ha usado para la creación de un sistema de exportación de archivos, que puedan ser usados por motores gráficos comerciales.
+
+A nivel profesional y académico, durante la realización de este proyecto he conseguido ampliar mi  nivel de conocimiento sobre CG, el sector en el que querría integrarme profesionalmente. Además, de profundizar y poner en práctica los conocimientos estudiados en varias asignaturas del grado de Ingeniería Informática y Tecnologías Virtuales, como
+
+** Trabajo Futuro
+
+Debido a lo ambicioso y complejo de este proyecto fin de grado, junto con el hecho de que puede considerarse un proyecto de investigación, son aplicables muchos desarrollos futuros.
+
+Conseguir que el simulador sea capaz de renderizar imágenes en tiempo real, se ha conseguido una mejora de rendimiento usando arquitectura CUDA pero seria posible incrementarlo al punto que realice gráficos a tiempo real.
+Implementar una interfaz de usuario para facilitar el uso del simulador, en ella se podría modificar el número de partículas, posición, velocidad, orientación y objetos a interactuar.
+
 * Referencias                                                        :ignore:
 #+print_bibliography:
