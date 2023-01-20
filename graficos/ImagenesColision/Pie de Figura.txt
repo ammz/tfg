@@ -1,0 +1,1 @@
+Comparativa de la gestón de colisiones. Las imágenes de la derecha se han obtenido utlizando cajas y cilindros, considerados como objetos de simetría geométrica. Las imagenes de la izquierda muestran los resultados de un cilindro, considerado como objeto de simetría, y el Stanford Bunny cuyo contorno está discretizado con ... triángulos.

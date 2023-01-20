@@ -1,0 +1,1 @@
+Comparativa de los resultados obtenidos para diferentes fluidos: agua, aceite y chocolate. Las imágenes de la derecha se obtuvieron a los 0.25 segundos de simulación, los de la izquierda a los 0.75 segundos.

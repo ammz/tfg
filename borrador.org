@@ -568,37 +568,82 @@ Si bien ambas ecuaciones son simétricas y cumplen las premisas de SPH, Monaghan
 
 La búsqueda de partículas vecinas es una de las tareas fundamentales en el método SPH. Tal como se indicó en el Capítulo [[*Fundamentos del Método SPH]], el modo en que se propagan las interacciones, en el método SPH, es a través de las partículas que se encuentran dentro del dominio soportado de la función kernel, las partículas vecinas. Determinar cuáles son las partículas vecinas de cada una de las partículas que componen el modelado del fluido, constituye uno de los retos más importantes en la simulación mediante SPH, desde un punto de vista de consumo de tiempo de cómputo. Es decir, resulta necesario encontrar las partículas vecinas de una partícula dada para poder calcular las propiedades del fluido en ese punto utilizando la función kernel.
 
-Hay varios métodos para buscar partículas vecinas en SPH. Algunos de los métodos más comunes incluyen:
+Hay varios métodos para buscar partículas vecinas en SPH. Pero podemos dividirlos principalmente en dos tipos.
 
-- /Listas de vecindad estáticas/: en este método, se construye una lista de vecindad estática para cada partícula al principio de la simulación y se utiliza para todo el tiempo de simulación. Es importante reconstruir la lista de vecindad en caso de que las partículas se salgan de su vecindario original.
+- Búsqueda exhaustiva:
 
-- /Búsqueda vecinal dinámica/: en este método, se buscan las partículas vecinas de una partícula dada en cada paso de tiempo. Se puede utilizar estructuras de datos como el octree o el kd-tree para hacer esta búsqueda de manera eficiente.
+  /Búsqueda por fuerza bruta/: La búsqueda de vecinos por fuerza bruta es un algoritmo que se utiliza para encontrar las partículas más cercanas a una partícula dada en un conjunto de partículas. El algoritmo consiste en comparar la distancia entre cada partícula y la partícula dada, y luego seleccionar aquellas que estén dentro de un radio de suavizado específico.
 
-- /Grids/: Es una aproximación de malla de cuadros regular, es decir, se divide el espacio en celdas regulares y se clasifican las partículas en las celdas correspondientes, permitiendo una búsqueda eficiente de las partículas vecina.
+- Discretización del espacio:
 
-- /Búsqueda exhaustiva o por fuerza bruta/:
+  /Grids/: Es una aproximación de malla de cuadros regular, es decir, se divide el espacio en cubos regulares y se clasifican las partículas en los cubículos correspondientes, permitiendo una búsqueda eficiente de las partículas vecina.
 
-En general, el tiempo de cálculo para la búsqueda vecinal es proporcional al número de partículas, y puede ser un cuello de botella importante en las simulaciones con un alto número de partículas. Por esta razón, es importante seleccionar el método de búsqueda vecinal adecuado para cada simulación y optimizarlo para mejorar el rendimiento.
 
-** Búsqueda de vecinas mediante Fuerza bruta
+** Búsqueda de vecinas mediante Fuerza Bruta
 
 La búsqueda de vecinos en el método de partículas suaves (SPH) mediante fuerza bruta consiste en comparar la posición de cada partícula con la posición de todas las demás partículas para encontrar las partículas vecinas. Es una técnica simple, pero tiene un tiempo de ejecución que crece de manera cuadrática con el número de partículas, lo que la hace ineficiente para simular grandes conjuntos de partículas.
 
-En esta técnica se recorren todas las partículas, y se compara su posición con la de cada otra partícula para determinar si la distancia es inferior al radio del dominio soportado, $h$, de la función kernel. Se puede utilizar un radio fijo o un radio variable para determinar el dominio soportado, tal como se sugiere en Price [cite:@Price12].
+En esta técnica se recorren todas las partículas, y se compara su posición con la de cada otra partícula para determinar si la distancia es inferior al radio del dominio soportado, h, de la función kernel. Se puede utilizar un radio fijo o un radio variable para determinar el dominio soportado, tal como se sugiere en Price [cite:@Price12].
 
-Este método es útil para pequeñas cantidades de partículas, pero se vuelve ineficiente para sistemas grandes debido a su complejidad computacional. En lugar de esto, se recomiendan técnicas de búsqueda vecinal más eficientes, como el uso de estructuras de datos como /octree/, /kd-tree/ o etiquetado /hash/.
+El proceso funciona de la siguiente manera:
+
+- Se recorre cada partícula en el conjunto de partículas.
+- Para cada partícula, se calcula la distancia entre ella y la partícula dada.
+- Si la distancia es menor o igual al radio de suavizado, se considera que es una partícula vecina y se añade a la lista de vecinos.
+- Se repite este proceso para cada partícula en el conjunto de partículas.
+
+
+Este método es útil para pequeñas cantidades de partículas, pero se vuelve ineficiente para sistemas grandes debido a su complejidad computacional, su complejidad es del orden $O(n^2)$. En lugar de esto, se recomiendan técnicas de búsqueda vecinal más eficientes, como el uso de estructuras de datos como /octree/, /kd-tree/ o etiquetado /hash/.
 
 ** Búsqueda basada en Grids con marcado Hashing
 
-La búsqueda de vecinos basada en etiquetado hash es una técnica utilizada para encontrar partículas vecinas en el método de partículas suaves (SPH). Esta técnica se basa en el uso de una tabla hash para almacenar las partículas en diferentes ``celda'' en función de su posición en el espacio.
+La búsqueda de vecinos basada en etiquetado hash es una técnica utilizada para encontrar partículas vecinas en el método de partículas suaves (SPH). Esta técnica se basa en el uso de una tabla hash para almacenar las partículas en diferentes “cubos” en función de su posición en el espacio.
 
-Sucintamente, esta técnica opera sobre divisiones del espacio mediante mallas, cada una de las cuales, y siempre que contengan al menos una partícula, es marcada o etiquetada con un número primo obtenido de una operación lógico-algebraica, la función hash. Luego, se buscan las partículas vecinas a través de un recorrido de las celdas adyacentes a la celda de la partícula dada.
+Sucintamente, esta técnica opera sobre divisiones del espacio mediante mallas, cada una de las cuales, y siempre que contengan al menos una partícula, es marcada o etiquetada con un número primo obtenido de una operación lógico-algebraica, la función hash. Luego, se buscan las partículas vecinas a través de un recorrido de los cubículos adyacentes al cubo de la partícula dada.
 
-La ventaja de este método es que, al clasificar las partículas en las celdas, se puede limitar el número de partículas que se deben revisar para encontrar vecinos a solo aquellas en las celdas adyacentes. Esto reduce significativamente el tiempo de cómputo que mejora conforme aumenta el número de partículas a simular y permite realizar simulaciones con un gran número de partículas.
+La ventaja de este método es que, al clasificar las partículas en los cubículos, se puede limitar el número de partículas que se deben revisar para encontrar vecinos a solo aquellas en los cubículos adyacentes. Esto reduce significativamente el tiempo de cómputo que mejora conforme aumenta el número de partículas a simular y permite realizar simulaciones con un gran número de partículas.
 
-Sin embargo, esta técnica tiene algunas desventajas. El problema es que si el número de partículas es relativamente bajo, del orden de algunos miles, el procesamiento hash puede ser más costoso que el de búsqueda exhaustiva. Además, no existe una función hash perfecta por lo que se requiere de un filtrado posterior para evitar la denominada colisión por valor hash, tal como menciona Kelager [cite:@Kelager06].
+Sin embargo, esta técnica tiene algunas desventajas. El problema es que, si el número de partículas es relativamente bajo, del orden de algunos miles, el procesamiento hash puede ser más costoso que el de búsqueda exhaustiva. Además, no existe una función hash perfecta por lo que se requiere de un filtrado posterior para evitar la denominada colisión por valor hash, tal como menciona Kelager [cite:@Kelager06].
 
 En general, la búsqueda de vecinos basada en etiquetado hash es una técnica eficiente para encontrar vecinos en SPH, pero requiere una buena comprensión de los detalles y puede requerir ajustes para adaptarse a diferentes situaciones.
+
+El etiquetado hash es una técnica que se utiliza para organizar y acceder rápidamente a datos en una estructura de datos, como un arreglo o una tabla hash. En el contexto de la búsqueda de vecinos en el método SPH, el etiquetado hash se puede utilizar para mejorar el rendimiento del algoritmo de Kélager.
+
+La idea es construir una tabla hash que asigne a cada partícula una etiqueta única basada en su posición en el espacio. Luego, al buscar vecinos, se puede acceder rápidamente a las partículas en los cubículos adyacentes a través de la tabla hash en lugar de recorrer todos los cubículos de la cuadrícula.
+
+El proceso sería el siguiente:
+
+- Se construye una tabla hash en la que cada entrada representa un cubículo de la cuadrícula y contiene una lista de etiquetas de partículas.
+
+- Para cada partícula, se calcula su posición en la cuadrícula y se asigna una etiqueta única basada en esa posición.
+
+- Se inserta la etiqueta de la partícula en la lista de la entrada de la tabla hash correspondiente al cubículo en la que se encuentra la partícula.
+
+- Al buscar vecinos, se accede a la entrada de la tabla hash correspondiente al cubículo en la que se encuentra la partícula y se buscan las partículas en los cubículos adyacentes a través de las etiquetas.
+
+Al utilizar una tabla hash, se puede acceder rápidamente a las partículas vecinas y se evita tener que recorrer todos los cubículos de la cuadrícula. Esto puede mejorar significativamente el rendimiento del algoritmo de búsqueda de vecinos de Kélager, especialmente en casos donde hay un gran número de partículas o un dominio de simulación muy grande.
+
+Uno de los problemas que genera usar etiquetado hash es la coalescencia de memoria, es decir, que las direcciones de memoria que sean cercanas representen cubículos adyacentes por lo que no se perdería tanto tiempo de computo. Esto lo resolvemos siguiendo la propuesta de Perea et al. [cite:@Perea-Cordero17], realizando la partición del espacio de la siguiente manera:
+
+Primero en el eje X,
+
+#+ATTR_LATEX: :width 8.5cm
+[[./graficos/1D.pdf]]
+
+
+luego en el eje Y
+
+#+ATTR_LATEX: :width 8.8cm
+[[./graficos/2D.pdf]]
+
+
+y por último en el eje Z
+
+#+ATTR_LATEX: :width 9cm
+[[./graficos/3D.pdf]]
+
+
+
 * Método de integración temporal
 
 La ecuación de NS tiene dependencia espacial y temporal. La componente espacial, esto es, el gradiente, el laplaciano y la densidad la calculamos mediante el método SPH, descrito en el capítulo [[*Fundamentos del Método SPH]]. Sin embargo, la componente temporal, evidenciada mediante la derivada sustantiva, requiere de un tratamiento específico no contemplado en el método SPH. Para tal fin se utilizan otros métodos numéricos tanto explícitos como implícitos, en Modak et al. [cite:@Modak-Sotelino02] se realiza una descripción de las diferentes metodologías. En nuestro proyecto nos vamos a centrar en los métodos explícitos y semi-implícitos algunos de los cuales procederemos a describir a continuación.
