@@ -103,7 +103,7 @@ $\rho$ es la densidad del fluido, $\frac{\mathrm {D}}{\mathrm {D} t}$ es la deri
 
 Esta ecuación expresa el comportamiento del fluido y su dinámica, describiendo cómo la velocidad, la presión y la densidad evolucionan en el tiempo y en el espacio.
 
-Aunque es indudable las ventajas que representa poder operar exclusivamente con la ecuación de Navier--Stokes en la simulación de fluidos, algunos autores como  han apuntado que precisamente en la simulación de fluidos, es conveniente incorporar la propiedad de /incompresibilidad/, sobre todo en el ámbito de la CG, ya que esta no está considerada en la ecuación de Navier--Stokes. Ha habido distintas propuestas técnicas como las de Solenthaler [cite:@Solenthaler-Pajarola09] y Teschner [cite:@BecTes07] que pretenden resolver el problema /imponiendo/ la incompresibilidad mediante procesos de adaptación de resultados calculando el valor instantáneo de la presión o a través de la composición de la ecuación de Navier--Stokes y la conservación de la masa. Debido a estas desventajas, en este proyecto consideraremos un modelo basado en la propuesta de Perea et al. [cite:@Perea-Cordero16] que impone implícitamente la incompresibilidad.
+Aunque es indudable las ventajas que representa poder operar exclusivamente con la ecuación de Navier--Stokes en la simulación de fluidos, algunos autores como (...) han apuntado que precisamente en la simulación de fluidos, es conveniente incorporar la propiedad de /incompresibilidad/, sobre todo en el ámbito de la CG, ya que esta no está considerada en la ecuación de Navier--Stokes. Ha habido distintas propuestas técnicas como las de Solenthaler [cite:@Solenthaler-Pajarola09] y Teschner [cite:@BecTes07] que pretenden resolver el problema /imponiendo/ la incompresibilidad mediante procesos de adaptación de resultados calculando el valor instantáneo de la presión o a través de la composición de la ecuación de Navier--Stokes y la conservación de la masa. Debido a estas desventajas, en este proyecto consideraremos un modelo basado en la propuesta de Perea et al. [cite:@Perea-Cordero16] que impone implícitamente la incompresibilidad.
 
 ** Diferentes métodos numéricos
 
@@ -117,11 +117,11 @@ Existen varios métodos numéricos que se han desarrollado para la simulación d
 
 - *Métodos Lagrangianos*:
 
-  Son aquellos métodos en los que se considera el fluido como un conjunto de partículas y se describen las variables en función de la posición y la velocidad de cada partícula. El método de partículas (SPH) es un ejemplo de estos métodos, se basa en la resolución de la ecuación de continuidad y la ecuación de movimiento para cada partícula, utilizando una función de suavizado o kernel para la interpolación entre las partículas. Este método es ampliamente utilizado en aplicaciones como la simulación de fluidos en medios porosos, fluidos multi-componentes y en problemas de dinámica de fluidos complejos.
+  Son aquellos métodos en los que se considera el fluido como un conjunto de partículas y se describen las variables en función de la posición y la velocidad de cada partícula. El método de partículas (SPH) es un ejemplo de estos métodos, se basa en la resolución de la ecuación de continuidad y la ecuación de movimiento para cada partícula, utilizando una función kernel para la interpolación entre las partículas. Este método es ampliamente utilizado en aplicaciones como la simulación de fluidos en medios porosos, fluidos multi-componentes y en problemas de dinámica de fluidos complejos.
 
   Los métodos lagrangianos presentan indudables ventajas frente a los eulerianos, ya que, por una parte, al operar con partículas en lugar de mallas permite una mayor simplificación de los cálculos y permite una gran adaptabilidad al contenedor del fluido, especialmente cuando se simulan líquidos. Por otro lado, resolver la ecuación de Navier--Stoke mediante el uso de técnicas lagrangianas, “genera” un conjunto de ecuaciones desacopladas que facilita el proceso de solución. Otra importante característica de los métodos lagrangianos  es que facilitan simular la interfase entre fluidos –por ejemplo aire–líquido– y la conservación de la masa.
 
-El SPH (/Smoothed Particle Hydrodynamics/) se presenta como el método más destacable de los métodos lagrangianos. Se trata método numérico utilizado para simular el comportamiento de fluidos. En este método, el fluido se representa como un conjunto de partículas que se mueven e interactúan entre sí a través de fuerzas de interacción, definido a partir de las ecuaciones en derivadas parciales con las que se describe el flujo del fluido. Cada partícula tiene una masa y está sujeta a la influencia de las demás partículas, las más próximas, a su alrededor. Esta interacción local es la que modela la interacción y permite reproducir el comportamiento de los fluidos de manera realista. Dado los buenos resultados que ofrece, el método SPH se utiliza a menudo en aplicaciones de simulación de fluidos en la industria del cine y en la ingeniería, así como en la investigación científica.
+El SPH (/Smoothed Particle Hydrodynamics/) se presenta como el método más destacable de los métodos lagrangianos. Se trata de un método numérico utilizado para simular el comportamiento de fluidos. En este método, el fluido se representa como un conjunto de partículas que se mueven e interactúan entre sí a través de fuerzas de interacción, definido a partir de las ecuaciones en derivadas parciales con las que se describe el flujo del fluido. Cada partícula tiene una masa y está sujeta a la influencia de las demás partículas, las más próximas, a su alrededor. Esta interacción local es la que modela la interacción y permite reproducir el comportamiento de los fluidos de manera realista. Dado los buenos resultados que ofrece, el método SPH se utiliza a menudo en aplicaciones de simulación de fluidos en la industria del cine y en la ingeniería, así como en la investigación científica.
 
 Algunas de las ventajas específicas asociadas al uso del método SPH son las siguientes:
 
@@ -149,7 +149,7 @@ El principal objetivo de este trabajo es desarrollar un simulador tridimensional
 
 En el desarrollo del proyecto también se ha investigado en solventar los principales inconvenientes que tiene el método SPH, en analizar los diferentes parámetros dentro de la simulación para que la simulación sea estable y estudiar otras propuestas, en desarrollar una implementación que nos permita colisionar de manera realista con diferentes tipos de sólidos rígidos y en implementar exportadores para motores de renderizado para que el proyecto tenga un renderizado de mayor calidad
 
-El proyecto deberá tener una estructura que sea escalable ya que no se pretende que este proyecto, dado lo ambicioso de sus objetivos, no es finalizar dentro del tiempo dado durante el TFG si no que se desarrolle más allá del ámbito de la universidad.
+El proyecto deberá tener una estructura que sea escalable, ya que no se pretende que este proyecto, dado lo ambicioso de sus objetivos, sea finalizar dentro del tiempo disponible durante el TFG, si no que se desarrolle más allá del ámbito de la universidad.
 
 ** Organización del proyecto
 
@@ -159,7 +159,7 @@ En el capítulo [[*Análisis]] se describirá de manera técnica el proyecto a d
 
 En el capítulo [[*Fundamentos del Método SPH]] se revisara en profundidad el método SPH, especialmente en sus fundamentos matemáticos, los diferentes estudios que avalan el método y los problemas del mismo junto con las diferentes soluciones creadas para solventarlos.
 
-En el capítulo [[*Búsqueda de partículas vecinas]]
+En el capítulo [[*Búsqueda de partículas vecinas]] se expondran dos de los posibles métodos disponibles para determinar la búsqueda de partículas vecinas dentro de un fluido.
 
 En el capítulo [[*Método de integración temporal]] se explican los diferentes métodos de integración temporal, uno de los pilares en la simulación, qué papel juega dentro de nuestra simulación y se explica la decisión de escoger un método sobre otro.
 
@@ -185,7 +185,7 @@ Aunque este proyecto de TFG sigue el desarrollo de un simulador y no es una apli
 
 ** Funcionamiento
 
-El funcionamiento del simulador será tal que a partir de unos parámetros de entrada a modificar en el código, este será capaz de ejecutar un numero de instrucciones determinadas que darán como resultado un programa, que tras su compilación y ejecución, exportara un numero determinado de archivos binarios que sirven para describir el comportamiento de la simulación. Estos después podrán ser utilizados en un motor de renderizado que nos facilite la visualización de la simulación.
+El funcionamiento del simulador será tal que a partir de unos parámetros de entrada a modificar en el código, este será capaz de ejecutar un número de instrucciones determinadas que darán como resultado un programa, que tras su compilación y ejecución, exportará un numero determinado de archivos binarios, que sirven para describir el comportamiento de la simulación. Éstos, más tarde, podrán ser utilizados en un motor de renderizado que nos facilite la visualización de la simulación.
 
 ** Entorno
 
@@ -197,9 +197,9 @@ El funcionamiento del simulador será tal que a partir de unos parámetros de en
 
 ** Vida Esperada
 
-Al enmarcarse en un proyecto de investigación es extremadamente complejo especificar la vida esperada del simulador. El desarrollo de este simulador se basa en diferentes estudios ya propuestos como se explica en el capitulo 1, con el objetivo de tener una mejora de rendimiento utilizando la potencia de calculo que ofrecen de las GPU. Por tanto, se espera que este simulador sirva como punto de partida hacia mejoras en el rendimiento de la simulación de fluidos basada en física y que tenga una duración prolongada, además de que se siga ampliando una vez acabado el ámbito de este TFG con los nuevos estudios y hardware futuros.
+Al enmarcarse en un proyecto de investigación es extremadamente complejo especificar la vida esperada del simulador. El desarrollo de este simulador se basa en diferentes estudios ya propuestos como se explica en el capítulo [[*Introducción]], con el objetivo de tener una mejora de rendimiento utilizando la potencia de cálculo que ofrecen el uso y programación de las GPU. Por tanto, se espera que este simulador sirva como punto de partida hacia mejoras en el rendimiento de la simulación de fluidos basada en física y que tenga una duración prolongada, además de que se siga ampliando, una vez acabado el ámbito de este TFG, incorporando los nuevos avances en la investigación y hardware futuros.
 
-También al ser CUDA una plataforma desarrollada por NVIDA una de las mayores empresas productoras de tarjetas gráficas en el mundo, esta ofrece un soporte continuo a sus librerías y debido al éxito y potencial que ha demostrado el uso de esta, se puede suponer que CUDA no se dejara de mantener en el corto plazo.
+También, al ser CUDA una plataforma desarrollada por NVIDA, una de las mayores empresas productoras de tarjetas gráficas en el mundo, ésta ofrece un soporte contínuo de sus librerías y, debido al éxito y potencial que ha demostrado su uso por parte de la comunidad cientifica y profesional, se puede suponer que CUDA no se dejará de mantener en el corto plazo.
 
 ** Ciclo de mantenimiento
 
@@ -252,42 +252,46 @@ A continuación se definen los objetivos a alto nivel:
 
 *** Requisitos de información
 
-A continuación se presentan los requisitos de información, que presentan la información relevante que es necesaria para un simulador de fluidos
+A continuación se presentan los requisitos de información, que presentan la información relevante que es necesaria para un simulador de fluidos:
 
-- RI-01: El usuario debe indicar el numero de partículas a utilizar durante la simulación
-- RI-02: Las partículas del simulador deben almacenar sus propiedades constitutivas
+- RI-01: El usuario debe indicar el numero de partículas a utilizar durante la simulación.
+- RI-02: Las partículas del simulador deben almacenar sus propiedades constitutivas.
 
 *** Requisitos Funcionales
 
-Los mínimos que debe alcanzar el simulador vienen dados por los siguientes requisitos funcionales
+Los mínimos que debe alcanzar el simulador vienen dados por los siguientes requisitos funcionales:
 
-- RF-01: El simulador debe ser capaz de colisionar con sólidos rígidos
-- RF-02: El simulador debe ejecutar parte del código en paralelo
-- RF-03: Se debe poder añadir diferentes sólidos rígidos dentro del simulador
-- RF-04: Las partículas deben modificar sus posición y velocidad dentro del simulador
+- RF-01: El simulador debe ser capaz de colisionar con sólidos rígidos.
+- RF-02: El simulador debe ejecutar parte del código en paralelo.
+- RF-03: Se debe poder añadir diferentes sólidos rígidos dentro del simulador.
+- RF-04: Las partículas deben modificar sus posición y velocidad dentro del simulador.
 - RF-05: El simulador debe implementar algún algoritmo de búsqueda de vecinas.
 
 *** Requisitos No Funcionales
 
-A continuación, con los requisitos no funcionales se determinan ciertas restricciones que debe cumplir nuestro simulador
+A continuación, con los requisitos no funcionales se determinan ciertas restricciones que debe cumplir nuestro simulador:
 
-- RNF-01: El simulador debe exportar binarios para su posterior renderizado
-- RNF-02: El simulador debe trabajar sobre una tarjeta NVIDIA
-- RNF-03: El simulador debe trabajar bajo la metodología SPH
+- RNF-01: El simulador debe exportar binarios para su posterior renderizado.
+- RNF-02: El simulador debe trabajar sobre una tarjeta NVIDIA.
+- RNF-03: El simulador debe trabajar bajo la metodología SPH.
 
 *** Matriz de Trazabilidad de Requisitos
 
-Después de haber especificado todos los requisitos necesarios para la simulación, se debe garantizar que estos van a cumplir los objetivos establecidos. Una herramienta gráfica muy útil para esto es la elaboración de matrices de trazabilidad. Una matriz de trazabilidad es una tabla en la que se relacionan todos los requisitos planteados con los objetivos (requisitos generales) establecidos y sirve para visualizar qué resultado alcanzará cada requisito. Las siguientes tablas muestran las matrices de trazabilidad de los requisitos generales respecto a los requisitos de información, requisitos funcionales y requisitos no funcionales respectivamente.
+Después de haber especificado todos los requisitos necesarios para la simulación, se debe garantizar que estos van a cumplir los objetivos establecidos. Una herramienta gráfica muy útil para esto es la elaboración de matrices de trazabilidad. Una matriz de trazabilidad es una tabla en la que se relacionan todos los requisitos planteados con los objetivos (requisitos generales) establecidos y sirve para visualizar qué resultado alcanzará cada requisito. Los siguientes cuadros muestran las matrices de trazabilidad de los requisitos generales respecto a los requisitos de información, requisitos funcionales y requisitos no funcionales respectivamente.
 
-#+CAPTION: Matriz de trazabilidad de los requisitos generales respecto a los requisitos de información \\
+#+CAPTION[Matriz de trazabilidad de los requisitos generales respecto a los requisitos de información]: Matriz de trazabilidad de los requisitos generales respecto a los requisitos de información \\
 #+ATTR_LATEX: :align |c|c|c|c|
+|---------+-------+-------+-------|
 | RI \ RG | RG-01 | RG-02 | RG-03 |
 |---------+-------+-------+-------|
 | RI-01   | -     | X     | -     |
 | RI-02   | X     | X     | -     |
+|---------+-------+-------+-------|
 
-#+CAPTION: Matriz de trazabilidad de los requisitos generales respecto a los requisitos funcionales \\
+
+#+CAPTION[Matriz de trazabilidad de los requisitos generales respecto a los requisitos funcionales]: Matriz de trazabilidad de los requisitos generales respecto a los requisitos funcionales \\
 #+ATTR_LATEX: :align |c|c|c|c|
+|---------+-------+-------+-------|
 | RF \ RG | RG-01 | RG-02 | RG-03 |
 |---------+-------+-------+-------|
 | RF-01   | X     | X     | -     |
@@ -295,14 +299,19 @@ Después de haber especificado todos los requisitos necesarios para la simulaci�
 | RF-03   | X     | X     | -     |
 | RF-04   | X     | -     | -     |
 | RF-05   | -     | -     | X     |
+|---------+-------+-------+-------|
 
-#+CAPTION:Matriz de trazabilidad de los requisitos generales respecto a los requisitos no funcionales \\
+
+#+CAPTION[Matriz de trazabilidad de los requisitos generales respecto a los requisitos no funcionales]: Matriz de trazabilidad de los requisitos generales respecto a los requisitos no funcionales \\
 #+ATTR_LATEX: :align |c|c|c|c|
+|----------+-------+-------+-------|
 | RNF \ RG | RG-01 | RG-02 | RG-03 |
 |----------+-------+-------+-------|
 | RNF-01   | X     | -     | -     |
 | RNF-02   | -     | -     | X     |
 | RNF-03   | X     | X     | X     |
+|----------+-------+-------+-------|
+
 
 * Fundamentos del Método SPH
 ** Introducción
@@ -315,12 +324,13 @@ Si bien el método SPH fue desarrollado por Gingold--Monaghan [cite:@Gingold-Mon
 
 Para poder aplicar el método SPH en la simulación del flujo del fluido, es necesario que el continuo que es el fluido, quede representado, unívocamente, por un sistema de partículas que puedan interactuar entre cada una de ellas. Así pues, para una correcta representación del fluido mediante partículas, se tiene que cumplir que la suma de la masa de todas las partículas sea igual a la masa de la totalidad del fluido. Así queda satisfecha una de las restricciones más importantes en física que es \textit{la conservación de la masa}.  Una vez que el fluido es transformado en un sistema de partículas, se tiene que \textit{modelar} la interacción entre las partículas. Aquí es donde entra en juego la formulación de SPH, que describiremos a lo largo de este capítulo, con las que se modela las ecuaciones en derivadas parciales del fluido. Resumidamente, las dos \textit{piedras angulares} de SPH son:
 
-1. /Las partículas/ donde se particularizan las magnitudes del fluido ($\rho$,$\nu$...), la masa y las magnitudes dinámicas (posición, velocidad, aceleración).
+1. /Las partículas/ donde se particularizan las magnitudes del fluido ($\rho$, $\nu$...), la masa y las magnitudes dinámicas (posición, velocidad, aceleración).
 
 2. /La función para modelar la interacción/, que en el ámbito de SPH, suele denominarse /función kernel/. Esta función debe satisfacer ciertas condiciones, que describiremos posteriormente en este mismo capítulo, entre las que destaca la continuidad, su dependencia de la distancia y que esta dependencia es de monótona decreciente con la distancia, tal como se indica en [cite:@Liu-Liu03].
 
-Visualmente, lo que acabamos de describir se ilustra en la figura \ref{fig:esquemaKernel}
+Visualmente, lo que acabamos de describir se ilustra en la figura [[fig:kernel]].
 
+#+NAME: fig:kernel
 #+CAPTION: Ilustración de los pilares en los que se asienta el método SPH: partículas y función kernel. La interacción está restringida por el dominio de la función, cuyo radio es $h$. Las partículas que cumplan que su distancia es inferior a $h$, se denominan partículas vecinas.
 #+ATTR_LATEX: :width 10cm
 [[./graficos/kernel.pdf]]
@@ -330,11 +340,11 @@ Una vez que hemos descrito brevemente los pilares fundamentales del método SPH,
 
 ** Descripción del Método SPH
 
-El método SPH, según se ha explicado en la sección [[*Introducción]], tiene dos pilares fundamentales, estos son: las partículas y las funciones kernel. Sobre cada una de las partículas, con las que se modela el fluido en para utilizar SPH, se definen cada una de las magnitudes necesarias para resolver la ecuación NS --ecuación [[ec:Navier--Stokes]]--, es decir, la velocidad, la presión, la densidad y la masa. Además, sobre cada una de las partículas se define una función kernel que ``\textit{pondera}'' cada una de esas magnitudes dinámicas, a partir del valor que tienen dichas magnitudes en sus partículas más próximas. Modelar un fluido mediante partículas que no está ligadas a través a una malla implica que el movimiento de las partículas sea el flujo del fluido. Debido a este hecho, se puede afirmar que SPH es un método lagrangiano.
+El método SPH, según se ha explicado en la sección [[*Introducción]], tiene dos pilares fundamentales: las partículas y las funciones kernel. En este método, sobre cada una de las partículas con las que se modela el fluido se definen todas las magnitudes necesarias para resolver la ecuación NS --ecuación [[ec:Navier--Stokes]]--, es decir, la velocidad, la presión, la densidad y la masa. Además, sobre cada una de las partículas se define una función kernel que ``\textit{pondera}'' cada una de esas magnitudes dinámicas, a partir del valor que tienen dichas magnitudes en sus partículas más próximas. Modelar un fluido mediante partículas que no está ligadas a través a una malla implica que el movimiento de las partículas sea el flujo del fluido. Debido a este hecho, se puede afirmar que SPH es un método lagrangiano.
 
-Desde un punto de vista numérico, cuando el fluido es modelado mediante partículas, y sus magnitudes se aproximan mediante SPH, la ecuación de NS se transforma en un conjunto de ecuaciones algebraicas que no están acopladas entre sí. Este desacoplamiento es gracias a la formulación de la función kernel. Según se afirma en Liu et al. [cite:@Liu-Liu03], esta formulación reduce el coste computacional y simplifica los cálculos si se compara con el modelado basado en mallas. No obstante, Price [cite:@Price12] advierte de que el número de partículas vecinas $j$, de cada una de las partículas $i$, debe ser relativamente alto, en un rango mínimo de $80-120$. Sin embargo, dependiendo del tipo de función kernel, y más concretamente de su formulación, este rango de valores puede disminuir, tal como se indica en [cite:@Price12; @Perea-Cordero16]. Así pues, se puede afirmar que las características analíticas condiciona la calidad de la simulación.
+Desde un punto de vista numérico, cuando el fluido es modelado mediante partículas, y sus magnitudes se aproximan mediante SPH, la ecuación de NS se transforma en un conjunto de ecuaciones algebraicas que no están acopladas entre sí. Este desacoplamiento es gracias a la formulación de la función kernel. Según se afirma en Liu et al. [cite:@Liu-Liu03], esta formulación reduce el coste computacional y simplifica los cálculos si se compara con el modelado basado en mallas. No obstante, Price [cite:@Price12] advierte de que el número de partículas vecinas $j$, de cada una de las partículas $i$, debe ser relativamente alto, en un rango mínimo de $80-120$. Sin embargo, dependiendo del tipo de función kernel, y más concretamente de su formulación, este rango de valores puede disminuir, tal como se indica en Price y Perea et al. [cite:@Price12; @Perea-Cordero16]. Así pues, se puede afirmar que las características analíticas condiciona la calidad de la simulación.
 
-Existe un consenso en relacionar las características analíticas de las diferentes funciones kernel, con la estabilidad y el realismo. A este respecto, se han llevado a cabo una gran cantidad de estudios que establecen cuales deben ser las características esenciales, que una función monótona decreciente, debe satisfacer para obtener simulaciones de fluido realistas. La primera función kernel fue propuesta por Monaghan et al. [cite:@Gingold-Monaghan77; @Monaghan92] y se trata de la función exponencial. Esta función puede proporcionar resultados adecuados, pero presenta una incompatibilidad, que es el hecho de que su radio de dominio soportado $h$ es infinito y dado este valor establece el número de partículas vecinas, se tendría un alto número, lo cual dificulta el cálculo de las magnitudes dinámicas del fluido, como es destacado en [cite:@Liu-Liu03].
+Existe un consenso en relacionar las características analíticas de las diferentes funciones kernel, con la estabilidad y el realismo. A este respecto, se han llevado a cabo una gran cantidad de estudios que establecen cuales deben ser las características esenciales, que una función monótona decreciente, debe satisfacer para obtener simulaciones de fluido realistas. La primera función kernel fue propuesta por Monaghan et al. [cite:@Gingold-Monaghan77; @Monaghan92] y se trata de la función exponencial. Esta función puede proporcionar resultados adecuados, pero presenta una incompatibilidad, que es el hecho de que su radio de dominio soportado $h$ es infinito y dado que este valor establece el número de partículas vecinas, se tendría un alto número, lo cual dificulta el cálculo de las magnitudes dinámicas del fluido, como es destacado en Liu et al. [cite:@Liu-Liu03].
 
 Además de la limitación destacada por Liu et al. [cite:@Liu-Liu03], se han desarrollado diversos estudios que establecen las características que hacen a cualquier función monótona decreciente una ``\textit{buena}'' función kernel. Estos estudios son:
 
@@ -344,23 +354,23 @@ Además de la limitación destacada por Liu et al. [cite:@Liu-Liu03], se han des
 
 3. \label{punto:punto2} Dehnen et al. [cite:@Dehnen-Aly12] centra su estudio no sólo en la función kernel, sino también en las características que debe presentar la primera derivada de la función kernel. Según Dehnen  la función kernel debe ser una función par y su gradiente, con el que se obtiene la fuerza de presión en la ecuación [[ec:Navier--Stokes]], debe tener un valor nulo en el origen, es decir, en la posición de la partícula.
 
-4. De las investigaciones desarrolladas por Cabezón [cite:@CabGarRel08], Price [cite:@Price12] y Dehnen et al. [cite:@Dehnen-Aly12], se deduce que la mejor función kernel debería ser continua e infinitamente diferenciable, lo que el matemática analítica se denomina $\mathcal{C}^{\infty}$.
+4. De las investigaciones desarrolladas por Cabezón [cite:@CabGarRel08], Price [cite:@Price12] y Dehnen et al. [cite:@Dehnen-Aly12], se deduce que la mejor función kernel debería ser continua e infinitamente diferenciable, lo que en matemática analítica se denomina $\mathcal{C}^{\infty}$.
 
 Otras características que tiene el método SPH, que representan una ventaja cualitativa a lo hora de llevar a cabo la simulación son:
 
-1. \emph{La conservación de la masa} que es posible porque la masa de cada partícula  $m_{p_{i}}$, representa una fracción de la masa total del fluido, es decir $\sum_i m_{p_{i}} = M_f$, donde $M_f$ representa la masa total del fluido. La principal ventaja es que considerando exclusivamente la ecuación de NS es posible simular el fluido, tal como se desataca en [cite:@Monaghan92; @Liu-Liu03].
+1. \emph{La conservación de la masa} que es posible porque la masa de cada partícula  $m_{p_{i}}$, representa una fracción de la masa total del fluido, es decir $\sum_i m_{p_{i}} = M_f$, donde $M_f$ representa la masa total del fluido. La principal ventaja es que considerando exclusivamente la ecuación de NS es posible simular el fluido, tal como se desataca en Monaghan y Liu et al. [cite:@Monaghan92; @Liu-Liu03].
 
-2. \emph{Permite definir el límite liquido--aire}, conocida también como superficie libre, en el ámbito de CG [cite:@MulChaGro03] es consecuencia del modelado a través de partículas. Esta característica representa una clara ventaja frente a los modelos basados en mallas, como destaca [cite:@AkiIhmAkin.etal12].
+2. \emph{Permite definir el límite liquido--aire}, conocida también como superficie libre, en el ámbito de CG [cite:@MulChaGro03] es consecuencia del modelado a través de partículas. Esta característica representa una clara ventaja frente a los modelos basados en mallas, como se destaca en Akinci et al. [cite:@AkiIhmAkin.etal12].
 
-3. \emph{No requiere de la implementación del término de advección.} Por tratarse SPH de una técnica lagrangiana, y el hecho de que las partículas se desplazan con el flujo del fluido, no se debe considerar el término de advección, según se explica en [cite:@Liu-Liu03].
+3. \emph{No requiere de la implementación del término de advección.} Por tratarse SPH de una técnica lagrangiana, y el hecho de que las partículas se desplazan con el flujo del fluido, no se debe considerar el término de advección, según se explica en Liu et al. [cite:@Liu-Liu03].
 
-4. \emph{La ecuación de NS se transforma en un conjunto de ecuaciones algebraicas desacopladas.} Comparativamente con los métodos basados en mallas esto representa una ventaja ya que no hay que resolver complejos sistemas de ecuaciones a la hora de implementar la simulación del fluido mediante SPH [cite:@Liu-Liu03]. Esta ventaja es muy importante si se desea paralelizar el cálculo de la dinámica del fluido.
+4. \emph{La ecuación de NS se transforma en un conjunto de ecuaciones algebraicas desacopladas.} Comparativamente con los métodos basados en mallas esto representa una ventaja ya que no hay que resolver complejos sistemas de ecuaciones a la hora de implementar la simulación del fluido mediante SPH, como indica Liu et al. [cite:@Liu-Liu03]. Esta ventaja es muy importante si se desea paralelizar el cálculo de la dinámica del fluido.
 
-5. \emph{Simplifica las colisiones del fluido con el contorno}, como describiremos en el capítulo [[*Colisiones]] de esta memoria de proyecto. Se debe a que es más fácil calcular la colisión partícula contorno del cuerpo rígido que la colisión entre diferentes mallas, tal como se indica en [cite:@MulChaGro03].
+5. \emph{Simplifica las colisiones del fluido con el contorno}, como describiremos en el capítulo [[*Colisiones]] de esta memoria de proyecto. Se debe a que es más fácil calcular la colisión partícula contorno del cuerpo rígido que la colisión entre diferentes mallas, tal como se indica en Müller et al. [cite:@MulChaGro03].
 
 No obstante, aunque SPH presenta las ventajas que acabamos de describir, puede generar inestabilidades en las simulaciones que afecten a su realismo. Esta limitación se hace muy visible cuando la cantidad de partículas vecinas es baja, entorno a $20$, tal como destaca Yan et al. [cite:@YanPenLiu14]. La complejidad de diseñar una función kernel que evite este problema es una tarea compleja que sale fuera de los objetivos de este proyecto. En este proyecto utilizaremos la propuesta de Perea et al. [cite:@Perea-Cordero16; @Perea-Cordero18] donde se desarrolla un estudio de estabilidad y precisión en simulaciones de fluido mediante SPH y formulan una función kernel que garantiza buenos resultados aunque el número de partículas vecinas sea bajo.
 
-Tras esta breve introducción al método SPH, el resto del capítulo de organiza del siguiente modo. En la sección [[*Fundamentos del Método SPH]] vamos a llevar a cabo una descripción de los fundamentos de SPH, tal como las definió Monaghan et al. [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77]. Seguidamente, en la sección [[*Fundamentos de SPH y su Formulación]] expondremos cómo quedan las ecuaciones dinámicas del fluido modeladas mediante la formulación SPH. Así mismo, expondremos como se obtienen las ecuaciones discretas, que utilizaremos en nuestro simulador, y como éstas se obtienen a partir de la formulación integral, que es el punto de partida que desarrolló Monaghan et al. [cite:@Gingold-Monaghan77]. El proceso seguido en la descripción es el propuesto por Monaghan [cite:@Monaghan82; @monaghan1992smoothed], Liu [cite:@Liu-Liu03] y Price [cite:@Price12].
+Tras esta breve introducción al método SPH, el resto del capítulo se organiza como se expone a continuación. En la sección [[*Fundamentos del Método SPH]] vamos a llevar a cabo una descripción de los fundamentos de SPH, tal como las definió Monaghan et al. [cite:@Gingold-Monaghan77] y Lucy [cite:@Lucy77]. Seguidamente, en la sección [[*Fundamentos de SPH y su Formulación]] expondremos cómo quedan las ecuaciones dinámicas del fluido modeladas mediante la formulación SPH. Así mismo, expondremos como se obtienen las ecuaciones discretas, que utilizaremos en nuestro simulador, y como éstas se obtienen a partir de la formulación integral, que es el punto de partida que desarrolló Monaghan et al. [cite:@Gingold-Monaghan77]. El proceso seguido en la descripción es el propuesto por Monaghan [cite:@Monaghan82; @monaghan1992smoothed], Liu [cite:@Liu-Liu03] y Price [cite:@Price12].
 
 ** Fundamentos de SPH y su Formulación
 
@@ -368,11 +378,11 @@ Desde la perspectiva de análisis funcional, tal como se describe en [cite:@Liu-
 
 Existe un consenso en descomponer, en dos etapas, las operaciones con las que Monaghan [cite:@Gingold-Monaghan77] establece la ecuación fundamental de SPH acorde con el criterio establecido por Dirac para formular su función $\delta$:
 
-1. \label{punto:paso1Cap2FormIntegral} La primera etapa se basa en considerar, tal como estableció Dirac, la formulación integral de la función  $\delta$, pero considerando que se trata, en lugar de una pulsiana, de una función cerrada y acotada, lo que el análisis de funciones se conoce como \textit{función compacta}, con un dominio espacial mayor que el de $\delta$. Llegados este punto, merece la pena destacar que esa función compacta, con la que se ``sustituye'' a $\delta$, es la función kernel de SPH, que será descrita con mayor profundidad en la sección [[*Fundamentos del Método SPH]]. De este modo, Monaghan establece la formulación integral del método SPH.
+1. \label{punto:paso1Cap2FormIntegral} La primera etapa se basa en considerar, tal como estableció Dirac, la formulación integral de la función  $\delta$, pero considerando que se trata, en lugar de una pulsiana, de una función cerrada y acotada, lo que en el análisis de funciones se conoce como \textit{función compacta}, con un dominio espacial mayor que el de $\delta$. Llegados este punto, merece la pena destacar que esa función compacta, con la que se ``sustituye'' a $\delta$, es la función kernel de SPH, que será descrita con mayor profundidad en la sección [[*Descripción del Método SPH]]. De este modo, Monaghan establece la formulación integral del método SPH.
 
 2. \label{punto:paso2Cap2FormDiscreta} En la segunda etapa se opera sobre la formulación integral desarrollada en la primera etapa, para transformarla en una expresión discreta, esto es, transformar la integral en sumatoria. De este modo, las ecuaciones obtenidas pueden ser aplicadas sobre un sistema discreto como, por ejemplo, es el sistema de partículas con el que se modela el fluido a simular. Por ello, son estas ecuaciones discretas las que utilizaremos en nuestro simulador.
 
-En las próximas subsecciones [[*Formulación integral de las ecuaciones del método SPH]] y [[*Formulación discreta de las ecuaciones del método SPH]] llevaremos a cabo una descripción más exhaustiva de las dos etapas que, brevemente, acabamos de describir. En dichas secciones vamos a seguir las líneas establecidas por [cite:@AkiIhmAkin.etal12; @monaghan1992smoothed].
+En las próximas subsecciones [[*Formulación integral de las ecuaciones del método SPH]] y [[*Formulación discreta de las ecuaciones del método SPH]] llevaremos a cabo una descripción más exhaustiva de las dos etapas que, brevemente, acabamos de describir. En dichas secciones vamos a seguir las líneas establecidas por Akinci et al. y Monaghan [cite:@AkiIhmAkin.etal12; @monaghan1992smoothed].
 
 *** Formulación integral de las ecuaciones del método SPH
 
@@ -401,13 +411,13 @@ Puede deducirse que  la función $W$ de la ecuación \ref{ec:kernelIntegral}, la
    \;\;\;\;\mbox{y}\;\;\;\;\lim_{h\rightarrow 0} W(r-r',h) = \delta(r-r').
    \end{equation}
 
-2. \label{punto:SPH_3} $W$ tiene que ser compacta, es decir, debe ser una función serrada y acotada. Además, Monaghan sugiere que debe ser una función par, es decir, simétrica respecto del origen y decaer suavemente con la distancia.
+2. \label{punto:SPH_3} $W$ tiene que ser compacta, es decir, debe ser una función cerrada y acotada. Además, Monaghan sugiere que debe ser una función par, es decir, simétrica respecto del origen y decaer suavemente con la distancia.
 
 Cabe destacar que la elección de la función kernel, es uno de los problemas recurrentes en el ámbito de SPH. Una buena elección, sobre todo cuando el número de partículas vecinas es relativamente bajo, garantiza resultados precisos y, por lo tanto, simulaciones realistas. Existen diferentes estudios en los que se analizan las características que debe cumplir una función compacta y simétrica para ser una buena función kernel. Merece destacar los estudios de Dehnen et al. [cite:@Dehnen-Aly12] y Yan et al. [cite:@YanPenLiu14] donde, además, hace una exposición de como controlar el error cometido. Sin embargo, realizar un estudio de las diferentes funciones kernel, queda fuera del ámbito de este capítulo, en el que describimos los fundamentos del método SPH.
 
 *** Formulación integral de las derivadas de las ecuaciones de SPH
 
-Una vez expuesta la formulación integral de SPH, el siguiente paso es ``adaptar'' esa formulación a la ecuación dinámica del fluido, es decir, la ecuación NS [[ec:Navier--Stokes]]. Por lo tanto, es necesario exponer la formulación del gradiente y el laplaciano, en términos de la ecuación \ref{ec:kernelIntegral}, ya que son las funciones que intervienen en la ecuación NS. Siguiendo los términos expuestos en [cite:@Liu-Liu03], se obtiene la ecuación \ref{ec:SPH11}:
+Una vez expuesta la formulación integral de SPH, el siguiente paso es ``adaptar'' esa formulación a la ecuación dinámica del fluido, es decir, la ecuación NS [[ec:Navier--Stokes]]. Por lo tanto, es necesario exponer la formulación del gradiente y el laplaciano, en términos de la ecuación \ref{ec:kernelIntegral}, ya que son las funciones que intervienen en la ecuación NS. Siguiendo los términos expuestos en Liu et al. [cite:@Liu-Liu03], se obtiene la ecuación \ref{ec:SPH11}:
 
 \begin{equation}\label{ec:SPH11}
 \nabla \cdot \tilde{f}(r)=\int_{\Omega}
@@ -435,7 +445,7 @@ Sustituyendo la ecuación \ref{ec:SPH12} en \ref{ec:SPH11}, se obtiene la expres
 f(r')\cdot\nabla\left[W(r-r',h)\right]dr'.
 \end{equation}
 
-Tal como se indica en [cite:@Liu-Liu03], la ecuación \ref{ec:SPH13} es válida para calcular el gradiente de cualquier función. Sin embargo, para dotar de significado, se recomienda tener dos componente, una referida al volumen del dominio soportado y otro, específicamente, asociado al contorno. Expresándolo, en otros términos, en [cite:@Liu-Liu03], se recomienda que haya una componente de volumétrica y otra superficial (la asociada al contorno). Para que ello se cumpla, se hace uso del  \emph{Teorema de la Divergencia}, de este modo la ecuación \ref{ec:SPH13} se expresa en términos de la ecuación \ref{ec:SPH14}.
+Tal como se indica en Liu et al. [cite:@Liu-Liu03], la ecuación \ref{ec:SPH13} es válida para calcular el gradiente de cualquier función. Sin embargo, para dotar de significado, se recomienda tener dos componentes, una referida al volumen del dominio soportado y otro, específicamente, asociado al contorno. Expresándolo, en otros términos, en Liu et al. [cite:@Liu-Liu03], se recomienda que haya una componente de volumétrica y otra superficial (la asociada al contorno). Para que ello se cumpla, se hace uso del \emph{Teorema de la Divergencia}, de este modo la ecuación \ref{ec:SPH13} se expresa en términos de la ecuación \ref{ec:SPH14}.
 
 \begin{equation}\label{ec:SPH14}
 \nabla\cdot \tilde{f}(r)= \int_{S}
@@ -446,7 +456,7 @@ f(r')\cdot\nabla\left[W(r-r',h)\right]dr'.
 
 donde $\vec{n}$ es el vector normal de la superficie que recubre el dominio $\Omega$.
 
-La descomposición en dos componentes, una superficial y otra volumétrica, de la ecuación \ref{ec:SPH13} para obtener la ecuación \ref{ec:SPH14}, tiene un objetivo claro, tal como se indica en [cite:@Liu-Liu03], y es que si la función es compacta y el dominio soportado no ``penetra'' en los límites del fluido, por ejemplo en el contenedor en el que se encuentre confinado el fluido a simular, entonces la parte superficial de la ecuación \ref{ec:SPH14} se anula, por lo que se simplifica en términos de:
+La descomposición en dos componentes, una superficial y otra volumétrica, de la ecuación \ref{ec:SPH13} para obtener la ecuación \ref{ec:SPH14}, tiene un objetivo claro, tal como se indica en Liu et al. [cite:@Liu-Liu03], y es que si la función es compacta y el dominio soportado no ``penetra'' en los límites del fluido, por ejemplo en el contenedor en el que se encuentre confinado el fluido a simular, entonces la parte superficial de la ecuación \ref{ec:SPH14} se anula, por lo que se simplifica en términos de:
 
 \begin{equation}\label{ec:SPH15}
 \nabla\cdot \tilde{f}(r)=-\int_{\Omega}
@@ -460,7 +470,7 @@ Siempre que se cumplan las condiciones para obtener la ecuación \ref{ec:SPH15},
 En este proyecto vamos a utilizar funciones compactas, con lo que podemos utilizar las ecuaciones que se obtengan a partir de la expresión \ref{ec:SPH15}.
 
 
-Para obtener ecuaciones diferenciales de orden superior, en Liu [cite:@Liu-Liu03], se propone extrapolar la ecuación \ref{ec:SPH15},para cualquier orden diferencial. Según su propuesta, la ecuación general que permitirá aproximar cualquier ecuación diferencial se expresa en términos de \ref{ec:SPHDerivadasGENERAL}:
+Para obtener ecuaciones diferenciales de orden superior, en Liu et al. [cite:@Liu-Liu03], se propone extrapolar la ecuación \ref{ec:SPH15},para cualquier orden diferencial. Según su propuesta, la ecuación general que permitirá aproximar cualquier ecuación diferencial se expresa en términos de \ref{ec:SPHDerivadasGENERAL}:
 
 
 \begin{equation}\label{ec:SPHDerivadasGENERAL}
@@ -472,7 +482,7 @@ donde con $l$ se hace referencia al orden diferencial, p.e. $l=1$ será el gradi
 
 *** Formulación discreta de las ecuaciones del método SPH
 
-Mediante las ecuaciones \ref{ec:kernelIntegral}--\ref{ec:SPH15}, se tienen las expresiones con las que es posible transformar, analíticamente, las ecuaciones en derivadas parciales, con las que se describe el fluido, en términos del método SPH. Sin embargo, tal como se ha dicho previamente, estas ecuaciones no se pueden aplicar sobre un sistema discretizado, como es el sistema de partículas con el que se modela el fluido a simular. Para poder aplicar las expresiones \ref{ec:kernelIntegral}--\ref{ec:SPH15} a un sistema discreto, es necesario transformar dichas ecuaciones. Sucintamente, el proceso consiste en transformar las integrales, por sumatorias, restringidas a las partículas. En los estudios de [cite:@Price12; @Monaghan92], se describe el proceso clave que permite dicha trasformación y consiste en considerar que, cada una  de las partículas, representa una fracción del fluido, visto como un continuo, cuyo valor es  $\rho dV$. Teniendo en cuenta esta hipótesis es posible transformar la expresión \ref{ec:kernelIntegral} en la ecuación \ref{ec:spHAproximada}:
+Mediante las ecuaciones \ref{ec:kernelIntegral}--\ref{ec:SPH15}, se tienen las expresiones con las que es posible transformar, analíticamente, las ecuaciones en derivadas parciales, con las que se describe el fluido, en términos del método SPH. Sin embargo, tal como se ha dicho previamente, estas ecuaciones no se pueden aplicar sobre un sistema discretizado, como es el sistema de partículas con el que se modela el fluido a simular. Para poder aplicar las expresiones \ref{ec:kernelIntegral}--\ref{ec:SPH15} a un sistema discreto, es necesario transformar dichas ecuaciones. Sucintamente, el proceso consiste en transformar las integrales, por sumatorias, restringidas a las partículas. En los estudios de Price y Monaghan [cite:@Price12; @Monaghan92], se describe el proceso clave que permite dicha trasformación y consiste en considerar que, cada una  de las partículas, representa una fracción del fluido, visto como un continuo, cuyo valor es  $\rho dV$. Teniendo en cuenta esta hipótesis es posible transformar la expresión \ref{ec:kernelIntegral} en la ecuación \ref{ec:spHAproximada}:
 
 \begin{equation}\label{ec:spHAproximada}
  \tilde{f}(r_i) =\sum_{j\in\mathcal{N}(i)}\frac{m_j}{\rho_{j}}f(x_j) W(r_i-r_j,h),
@@ -515,11 +525,11 @@ Las expresiones obtenidas permite simplificar el cálculo de las complejas ecuac
 
 1. Que la función kernel debe ser compacta y la partícula $i$, sobre las que se particulariza cada función kernel, deben estar lejos del contorno del fluido.
 
-2. Las ecuaciones \ref{ec:deDerivadaDiscreta}, particularizadas para cada $l$, no satisfacen la conservación del momento, tal como advierten [cite:@Price12; @Monaghan92]. Para solventar este problema Monaghan [cite:@Monaghan92] propone el desarrollo de ecuaciones simétricas basadas en la regla de la cadena. El proceso que Monaghan sigue se describirá a continuación.
+2. Las ecuaciones \ref{ec:deDerivadaDiscreta}, particularizadas para cada $l$, no satisfacen la conservación del momento, tal como advierten Price y Monaghan [cite:@Price12; @Monaghan92]. Para solventar este problema Monaghan [cite:@Monaghan92] propone el desarrollo de ecuaciones simétricas basadas en la regla de la cadena. El proceso que Monaghan sigue se describirá a continuación.
 
 *** Formulación simétricas de las derivadas de las ecuaciones en SPH
 
-Tal como se ha mencionado en la sección anterior, las ecuaciones discretas del método SPH obtenidas, aunque cumplen los criterios analíticos, nos satisfacen la conservación del momento, es decir, no satisface en principio acción--reacción. Monaghan [cite:@Monaghan92] advierte de este hecho y propone una metodología, basada en la regla de la cadena, para obtener ecuaciones simétricas que satisfagan dicha ley de conservación. Las ecuaciones que permiten simetrizar las derivadas parciales de las funciones desconocidas son \ref{ec:SPH18} y \ref{ec:SPH19}:
+Tal como se ha mencionado en la sección anterior, las ecuaciones discretas del método SPH obtenidas, aunque cumplen los criterios analíticos, no satisfacen la conservación del momento, es decir, no se satisface el principio acción--reacción. Monaghan [cite:@Monaghan92] advierte de este hecho y propone una metodología, basada en la regla de la cadena, para obtener ecuaciones simétricas que satisfagan dicha ley de conservación. Las ecuaciones que permiten simetrizar las derivadas parciales de las funciones desconocidas son \ref{ec:SPH18} y \ref{ec:SPH19}:
 
 \begin{equation}\label{ec:SPH18}
 \nabla^l f(r)=\frac{1}{\rho}\left[
@@ -566,13 +576,13 @@ Si bien ambas ecuaciones son simétricas y cumplen las premisas de SPH, Monaghan
 
 ** Introducción
 
-La búsqueda de partículas vecinas es una de las tareas fundamentales en el método SPH. Tal como se indicó en el Capítulo [[*Fundamentos del Método SPH]], el modo en que se propagan las interacciones, en el método SPH, es a través de las partículas que se encuentran dentro del dominio soportado de la función kernel, las partículas vecinas. Determinar cuáles son las partículas vecinas de cada una de las partículas que componen el modelado del fluido, constituye uno de los retos más importantes en la simulación mediante SPH, desde un punto de vista de consumo de tiempo de cómputo. Es decir, resulta necesario encontrar las partículas vecinas de una partícula dada para poder calcular las propiedades del fluido en ese punto utilizando la función kernel.
+La búsqueda de partículas vecinas es una de las tareas fundamentales en el método SPH. Tal como se indicó en el Capítulo [[*Fundamentos del Método SPH]], el modo en que se propagan las interacciones en el método SPH, es a través de las partículas que se encuentran dentro del dominio soportado de la función kernel, o dicho de otra manera, de las partículas que se consideren vecinas a otra dada. Determinar cuáles son las partículas vecinas de cada una de las partículas que componen el modelado del fluido constituye uno de los retos más importantes en la simulación mediante SPH, desde un punto de vista de consumo de tiempo de cómputo. Es decir, resulta necesario encontrar las partículas vecinas de una partícula dada para poder calcular las propiedades del fluido en ese punto utilizando la función kernel.
 
 Hay varios métodos para buscar partículas vecinas en SPH. Pero podemos dividirlos principalmente en dos tipos.
 
 - Búsqueda exhaustiva:
 
-  /Búsqueda por fuerza bruta/: La búsqueda de vecinos por fuerza bruta es un algoritmo que se utiliza para encontrar las partículas más cercanas a una partícula dada en un conjunto de partículas. El algoritmo consiste en comparar la distancia entre cada partícula y la partícula dada, y luego seleccionar aquellas que estén dentro de un radio de suavizado específico.
+  /Búsqueda por fuerza bruta/: La búsqueda de vecinos por fuerza bruta es un algoritmo que se utiliza para encontrar las partículas más cercanas a una partícula dada en un conjunto de partículas. El algoritmo consiste en comparar la distancia entre cada partícula y la partícula dada, y luego seleccionar aquellas que estén dentro de un radio definido por la función kernel.
 
 - Discretización del espacio:
 
@@ -589,7 +599,7 @@ El proceso funciona de la siguiente manera:
 
 - Se recorre cada partícula en el conjunto de partículas.
 - Para cada partícula, se calcula la distancia entre ella y la partícula dada.
-- Si la distancia es menor o igual al radio de suavizado, se considera que es una partícula vecina y se añade a la lista de vecinos.
+- Si la distancia es menor o igual al radio definido por la funcion kernel, se considera que es una partícula vecina y se añade a la lista de vecinos.
 - Se repite este proceso para cada partícula en el conjunto de partículas.
 
 
@@ -597,11 +607,11 @@ Este método es útil para pequeñas cantidades de partículas, pero se vuelve i
 
 ** Búsqueda basada en Grids con marcado Hashing
 
-La búsqueda de vecinos basada en etiquetado hash es una técnica utilizada para encontrar partículas vecinas en el método de partículas suaves (SPH). Esta técnica se basa en el uso de una tabla hash para almacenar las partículas en diferentes “cubos” en función de su posición en el espacio.
+La búsqueda de vecinos basada en marcado hash es una técnica utilizada para encontrar partículas vecinas en el método de partículas suaves (SPH). Esta técnica se basa en el uso de una tabla hash para almacenar las partículas en diferentes “cubos” en función de su posición en el espacio.
 
 Sucintamente, esta técnica opera sobre divisiones del espacio mediante mallas, cada una de las cuales, y siempre que contengan al menos una partícula, es marcada o etiquetada con un número primo obtenido de una operación lógico-algebraica, la función hash. Luego, se buscan las partículas vecinas a través de un recorrido de los cubículos adyacentes al cubo de la partícula dada.
 
-La ventaja de este método es que, al clasificar las partículas en los cubículos, se puede limitar el número de partículas que se deben revisar para encontrar vecinos a solo aquellas en los cubículos adyacentes. Esto reduce significativamente el tiempo de cómputo que mejora conforme aumenta el número de partículas a simular y permite realizar simulaciones con un gran número de partículas.
+La ventaja de este método es que, al clasificar las partículas en los cubículos, se puede limitar el número de partículas que se deben revisar para encontrar vecinas a solo aquellas en los cubículos adyacentes. Esto reduce significativamente el tiempo de cómputo que mejora conforme aumenta el número de partículas a simular y permite realizar simulaciones con un gran número de partículas.
 
 Sin embargo, esta técnica tiene algunas desventajas. El problema es que, si el número de partículas es relativamente bajo, del orden de algunos miles, el procesamiento hash puede ser más costoso que el de búsqueda exhaustiva. Además, no existe una función hash perfecta por lo que se requiere de un filtrado posterior para evitar la denominada colisión por valor hash, tal como menciona Kelager [cite:@Kelager06].
 
@@ -623,7 +633,7 @@ El proceso sería el siguiente:
 
 Al utilizar una tabla hash, se puede acceder rápidamente a las partículas vecinas y se evita tener que recorrer todos los cubículos de la cuadrícula. Esto puede mejorar significativamente el rendimiento del algoritmo de búsqueda de vecinos de Kélager, especialmente en casos donde hay un gran número de partículas o un dominio de simulación muy grande.
 
-Uno de los problemas que genera usar etiquetado hash es la coalescencia de memoria, es decir, que las direcciones de memoria que sean cercanas representen cubículos adyacentes por lo que no se perdería tanto tiempo de computo. Esto lo resolvemos siguiendo la propuesta de Perea et al. [cite:@Perea-Cordero17], realizando la partición del espacio de la siguiente manera:
+Uno de los problemas que genera usar etiquetado hash es la coalescencia de memoria, es decir, que las direcciones de memoria que sean cercanas representen cubículos adyacentes para que no se pierda un tiempo de cómputo excesivo. Esto lo resolvemos siguiendo la propuesta de Perea et al. [cite:@Perea-Cordero17], realizando la partición del espacio de la siguiente manera:
 
 Primero en el eje X,
 
@@ -1088,6 +1098,7 @@ En este proyecto se utiliza la librería GLFW debido a la disponibilidad de gran
 ** Introducción
 
 A lo largo de los capítulos anteriores hemos hablado del ámbito de las computer graphics, de su importancia en diferentes industrias y de cómo es un importante campo de investigación. Además, se ha realizado un análisis previo, desde el punto de vista de un desarrollador, del proyecto que se quiere implementar. En nuestro caso, se trata de una simulación de fluidos basada en física, donde hemos realizado un recorrido por los fundamentos matemáticos necesarios y las técnicas existentes, capaces de simular un fluido de manera realista y versátil. Se han estudiado los trabajos de aquellos autores que avalan estas técnicas y, finalmente, se ha seleccionado una técnica concreta. Igualmente, se ha explicado el concepto de la búsqueda de vecinas, sin el cual no se puede realizar el método de simulación escogido. También, se vieron los diferentes tipos de búsqueda existentes, y se expuso el motivo por el que se ha seleccionado uno sobre los otros.
+
 Seguidamente, se introdujeron los métodos de integración temporal y las razones por las que se necesitan en un campo como la simulación gráfica por ordenador. Del mismo modo, se ha establecido la importancia de que el fluido sea capaz de reaccionar ante sólidos rígidos para que éste cumpla con los requisitos de versatilidad, así como las diferentes técnicas que podemos implementar para que el fluido reaccione a su entorno. Por ultimo, se han explicado las herramientas que se han utilizado en el desarrollo de este proyecto, así como aquellas características que las distinguen favorablemente frente a otras herramientas similares. Después de haber explicado todos los pormenores que conlleva la realización de un simulador de fluidos basado en física, y comprender todas las piezas necesarias para construirlo, en este capítulo vamos a explicar cómo se ha llevado a cabo este desarrollo y la estructura interna que tiene el simulador.
 
 ** Diagrama de Clases
@@ -1121,8 +1132,6 @@ A continuación se hace una relación de las pseudo-clases que hemos utilizado e
 - /vecinasFuerzaBruta/: Este es el método que calcula las partículas vecinas que tiene cada partícula, aplicando el método de búsqueda exhaustiva explicado en el capítulo [[*Búsqueda de partículas vecinas]]. Modifica los atributos del conjunto de partículas y almacena en ellas el número de partículas vecinas de cada una.
 
 - /vecinasHash/: Este es el método que calcula las partículas vecinas usando la búsqueda de vecinas basada en hash explicada en el capítulo [[*Método de integración temporal]]. Modifica los atributos del conjunto de partículas y almacena en ellas el número de partículas vecinas de cada una.
-
-- /fuerzaMuelle/: Este es el método que calcula las fuerzas internas de cada partícula basándose en la ley de elasticidad de Hooke. Modifica las fuerzas internas del conjunto de partículas.
 
 - /FuncionKernel/: Calcula la función kernel vista en el capítulo [[*Fundamentos del Método SPH]].
 
@@ -1166,11 +1175,63 @@ Para mejorar el rendimiento del bucle de simulación se han paralelizado los sig
 
 - Cálculo de vecinas: (/vecinasFuerzaBruta/, /vecinasHash/)
 - La detección de colisiones y respuesta de colisiones: (/respuestaColision/, /detectaColisionCilindro/, /detectaColisionEsfera/, /detectaColisionCaja/, /detectaColisionModelo/)
-- El cálculo de las fuerzas del fluido: (/fuerzaMuelle/, /FuncionKernel/, /GradienteKernel/, /LaplacianoKernel/, /fuerzaSPH/)
+- El cálculo de las fuerzas del fluido: (/FuncionKernel/, /GradienteKernel/, /LaplacianoKernel/, /fuerzaSPH/)
 - El cálculo de las nuevas aceleraciones: (/newAcceleration/)
 - El cálculo de las nuevas posiciones, velocidades, densidades y presiones: (/Densidad/, /MetodoEulerSemImplcito/)
 
 ** Resultados obtenidos
+
+Una vez revisada la implementación que se ha llevado a cabo, se exponen a continuación los principales resultados obtenidos por nuestro simulador. Esto nos permitirá demostrar las capacidades más destacables del simulador.
+
+Por una parte, el simulador cumple con el requisito de versatilidad, ya que, a través de la modificación de ciertos parámetros, como la viscosidad, se pueden simular diferentes tipos de fluidos (agua, aceite o chocolate), como se muestra en los frames de la figura [[fig:versatilidad]].
+
+#+NAME: fig:versatilidad
+#+CAPTION[Comparativa de los resultados obtenidos para diferentes fluidos: agua, aceite y chocolate]: Comparativa de los resultados obtenidos para diferentes fluidos: agua, aceite y chocolate. Las imágenes de la izquierda se obtuvieron a los 1,65 segundos de simulación, los de la derecha a los 6,8 segundos.
+#+ATTR_LATEX: :width 15cm
+[[./graficos/versatilidad.pdf]]
+
+Los parámetros de viscosidad y densidad que se han utilizado en las /simulaciones de versatilidad/ se recogen en el cuadro [[tb:versatilidad]]:
+
+#+NAME: tb:versatilidad
+#+CAPTION[Paramétros utilizados en las simulaciones de versatilidad]: Paramétros utilizados en las simulaciones de versatilidad. En unidades del Sistema Internacional.\\
+#+ATTR_LATEX: :align |l|c|c|c|
+|--------------------+------+--------+-----------|
+|                    | agua | aceite | chocolate |
+|--------------------+------+--------+-----------|
+| densidad $(\rho)$  |  1.0 |  0.836 |     1.275 |
+| viscosidad $(\nu)$ | 1.01 |   81.6 |      4.76 |
+|--------------------+------+--------+-----------|
+
+Por otro lado, el simulador también permite que el fluido reaccione frente a cuerpos rígidos con diferentes geometrías. En la figura [[fig:gestion-colisiones]] se muestran imágenes que presentan las reacciones de un fluido ante un cuerpo rígido con alta simetría o un modelo discretizado por triángulos.
+
+#+NAME: fig:gestion-colisiones
+#+CAPTION[Comparativa de la gestión de colisiones]: Comparativa de la gestión de colisiones. Las imágenes de la izquierda se han obtenido utlizando cajas y cilindros, considerados como objetos de simetría geométrica. Las imágenes de la derecha muestran los resultados de un cilindro, considerado como objeto de simetría, y el Stanford Bunny cuyo contorno está discretizado con triángulos.
+#+ATTR_LATEX: :width 15cm
+[[./graficos/gestion-colisiones.pdf]]
+
+Otra característica destacable implementada en el simulador es la de recrear /colisiones múltiples/, es decir, poder simular como un fluido reaccionando ante múltiples objetos en la misma simulación. Esto, también, queda ilustrado en la figura [[fig:gestion-colisiones]].
+
+Igualmente, podemos asegurar que se ha logrado aumentar el rendimiento del simulador, al utilizar la arquitectura CUDA, como se demuestra en la siguiente gráfica:
+
+(grafica)
+
+Y, por último, mostramos los valores óptimos utilizados en las distintas simulaciones.
+
+
+
+Valores óptimos para los parámetros de fuerzas SPH, según el estudio (cita de juan jose)
+
+(Tabla)
+
+
+
+Otros valores críticos para que la simulación sea realista
+
+(Tabla)
+
+(grafica)
+
+
 *** Comparativa en tiempo de renderizado
 * Conclusiones y trabajo futuro
 
