@@ -24,7 +24,6 @@
     ]{book}
   #+END_SRC
 
-
 ** Dimensiones de la caja
 
 #+begin_SRC latex
@@ -78,6 +77,11 @@
   \definecolor{verdoso}{rgb}{0.10,0.40,0.20}
 #+end_SRC
 
+** Tablas, no cuadros
+
+#+BEGIN_SRC latex
+  \renewcommand{\tablename}{Tabla}
+#+END_SRC
 * Fuentes e idiomas
 ** Fontspec y definición de familias
 
@@ -105,7 +109,7 @@ Fira code para la fuente monoespaciada y escalada a la altura de la fuente princ
 Cargamos Babel con los idiomas que se van a usar en el documento
 
 #+begin_SRC latex
-  \usepackage[english,spanish]{babel}
+  \usepackage[english,spanish,es-tabla]{babel}
 #+end_SRC
 
 Definimos un guión de no-corte:
