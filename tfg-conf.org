@@ -13,7 +13,6 @@
 * Configuración general
 ** Configuración de la clase de documento
 
-
   #+BEGIN_SRC latex
     \documentclass[%
     12pt,
@@ -23,6 +22,13 @@
     % draft
     ]{book}
   #+END_SRC
+
+** Abstract en book
+
+#+BEGIN_SRC latex
+  \newenvironment{abstract}{}{}
+  \usepackage{abstract}
+#+END_SRC
 
 ** Dimensiones de la caja
 
@@ -171,6 +177,7 @@ Para que el espaciado entre oraciones y palabras sea igual. La tradición ingles
 
 #+begin_SRC latex
   \usepackage{amsmath}
+  \newcommand\XOR{\mathbin{\char`\^}}
 #+end_SRC
 
 ** Tablas
@@ -217,7 +224,7 @@ Se carga =titlesec= y =titletoc= pero como son necesarias las cabeceras dinámic
     \renewcommand{\headrulewidth}{0pt}}
 #+end_SRC
 
-
+**** previo
 #+BEGIN_SRC latex
   \fancyhead[L,C]{}
   \fancyhead[L]{\sffamily\nouppercase\rightmark}
@@ -227,6 +234,22 @@ Se carga =titlesec= y =titletoc= pero como son necesarias las cabeceras dinámic
 
   \pagestyle{fancy}
 #+END_SRC
+
+**** COMMENT Nuevo
+
+#+begin_SRC latex
+  \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+  \renewcommand{\sectionmark}[1]{\markright{#1}}
+
+  \fancypagestyle{main}{%
+    \fancyhf{}
+    \fancyhead[LE]{\hspace*{-\marginparwidth-\marginparsep}{\makebox[1cm][l]{\sffamily\color{azulao}\thepage}}%
+      \hspace*{\marginparwidth+\marginparsep-1cm}{\sffamily\color{azulao}\footnotesize\leftmark}}
+    \fancyhead[LO]{\sffamily\color{azulao}\footnotesize\rightmark}
+    \fancyhead[RO]{\makebox[0em][l]{\makebox[\marginparwidth+\marginparsep][r]{\sffamily\color{azulao}\normalsize\thepage}}}
+    }
+#+end_SRC
+
 
 ** COMMENT Estilos de las secciones con titlesec
 
